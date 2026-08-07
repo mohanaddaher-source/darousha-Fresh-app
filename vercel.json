@@ -1,4 +1,7 @@
 {
+  "crons": [
+    { "path": "/api/subscription-digest", "schedule": "0 2 * * *" }
+  ],
   "headers": [
     {
       "source": "/",

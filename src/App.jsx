@@ -74,7 +74,9 @@ function useResponsiveStyles() {
         .dsf-recipe-grid { display: block !important; }
         .dsf-recipe-card { break-after: page; page-break-after: always; margin-bottom: 0 !important; }
         .dsf-recipe-card:last-child { break-after: auto; page-break-after: auto; }
+        .print-only-inline { display: inline !important; }
       }
+      .print-only-inline { display: none; }
     `;
     document.head.appendChild(style);
   }, []);
@@ -397,6 +399,14 @@ function effectivePrice(product) {
   return typeof product.salePrice === "number" && product.salePrice > 0 && product.salePrice < product.price
     ? product.salePrice
     : product.price;
+}
+// Same idea as effectivePrice, but for fixed-price boxes (Daily/Family/
+// Fruit/Frozen boxes) — kept as its own function since boxes are a
+// separate data shape from catalog products, not because the logic differs.
+function effectiveBoxPrice(box) {
+  return typeof box.salePrice === "number" && box.salePrice > 0 && box.salePrice < box.price
+    ? box.salePrice
+    : box.price;
 }
 function productDescription(product, lang) {
   return (lang === "ar" ? product.descriptionAr : product.description) || null;
@@ -1651,6 +1661,186 @@ const RECIPES = [
       "قدّميها فورًا بينما الأوراق لا تزال مقرمشة.",
     ],
   },
+  {
+    id: "ratatouille",
+    name: "Ratatouille", nameAr: "راتاتوي",
+    tagline: "French stewed summer vegetables", taglineAr: "طبخة خضار صيفية فرنسية",
+    produce: ["Zucchini", "Eggplant", "Bell Pepper (Red)", "Tomato", "Garlic", "Yellow Onion"],
+    pantry: ["Olive oil", "Fresh thyme", "Salt & pepper"],
+    pantryAr: ["زيت زيتون", "زعتر طازج", "ملح وفلفل"],
+    steps: [
+      "Dice the zucchini, eggplant, bell pepper, tomato and onion into similar-sized cubes.",
+      "Sauté the onion and garlic in olive oil until soft, then add the eggplant and cook a few minutes.",
+      "Add the remaining vegetables and thyme, and simmer uncovered until everything is tender and slightly jammy.",
+      "Season to taste and serve warm as a side, or over rice or crusty bread.",
+    ],
+    stepsAr: [
+      "قطّعي الكوسا والباذنجان والفلفل والطماطم والبصل إلى مكعبات متقاربة الحجم.",
+      "قلّبي البصل والثوم في زيت الزيتون حتى يلين، ثم أضيفي الباذنجان واطبخيه بضع دقائق.",
+      "أضيفي باقي الخضار والزعتر واتركيها على نار هادئة دون غطاء حتى تنضج وتتماسك قليلًا.",
+      "تبّليها حسب الرغبة وقدّميها دافئة كطبق جانبي أو مع الأرز أو الخبز المقرمش.",
+    ],
+  },
+  {
+    id: "borscht",
+    name: "Borscht", nameAr: "بورش",
+    tagline: "Russian beetroot & cabbage soup", taglineAr: "شوربة الشمندر والملفوف الروسية",
+    produce: ["Beetroot", "White Cabbage", "Potato", "Carrot", "Yellow Onion", "Garlic", "Dill"],
+    pantry: ["Beef or vegetable stock", "Tomato paste", "Sour cream, to serve", "Bay leaf", "Salt & pepper"],
+    pantryAr: ["مرق لحم أو خضار", "معجون طماطم", "قشدة حامضة للتقديم", "ورق غار", "ملح وفلفل"],
+    steps: [
+      "Grate the beetroot and carrot, and shred the cabbage; dice the potato and onion.",
+      "Sauté the onion, carrot and garlic, then stir in the tomato paste and beetroot.",
+      "Add the stock, potato, cabbage and bay leaf, and simmer until all the vegetables are tender.",
+      "Ladle into bowls, top with a spoonful of sour cream and a scatter of fresh dill.",
+    ],
+    stepsAr: [
+      "ابشري الشمندر والجزر وقطّعي الملفوف إلى شرائح رفيعة، وقطّعي البطاطس والبصل مكعبات.",
+      "قلّبي البصل والجزر والثوم، ثم أضيفي معجون الطماطم والشمندر.",
+      "أضيفي المرق والبطاطس والملفوف وورق الغار، واتركيها على نار هادئة حتى تنضج كل الخضار.",
+      "قدّميها في أطباق مع ملعقة من القشدة الحامضة ورشة من الشبت الطازج.",
+    ],
+  },
+  {
+    id: "olivier-salad",
+    name: "Olivier (Russian) Salad", nameAr: "سلطة أوليفيه الروسية",
+    tagline: "Creamy diced vegetable & potato salad", taglineAr: "سلطة بطاطس وخضار مقطعة بصلصة كريمية",
+    produce: ["Potato", "Carrot", "Green Peas", "Yellow Onion"],
+    pantry: ["Boiled eggs", "Pickled cucumbers", "Mayonnaise", "Boiled chicken or bologna (optional)", "Salt"],
+    pantryAr: ["بيض مسلوق", "مخلل خيار", "مايونيز", "دجاج مسلوق أو مرتديلا (اختياري)", "ملح"],
+    steps: [
+      "Boil the potato and carrot until just tender, then cool and dice into small cubes.",
+      "Finely dice the pickled cucumbers, onion and boiled eggs to match.",
+      "Combine everything in a bowl with the peas and a generous spoonful of mayonnaise.",
+      "Mix gently until evenly coated, season with salt, and chill before serving.",
+    ],
+    stepsAr: [
+      "اسلقي البطاطس والجزر حتى ينضجا قليلًا، ثم دعيهما يبردا وقطّعيهما مكعبات صغيرة.",
+      "قطّعي المخلل والبصل والبيض المسلوق مكعبات صغيرة بنفس الحجم تقريبًا.",
+      "اخلطي كل شيء في وعاء مع البازلاء وملعقة سخية من المايونيز.",
+      "قلّبي برفق حتى يتغطى كل شيء بالتساوي، تبّلي بالملح وبرّديها قبل التقديم.",
+    ],
+  },
+  {
+    id: "mjadara",
+    name: "Mjadara (Lentils & Rice)", nameAr: "مجدرة عدس بالأرز",
+    tagline: "Lentils and rice topped with caramelized onions", taglineAr: "عدس وأرز مغطى بالبصل المكرمل",
+    produce: ["Yellow Onion", "Garlic"],
+    pantry: ["Brown or green lentils", "Rice", "Cumin", "Olive oil", "Salt"],
+    pantryAr: ["عدس بني أو أخضر", "أرز", "كمون", "زيت زيتون", "ملح"],
+    steps: [
+      "Boil the lentils until just tender, about 15 minutes, then add the rice and enough water to cook both together.",
+      "Meanwhile, slice the onions thinly and fry slowly in olive oil until deeply caramelized — don't rush this step.",
+      "Stir crushed garlic and cumin into the lentils and rice for the last few minutes of cooking.",
+      "Serve topped generously with the caramelized onions, with a side of plain yogurt if you like.",
+    ],
+    stepsAr: [
+      "اسلقي العدس حتى ينضج قليلًا، حوالي ١٥ دقيقة، ثم أضيفي الأرز وكمية كافية من الماء لطهيهما معًا.",
+      "في هذه الأثناء، قطّعي البصل شرائح رفيعة وحمّريه ببطء في زيت الزيتون حتى يتكرمل جيدًا — لا تستعجلي هذه الخطوة.",
+      "أضيفي الثوم المهروس والكمون إلى العدس والأرز في آخر دقائق الطهي.",
+      "قدّميها مغطاة بسخاء بالبصل المكرمل، مع اللبن الرائب إذا أحببت.",
+    ],
+  },
+  {
+    id: "foul-medames",
+    name: "Foul Medames", nameAr: "فول مدمس",
+    tagline: "Warm stewed fava beans, a Levantine breakfast staple", taglineAr: "فول مدمس دافئ، طبق فطور شامي أساسي",
+    produce: ["Broad Beans (Fava)", "Garlic", "Lemon", "Tomato", "Parsley"],
+    pantry: ["Olive oil", "Cumin", "Salt"],
+    pantryAr: ["زيت زيتون", "كمون", "ملح"],
+    steps: [
+      "Warm the fava beans gently with a splash of their liquid (or water) until heated through.",
+      "Mash lightly with a fork, leaving some texture, and stir in crushed garlic, lemon juice and cumin.",
+      "Spoon into a bowl and top with diced tomato and chopped parsley.",
+      "Finish with a generous drizzle of olive oil and serve warm with bread.",
+    ],
+    stepsAr: [
+      "سخّني الفول برفق مع رشة من سائله (أو الماء) حتى يسخن تمامًا.",
+      "اهرسيه قليلًا بالشوكة مع ترك بعض القوام، وأضيفي الثوم المهروس وعصير الليمون والكمون.",
+      "ضعيه في طبق وزيّنيه بمكعبات الطماطم والبقدونس المفروم.",
+      "أنهيه بكمية سخية من زيت الزيتون وقدّميه دافئًا مع الخبز.",
+    ],
+  },
+  {
+    id: "minestrone",
+    name: "Minestrone Soup", nameAr: "شوربة مينستروني",
+    tagline: "Hearty Italian vegetable & pasta soup", taglineAr: "شوربة إيطالية غنية بالخضار والمعكرونة",
+    produce: ["Zucchini", "Carrot", "Celery", "Tomato", "White Cabbage", "Garlic", "Yellow Onion", "Basil"],
+    pantry: ["Small pasta or beans", "Vegetable stock", "Olive oil", "Salt & pepper", "Parmesan, to serve"],
+    pantryAr: ["معكرونة صغيرة أو فاصولياء", "مرق خضار", "زيت زيتون", "ملح وفلفل", "جبنة بارميزان للتقديم"],
+    steps: [
+      "Dice the carrot, celery and onion, and sauté in olive oil until softened.",
+      "Add the garlic, chopped tomato, cabbage and zucchini, and cook a few minutes more.",
+      "Pour in the stock, bring to a simmer, and add the pasta or beans until tender.",
+      "Finish with torn basil, season to taste, and serve with grated parmesan.",
+    ],
+    stepsAr: [
+      "قطّعي الجزر والكرفس والبصل مكعبات وقلّبيها في زيت الزيتون حتى تلين.",
+      "أضيفي الثوم والطماطم المقطعة والملفوف والكوسا واطبخي بضع دقائق أخرى.",
+      "أضيفي المرق واتركيه حتى يغلي برفق، ثم أضيفي المعكرونة أو الفاصولياء حتى تنضج.",
+      "أنهيها بأوراق الريحان الممزقة، تبّلي حسب الرغبة وقدّميها مع جبنة البارميزان المبشورة.",
+    ],
+  },
+  {
+    id: "coleslaw",
+    name: "Coleslaw", nameAr: "سلطة كول سلو",
+    tagline: "Crunchy cabbage & carrot salad", taglineAr: "سلطة ملفوف وجزر مقرمشة",
+    produce: ["White Cabbage", "Carrot", "Red Onion"],
+    pantry: ["Mayonnaise", "White vinegar", "Sugar", "Salt & pepper"],
+    pantryAr: ["مايونيز", "خل أبيض", "سكر", "ملح وفلفل"],
+    steps: [
+      "Finely shred the cabbage and grate the carrot; thinly slice the red onion.",
+      "Whisk together mayonnaise, a splash of vinegar and a pinch of sugar for the dressing.",
+      "Toss the vegetables with the dressing until evenly coated.",
+      "Chill for at least 20 minutes before serving so the flavors settle.",
+    ],
+    stepsAr: [
+      "قطّعي الملفوف شرائح رفيعة جدًا وابشري الجزر، وقطّعي البصل الأحمر شرائح رفيعة.",
+      "اخفقي المايونيز مع رشة من الخل وقليل من السكر لعمل التتبيلة.",
+      "قلّبي الخضار مع التتبيلة حتى تتغطى بالتساوي.",
+      "برّديها لمدة ٢٠ دقيقة على الأقل قبل التقديم حتى تتداخل النكهات.",
+    ],
+  },
+  {
+    id: "vinegret",
+    name: "Vinegret (Russian Beet Salad)", nameAr: "فينيغريت (سلطة الشمندر الروسية)",
+    tagline: "Diced beetroot, potato & pickle salad with oil dressing", taglineAr: "سلطة شمندر وبطاطس ومخلل بتتبيلة الزيت",
+    produce: ["Beetroot", "Potato", "Carrot", "Yellow Onion"],
+    pantry: ["Pickled cucumbers", "Sauerkraut (optional)", "Vegetable oil", "Vinegar", "Salt"],
+    pantryAr: ["مخلل خيار", "ملفوف مخلل (اختياري)", "زيت نباتي", "خل", "ملح"],
+    steps: [
+      "Boil the beetroot, potato and carrot separately until tender, then cool and dice into small, even cubes.",
+      "Finely dice the pickled cucumbers and onion to match.",
+      "Combine everything in a bowl with the sauerkraut, if using.",
+      "Dress with vegetable oil, a splash of vinegar and salt, and chill before serving.",
+    ],
+    stepsAr: [
+      "اسلقي الشمندر والبطاطس والجزر كل على حدة حتى ينضجوا، ثم دعيهم يبردوا وقطّعيهم مكعبات صغيرة متساوية.",
+      "قطّعي المخلل والبصل مكعبات صغيرة بنفس الحجم.",
+      "اخلطي كل شيء في وعاء مع الملفوف المخلل إن أردت.",
+      "تبّليها بالزيت النباتي ورشة من الخل والملح، وبرّديها قبل التقديم.",
+    ],
+  },
+  {
+    id: "draniki",
+    name: "Draniki (Potato Pancakes)", nameAr: "درانيكي (فطائر البطاطس)",
+    tagline: "Crispy pan-fried potato & onion pancakes", taglineAr: "فطائر بطاطس وبصل مقلية ومقرمشة",
+    produce: ["Potato", "Yellow Onion"],
+    pantry: ["Egg", "Flour", "Vegetable oil for frying", "Salt & pepper", "Sour cream, to serve"],
+    pantryAr: ["بيضة", "طحين", "زيت نباتي للقلي", "ملح وفلفل", "قشدة حامضة للتقديم"],
+    steps: [
+      "Grate the potato and onion together, then squeeze out as much excess liquid as possible.",
+      "Mix in the egg, a spoonful of flour, salt and pepper until combined.",
+      "Fry spoonfuls flattened into patties in hot oil until golden and crisp on both sides.",
+      "Drain briefly and serve hot with a dollop of sour cream.",
+    ],
+    stepsAr: [
+      "ابشري البطاطس والبصل معًا، ثم اعصريهما جيدًا للتخلص من أكبر قدر ممكن من السائل الزائد.",
+      "أضيفي البيضة وملعقة من الطحين والملح والفلفل واخلطي جيدًا.",
+      "اقلي ملاعق من الخليط مسطحة على شكل أقراص في زيت ساخن حتى تذهّب وتقرمش من الجهتين.",
+      "صفّيها قليلًا وقدّميها ساخنة مع ملعقة من القشدة الحامضة.",
+    ],
+  },
 ];
 
 const AR_CATEGORY = {
@@ -1869,12 +2059,33 @@ const BOX_TIER_DEFS = {
 };
 BOX_TIER_DEFS.box = BOX_TIER_DEFS.piece;
 function computeBoxTiers(product) {
+  const basePrice = effectivePrice(product);
+  const onSale = basePrice !== product.price;
+  // Per-item override set in Backstage (📦 button on piece/bunch items) —
+  // takes priority over the generic shared defaults below, since "how many
+  // pieces per box" genuinely varies by item (a strawberry box and a
+  // cucumber box shouldn't have to share the same 1/3/6 split).
+  if (product.tierPieces && (product.unit === "piece" || product.unit === "bunch")) {
+    const { small, medium, big } = product.tierPieces;
+    const unitLabel = product.unit === "bunch" ? "bunch" : "piece";
+    const unitLabelAr = product.unit === "bunch" ? "حزمة" : "قطعة";
+    const pluralAr = product.unit === "bunch" ? "حزم" : "قطع";
+    const mk = (key, n) => ({
+      key,
+      weight: `${n} ${unitLabel}${n === 1 ? "" : "s"}`,
+      weightAr: n === 1 ? `${unitLabelAr} واحدة` : `${n} ${pluralAr}`,
+      price: Math.max(1, Math.round(basePrice * n)),
+      originalPrice: onSale ? Math.max(1, Math.round(product.price * n)) : undefined,
+    });
+    return [mk("small", small), mk("medium", medium), mk("big", big)];
+  }
   const defs = BOX_TIER_DEFS[product.unit] || BOX_TIER_DEFS.kg;
   return defs.map((d) => ({
     key: d.key,
     weight: d.weight,
     weightAr: d.weightAr,
-    price: Math.max(d.min, Math.round(product.price * d.mult)),
+    price: Math.max(d.min, Math.round(basePrice * d.mult)),
+    originalPrice: onSale ? Math.max(d.min, Math.round(product.price * d.mult)) : undefined,
   }));
 }
 const BOX_SIZE_LABEL = {
@@ -2280,8 +2491,8 @@ const WHATSAPP_NUMBER = "971524786729"; // 00 971 52 478 6729
 const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
-const SITE_URL = "https://darousha-fresh-app-38yw5.vercel.app";
-const CURRENT_VERSION = "20260724153000"; // must match public/version.json — bumped on every new build
+const SITE_URL = "https://daroushafresh.com";
+const CURRENT_VERSION = "20260806160419"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -2513,6 +2724,17 @@ function buildStatusNotifyLink(order, status) {
   const text = encodeURIComponent(messageFn(order));
   return `https://wa.me/${digits}?text=${text}`;
 }
+// Same one-tap wa.me pattern as buildStatusNotifyLink above, but for telling
+// a customer their requested item is now in stock — the loop-closer that
+// makes the whole "request an item" feature worth using.
+function buildItemRequestNotifyLink(request) {
+  const digits = phoneDigitsForWhatsApp(request.customerPhone);
+  const name = request.customerName ? `Hi ${request.customerName}, ` : "Hi, ";
+  const text = encodeURIComponent(
+    `${name}this is Darousha Fresh 🌿 Good news — "${request.itemName}" is now available! Tap here to order: ${window.location.origin}`
+  );
+  return `https://wa.me/${digits}?text=${text}`;
+}
 // Automatic email to the CUSTOMER at each status change — separate from
 // sendOrderNotificationEmail above, which alerts the business instead.
 // Needs EMAILJS_STATUS_TEMPLATE_ID configured; stays a safe no-op until then.
@@ -2636,20 +2858,31 @@ const FRUIT_BOX_STEP = {
 };
 // Vegetable boxes (Daily/Family/Signature/Chef's) work the same pick-your-
 // own way as the fruit boxes, but there are far too many vegetables to
-// hand-list a cap/step for each one the way fruits are above. Instead,
-// anything not in the two maps above falls back to a simple price rule:
-// pricier items (herbs, mushrooms, asparagus, etc.) are capped at 1 per
-// box since they're worth much more per unit, while genuinely cheap
-// staples (potato, onion, carrot...) come in sets of 3, exactly like the
-// cheap fruits do.
+// hand-list a cap/step for each one the way fruits are above. Instead of
+// guessing from price (which broke the moment any item's price changed —
+// Bell Pepper at 33 AED after a Backstage edit got capped at 1 per box
+// even though it should never have been limited), this caps only what's
+// genuinely sold as one whole unit: anything with unit "bunch" (parsley,
+// garlic...), plus the entire Leafy Greens category, since a head of
+// lettuce or a bunch of spinach is the same "pick 1" situation even
+// though a couple of lettuce varieties happen to be catalogued as
+// "piece" rather than "bunch". Everything else — kg-priced staples like
+// tomato/cucumber/bell pepper, or piece-priced items outside Leafy
+// Greens — has no cap here at all; only the box's total slot count and
+// actual stock limit how many a customer can pick.
 function boxItemMaxPerBox(product) {
   if (typeof FRUIT_BOX_MAX_PER_BOX[product.name] === "number") return FRUIT_BOX_MAX_PER_BOX[product.name];
-  if (product.category !== "Fruits" && product.price >= 10) return 1;
+  if (product.category === "Leafy Greens") return 1;
+  if (product.category !== "Fruits" && product.unit === "bunch") return 1;
   return null;
 }
+// Same price-based guessing problem as the old max-per-box rule: this used
+// to force any vegetable under 5 AED into sets of 3 (potato, carrot,
+// onion...), so a customer picking a mixed veg box couldn't add just one
+// potato — only groups of 3. Fruits keep their own deliberate step list
+// above; every vegetable now defaults to picking one at a time.
 function boxItemStep(product) {
   if (typeof FRUIT_BOX_STEP[product.name] === "number") return FRUIT_BOX_STEP[product.name];
-  if (product.category !== "Fruits" && product.price < 5) return 3;
   return 1;
 }
 function referralCodeFor(uid, name) {
@@ -3029,6 +3262,102 @@ async function saveLeadDoc(lead) {
   }
 }
 
+/* Item requests — "Can't find it? Request it" feature. Same one-document-
+   per-request pattern as orders/leads, kept in its own collection so it
+   never fights other writes. status is "pending" | "sourcing" | "added" |
+   "declined", set by Backstage. */
+async function fetchAllItemRequests() {
+  try {
+    const snap = await getDocs(collection(db, "itemRequests"));
+    return snap.docs.map((d) => d.data());
+  } catch (e) {
+    console.error("Firestore item requests fetch failed:", e);
+    return [];
+  }
+}
+function subscribeToItemRequests(onUpdate) {
+  try {
+    return onSnapshot(collection(db, "itemRequests"), (snap) => {
+      onUpdate(snap.docs.map((d) => d.data()));
+    });
+  } catch (e) {
+    console.error("Firestore item requests subscription failed:", e);
+    return () => {};
+  }
+}
+async function saveItemRequestDoc(request) {
+  try {
+    await setDoc(doc(db, "itemRequests", request.id), request);
+    return true;
+  } catch (e) {
+    console.error("Firestore item request save failed:", e);
+    return false;
+  }
+}
+async function updateItemRequestStatusDoc(id, status) {
+  try {
+    await setDoc(doc(db, "itemRequests", id), { id, status }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore item request status update failed:", e);
+    return false;
+  }
+}
+function sendItemRequestAlertWhatsApp(request) {
+  if (!CALLMEBOT_READY) return; // not configured yet — skip quietly
+  const text = encodeURIComponent(
+    `🙋 Darousha Fresh — item request: "${request.itemName}"${request.quantity ? ` (${request.quantity})` : ""} from ${request.customerName || "a customer"}${request.customerPhone ? ` (${request.customerPhone})` : ""}.${request.note ? ` Note: ${request.note}` : ""}`
+  );
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${text}&apikey=${CALLMEBOT_APIKEY}`;
+  const pixel = document.createElement("img");
+  pixel.src = url;
+  pixel.width = 1;
+  pixel.height = 1;
+  pixel.style.position = "absolute";
+  pixel.style.left = "-9999px";
+  pixel.alt = "";
+  const cleanup = () => pixel.remove();
+  pixel.onload = cleanup;
+  pixel.onerror = cleanup;
+  document.body.appendChild(pixel);
+  setTimeout(cleanup, 15000);
+}
+
+// Starting-point tiers from the Office Friday Box pricing discussion —
+// intentionally a suggestion sent to the business owner, not a price
+// quoted to the company automatically. B2B pricing like this usually
+// still wants a human look before it goes out, so this speeds up that
+// human step instead of skipping it.
+function suggestedOfficeBoxWeeklyPrice(headcount) {
+  const n = Number(headcount) || 0;
+  if (n <= 0) return null;
+  if (n <= 10) return "~180 AED/week (Small Office tier)";
+  if (n <= 25) return "~400 AED/week (Medium Office tier)";
+  if (n <= 50) return "~750 AED/week (Large Office tier)";
+  return "Custom quote needed (Enterprise, 50+)";
+}
+
+function sendOfficeLeadAlertWhatsApp(lead) {
+  if (!CALLMEBOT_READY) return; // not configured yet — skip quietly
+  const suggested = suggestedOfficeBoxWeeklyPrice(lead.headcount);
+  const text = encodeURIComponent(
+    `🏢 Office Friday Box request — ${lead.company}, ~${lead.headcount || "?"} employees. Contact: ${lead.contact} (${lead.phone}). ${lead.message || ""}${suggested ? `\n\n💰 Suggested price: ${suggested}` : ""}`
+  );
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${text}&apikey=${CALLMEBOT_APIKEY}`;
+  const pixel = document.createElement("img");
+  pixel.src = url;
+  pixel.width = 1;
+  pixel.height = 1;
+  pixel.style.position = "absolute";
+  pixel.style.left = "-9999px";
+  pixel.alt = "";
+  const cleanup = () => pixel.remove();
+  pixel.onload = cleanup;
+  pixel.onerror = cleanup;
+  document.body.appendChild(pixel);
+  setTimeout(cleanup, 15000);
+}
+
 async function storageGet(key) {
   try {
     const snap = await getDoc(doc(db, "app-state", key));
@@ -3065,34 +3394,42 @@ function storageSubscribe(key, onUpdate) {
 /* ------------------------------------ Small UI atoms ------------------------------------ */
 
 function PriceTag({ value, unit, size = "md", originalValue }) {
+  const { lang } = useLang();
   const big = size === "lg";
   const onSale = typeof originalValue === "number" && originalValue > value;
   return (
-    <div style={{ display: "inline-flex", alignItems: "baseline", gap: 6 }}>
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
       {onSale && (
-        <span style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: big ? 13 : 11, color: BRAND.ink, opacity: 0.45, textDecoration: "line-through" }}>
-          {money(originalValue)}
+        <span style={{ fontSize: big ? 10.5 : 9.5, fontWeight: 800, letterSpacing: "0.05em", color: "#fff", background: BRAND.tomato, borderRadius: 999, padding: big ? "3px 9px" : "2px 7px", textTransform: lang === "ar" ? "none" : "uppercase" }}>
+          {lang === "ar" ? "خصم" : "Sale"}
         </span>
       )}
-      <div
-        style={{
-          display: "inline-flex",
-          alignItems: "baseline",
-          gap: 4,
-          background: onSale ? "#FDEAEA" : BRAND.cream,
-          border: `1.5px dashed ${onSale ? BRAND.tomato : BRAND.orange}`,
-          borderRadius: 8,
-          padding: big ? "6px 12px" : "3px 8px",
-          transform: "rotate(-1.5deg)",
-          fontFamily: "IBM Plex Mono, monospace",
-          color: onSale ? BRAND.tomato : BRAND.orangeDeep,
-          fontWeight: 600,
-          fontSize: big ? 18 : 13,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {money(value)}
-        {unit ? <span style={{ fontSize: big ? 11 : 10, color: BRAND.ink, opacity: 0.6 }}>/{unit}</span> : null}
+      <div style={{ display: "inline-flex", alignItems: "baseline", gap: 6 }}>
+        {onSale && (
+          <span style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: big ? 13 : 11, color: BRAND.ink, opacity: 0.45, textDecoration: "line-through" }}>
+            {money(originalValue)}
+          </span>
+        )}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "baseline",
+            gap: 4,
+            background: onSale ? "#FDEAEA" : BRAND.cream,
+            border: `1.5px dashed ${onSale ? BRAND.tomato : BRAND.orange}`,
+            borderRadius: 8,
+            padding: big ? "6px 12px" : "3px 8px",
+            transform: "rotate(-1.5deg)",
+            fontFamily: "IBM Plex Mono, monospace",
+            color: onSale ? BRAND.tomato : BRAND.orangeDeep,
+            fontWeight: 600,
+            fontSize: big ? 18 : 13,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {money(value)}
+          {unit ? <span style={{ fontSize: big ? 11 : 10, color: BRAND.ink, opacity: 0.6 }}>/{unit}</span> : null}
+        </div>
       </div>
     </div>
   );
@@ -3255,6 +3592,36 @@ function AppShell() {
   }
 
   const [view, setView] = useState(() => (getInvoiceParam() ? "invoice" : getDriveParam() ? "drive" : getTrackParam() ? "track" : getRecipeParam() ? "recipes" : "home"));
+  // Makes the browser's own Back button work for in-app navigation. Without
+  // this, every setView() call only changes React state — the URL and
+  // history never move, so there's nothing for Back to go back to, and the
+  // only way to leave a page was reloading the whole site from scratch.
+  // isPoppingRef distinguishes "the browser fired popstate" from "the app
+  // called setView normally" so the two effects below don't fight each
+  // other and double-push or get stuck.
+  const isPoppingRef = useRef(false);
+  const historyMountedRef = useRef(false);
+  useEffect(() => {
+    if (isPoppingRef.current) {
+      isPoppingRef.current = false;
+      return;
+    }
+    if (!historyMountedRef.current) {
+      historyMountedRef.current = true;
+      window.history.replaceState({ view }, "");
+      return;
+    }
+    window.history.pushState({ view }, "");
+  }, [view]);
+  useEffect(() => {
+    function onPopState(e) {
+      isPoppingRef.current = true;
+      setView((e.state && e.state.view) || "home");
+    }
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const [deepLinkOrderId] = useState(getTrackParam); // set once on load; doesn't change
   const [driveOrderId] = useState(getDriveParam); // set once on load; doesn't change
   const [deepLinkRecipeId] = useState(getRecipeParam); // set once on load; doesn't change
@@ -3309,6 +3676,7 @@ function AppShell() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [orders, setOrders] = useState([]);
   const [leads, setLeads] = useState([]);
+  const [itemRequests, setItemRequests] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [lastOrderId, setLastOrderId] = useState(null);
   const [lastOrder, setLastOrder] = useState(null);
@@ -3346,6 +3714,7 @@ function AppShell() {
   useEffect(() => {
     let unsubOrders = () => {};
     let unsubReviews = () => {};
+    let unsubItemRequests = () => {};
     const unsubCatalog = storageSubscribe("dsf-catalog-overrides", (overrides) => {
       if (!overrides) return;
       setProducts((prev) => prev.map((p) => (overrides[p.id] ? { ...p, ...overrides[p.id] } : p)));
@@ -3378,6 +3747,10 @@ function AppShell() {
         liveReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setReviews(liveReviews);
       });
+      unsubItemRequests = subscribeToItemRequests((liveRequests) => {
+        liveRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setItemRequests(liveRequests);
+      });
       const savedLeads = await fetchAllLeads();
       savedLeads.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setLeads(savedLeads);
@@ -3386,6 +3759,7 @@ function AppShell() {
     return () => {
       unsubOrders();
       unsubReviews();
+      unsubItemRequests();
       unsubCatalog();
       unsubBoxes();
       unsubPromoCodes();
@@ -3557,6 +3931,12 @@ function AppShell() {
       if (saved) {
         await decrementStockForOrder(order);
         setOrders((prev) => [order, ...prev]);
+        // Same business alerts a manually-placed order gets — without these,
+        // a subscription renewing in the background was completely silent:
+        // no ping to the business, nothing for the admin to act on until
+        // someone happened to open the Orders tab and noticed it by chance.
+        sendOrderNotificationEmail(order); // fire-and-forget; safe no-op until EmailJS keys are set
+        sendOrderNotificationWhatsApp(order); // fire-and-forget; safe no-op until CallMeBot key is set
         await updateSubscriptionDoc(sub.id, {
           lastOrderCreatedDate: todayStr,
           nextDeliveryDate: nextSubscriptionDate(todayStr, sub.frequency).toISOString(),
@@ -3643,6 +4023,22 @@ function AppShell() {
     const entry = { id: "L" + Date.now().toString(36).toUpperCase(), createdAt: new Date().toISOString(), ...lead };
     setLeads((prev) => [entry, ...prev]);
     await saveLeadDoc(entry);
+    if (entry.bizType === "Office Box") sendOfficeLeadAlertWhatsApp(entry); // fire-and-forget; safe no-op until CallMeBot key is set
+  }
+
+  async function submitItemRequest(request) {
+    const entry = { id: "IR" + Date.now().toString(36).toUpperCase(), createdAt: new Date().toISOString(), status: "pending", ...request };
+    const saved = await saveItemRequestDoc(entry);
+    if (saved) {
+      setItemRequests((prev) => [entry, ...prev]);
+      sendItemRequestAlertWhatsApp(entry); // fire-and-forget; safe no-op until CallMeBot key is set
+    }
+    return saved; // let the form show a real error instead of a false "Thanks!" on failure
+  }
+
+  async function updateItemRequestStatus(id, status) {
+    setItemRequests((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
+    await updateItemRequestStatusDoc(id, status);
   }
 
   async function updateProduct(id, patch) {
@@ -3650,7 +4046,7 @@ function AppShell() {
     setProducts(next);
     const overrides = {};
     next.forEach((p) => {
-      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null };
+      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null };
     });
     return await storageSet("dsf-catalog-overrides", overrides, true);
   }
@@ -3704,7 +4100,7 @@ function AppShell() {
     setProducts(next);
     const overrides = {};
     next.forEach((p) => {
-      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null };
+      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null };
     });
     await storageSet("dsf-catalog-overrides", overrides, true);
     // Deliberately no alert fired from here — this function runs inside
@@ -3727,6 +4123,7 @@ function AppShell() {
         available: b.available,
         pieceCount: b.pieceCount == null ? null : b.pieceCount,
         weight: b.weight == null ? null : b.weight,
+        salePrice: b.salePrice == null ? null : b.salePrice,
       };
     });
     return await storageSet("dsf-box-overrides", overrides, true);
@@ -3777,10 +4174,11 @@ function AppShell() {
             addToCart={addToCart}
             cart={cart}
             lang={lang}
+            onSubmitItemRequest={submitItemRequest}
           />
         )}
         {view === "boxes" && <BoxesView addToCart={addToCart} cart={cart} lang={lang} boxes={boxes} products={allProducts} />}
-        {view === "freshboxes" && <FreshBoxesView products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />}
+        {view === "freshboxes" && <FreshBoxesView products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} activeCategory={activeCategory} setActiveCategory={setActiveCategory} onSubmitItemRequest={submitItemRequest} />}
         {view === "commercial" && <CommercialView onSubmitLead={submitLead} />}
         {view === "cart" && (
           <CartView
@@ -3848,7 +4246,7 @@ function AppShell() {
         )}
         {view === "admin" &&
           (adminAuthed ? (
-            <AdminView products={products} updateProduct={updateProduct} boxes={boxes} updateBox={updateBox} orders={orders} updateOrderStatus={updateOrderStatus} acknowledgeOrder={acknowledgeOrder} leads={leads} promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} reviews={reviews} approveReview={approveReview} deleteReview={deleteReview} customProducts={customProducts} addCustomProduct={addCustomProduct} updateCustomProduct={updateCustomProduct} deleteCustomProduct={deleteCustomProduct} suppliers={suppliers} addSupplier={addSupplier} deleteSupplier={deleteSupplier} />
+            <AdminView products={products} updateProduct={updateProduct} boxes={boxes} updateBox={updateBox} orders={orders} updateOrderStatus={updateOrderStatus} acknowledgeOrder={acknowledgeOrder} leads={leads} promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} reviews={reviews} approveReview={approveReview} deleteReview={deleteReview} customProducts={customProducts} addCustomProduct={addCustomProduct} updateCustomProduct={updateCustomProduct} deleteCustomProduct={deleteCustomProduct} suppliers={suppliers} addSupplier={addSupplier} deleteSupplier={deleteSupplier} itemRequests={itemRequests} updateItemRequestStatus={updateItemRequestStatus} />
           ) : (
             <AdminLogin onSuccess={() => setAdminAuthed(true)} />
           ))}
@@ -4147,7 +4545,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
             </div>
           </div>
           <img
-            src="https://i.postimg.cc/JMtZXFgT/D2125A2A-4C5D-48E1-A0B6-1CFBF1E5EAD6.png"
+            src="/images/fruit-basket-hero.jpg"
             alt="Darousha Fresh premium fruit box"
             style={{ width: "100%", height: "100%", minHeight: 260, objectFit: "cover", display: "block" }}
           />
@@ -4187,7 +4585,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
             </div>
           </div>
           <img
-            src="/images/box-large.jpg"
+            src="/images/veg-crate-hero.jpg"
             alt="Darousha Fresh premium vegetable box"
             style={{ width: "100%", height: "100%", minHeight: 220, objectFit: "cover", display: "block" }}
           />
@@ -4355,7 +4753,7 @@ function SectionTitle({ eyebrow, title }) {
 
 /* ------------------------------------ Shop ------------------------------------ */
 
-function ShopView({ products, activeCategory, setActiveCategory, addToCart, cart }) {
+function ShopView({ products, activeCategory, setActiveCategory, addToCart, cart, onSubmitItemRequest }) {
   const { t, lang } = useLang();
   const [query, setQuery] = useState("");
   const categories = [...new Set(products.map((p) => p.category))];
@@ -4390,7 +4788,129 @@ function ShopView({ products, activeCategory, setActiveCategory, addToCart, cart
         {filtered.map((p) => (
           <ProductCard key={p.id} product={p} addToCart={addToCart} cartQty={cart.find((c) => c.id === p.id)?.qty || 0} />
         ))}
-        {filtered.length === 0 && <div style={{ opacity: 0.6, fontSize: 14 }}>{t("no_results")} "{query}".</div>}
+      </div>
+      {filtered.length === 0 && (
+        <div style={{ marginTop: 10 }}>
+          <div style={{ opacity: 0.6, fontSize: 14, marginBottom: 12 }}>{t("no_results")} "{query}".</div>
+          <ItemRequestForm prefillName={query} onSubmitItemRequest={onSubmitItemRequest} />
+        </div>
+      )}
+      {filtered.length > 0 && (
+        <div style={{ textAlign: "center", marginTop: 24 }}>
+          <ItemRequestLink onSubmitItemRequest={onSubmitItemRequest} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* "Can't find it? Request it" — a lightweight always-available link that
+   opens the same request form used in the empty search state, so the
+   feature works whether or not the customer searched for anything. */
+function ItemRequestLink({ onSubmitItemRequest }) {
+  const { lang } = useLang();
+  const [open, setOpen] = useState(false);
+  if (open) {
+    return (
+      <div style={{ textAlign: lang === "ar" ? "right" : "left" }}>
+        <ItemRequestForm onSubmitItemRequest={onSubmitItemRequest} onClose={() => setOpen(false)} />
+      </div>
+    );
+  }
+  return (
+    <button
+      onClick={() => setOpen(true)}
+      style={{ background: "none", border: "none", color: BRAND.green, fontWeight: 700, fontSize: 13, textDecoration: "underline", cursor: "pointer" }}
+    >
+      {lang === "ar" ? "لم تجد ما تبحث عنه؟ اطلبه منّا" : "Can't find it? Request it"}
+    </button>
+  );
+}
+
+function ItemRequestForm({ prefillName = "", onSubmitItemRequest, onClose }) {
+  const { lang } = useLang();
+  const [itemName, setItemName] = useState(prefillName);
+  const [quantity, setQuantity] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [note, setNote] = useState("");
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(false);
+
+  if (sent) {
+    return (
+      <div style={{ background: BRAND.greenSoft, border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 14, fontSize: 13.5 }}>
+        {lang === "ar" ? "شكرًا لك! تلقينا طلبك وسنتحقق من توفره قريبًا." : "Thanks! We got your request and we'll check availability soon."}
+      </div>
+    );
+  }
+
+  async function handleSubmit() {
+    if (!itemName.trim() || busy) return;
+    setBusy(true);
+    setError(false);
+    const saved = await onSubmitItemRequest({
+      itemName: itemName.trim(),
+      quantity: quantity.trim() || null,
+      customerName: customerName.trim() || null,
+      customerPhone: customerPhone.trim() || null,
+      note: note.trim() || null,
+    });
+    setBusy(false);
+    if (saved) {
+      setSent(true);
+    } else {
+      setError(true);
+    }
+  }
+
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 16, maxWidth: 420 }}>
+      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>
+        {lang === "ar" ? "اطلب صنفًا غير متوفر" : "Request an item"}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <input
+          value={itemName}
+          onChange={(e) => setItemName(e.target.value)}
+          placeholder={lang === "ar" ? "اسم الصنف" : "Item name"}
+          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
+        />
+        <input
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          placeholder={lang === "ar" ? "الكمية (اختياري)" : "Quantity (optional)"}
+          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
+        />
+        <input
+          value={customerPhone}
+          onChange={(e) => setCustomerPhone(e.target.value)}
+          placeholder={lang === "ar" ? "رقم الجوال (اختياري)" : "Phone number (optional)"}
+          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
+        />
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder={lang === "ar" ? "ملاحظة (اختياري)" : "Note (optional)"}
+          rows={2}
+          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif", resize: "vertical" }}
+        />
+      </div>
+      <div style={{ display: "flex", gap: 8, marginTop: 12, alignItems: "center", flexWrap: "wrap" }}>
+        <PrimaryButton disabled={!itemName.trim() || busy} onClick={handleSubmit} style={{ padding: "9px 16px", fontSize: 13 }}>
+          {busy ? (lang === "ar" ? "جارٍ الإرسال…" : "Sending…") : lang === "ar" ? "إرسال الطلب" : "Send request"}
+        </PrimaryButton>
+        {onClose && (
+          <GhostButton onClick={onClose} style={{ padding: "9px 16px", fontSize: 13 }}>
+            {lang === "ar" ? "إلغاء" : "Cancel"}
+          </GhostButton>
+        )}
+        {error && (
+          <span style={{ color: BRAND.tomato, fontSize: 12, fontWeight: 700 }}>
+            {lang === "ar" ? "⚠ تعذّر الإرسال — حاول مرة أخرى" : "⚠ Failed to send — try again"}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -4452,7 +4972,7 @@ function ProductCard({ product, addToCart, cartQty }) {
 
 /* ------------------------------------ Boxes ------------------------------------ */
 
-function FreshBoxesView({ products, addToCart, cart, setView, lang, activeCategory, setActiveCategory }) {
+function FreshBoxesView({ products, addToCart, cart, setView, lang, activeCategory, setActiveCategory, onSubmitItemRequest }) {
   const [search, setSearch] = useState("");
   const q = search.trim().toLowerCase();
   const categories = ["All", ...new Set(products.map((p) => p.category))];
@@ -4514,8 +5034,18 @@ function FreshBoxesView({ products, addToCart, cart, setView, lang, activeCatego
                 ? <GourmetItemCard key={p.id} product={p} addToCart={addToCart} cart={cart} lang={lang} />
                 : <BoxSizeCard key={p.id} product={p} addToCart={addToCart} cart={cart} lang={lang} />
             )}
-            {filtered.length === 0 && <div style={{ opacity: 0.6, fontSize: 14, padding: "20px 0" }}>{lang === "ar" ? "لا توجد نتائج" : "No items found"}</div>}
+            {filtered.length === 0 && (
+              <div style={{ padding: "20px 0" }}>
+                <div style={{ opacity: 0.6, fontSize: 14, marginBottom: 12 }}>{lang === "ar" ? "لا توجد نتائج" : "No items found"}</div>
+                <ItemRequestForm prefillName={search} onSubmitItemRequest={onSubmitItemRequest} />
+              </div>
+            )}
           </div>
+          {filtered.length > 0 && (
+            <div style={{ marginTop: 24 }}>
+              <ItemRequestLink onSubmitItemRequest={onSubmitItemRequest} />
+            </div>
+          )}
         </div>
       </div>
 
@@ -4579,7 +5109,12 @@ function FruitBoxBuilder({ products, addToCart, cart, setView, lang }) {
           const remaining = hasStockLimit ? Math.max(0, p.stock - existingCartQty) : Infinity;
           const atMax = hasStockLimit && n >= remaining;
           return (
-            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, textAlign: "center" }}>
+            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, textAlign: "center", position: "relative" }}>
+              {effectivePrice(p) !== p.price && (
+                <div style={{ position: "absolute", top: 8, insetInlineStart: 8, fontSize: 9, fontWeight: 800, letterSpacing: "0.04em", color: "#fff", background: BRAND.tomato, borderRadius: 999, padding: "2px 7px", textTransform: lang === "ar" ? "none" : "uppercase" }}>
+                  {lang === "ar" ? "خصم" : "Sale"}
+                </div>
+              )}
               <Thumb product={p} size={80} radius={10} />
               <div style={{ fontWeight: 700, fontSize: 13, marginTop: 8 }}>{localName(p.name, lang)}</div>
               <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 4 }}>
@@ -4693,7 +5228,12 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
           const remaining = hasStockLimit ? Math.max(0, p.stock - existingCartQty) : Infinity;
           const atMax = hasStockLimit && n >= remaining;
           return (
-            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, textAlign: "center" }}>
+            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, textAlign: "center", position: "relative" }}>
+              {effectivePrice(p) !== p.price && (
+                <div style={{ position: "absolute", top: 8, insetInlineStart: 8, fontSize: 9, fontWeight: 800, letterSpacing: "0.04em", color: "#fff", background: BRAND.tomato, borderRadius: 999, padding: "2px 7px", textTransform: lang === "ar" ? "none" : "uppercase" }}>
+                  {lang === "ar" ? "خصم" : "Sale"}
+                </div>
+              )}
               <Thumb product={p} size={80} radius={10} />
               <div style={{ fontWeight: 700, fontSize: 13, marginTop: 8 }}>{localName(p.name, lang)}</div>
               <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 4 }}>
@@ -4818,7 +5358,7 @@ function BoxSizeCard({ product, addToCart, cart, lang }) {
                   {label} <span style={{ fontWeight: 400, opacity: 0.6, fontSize: 12.5 }}>· {weightLabel}</span>
                   {inCart ? <span style={{ color: BRAND.green, fontSize: 12.5 }}> · {inCart.qty} {lang === "ar" ? "في السلة" : "in cart"}</span> : null}
                 </span>
-                <span style={{ fontWeight: 800, color: BRAND.green }}>{money(tier.price)}</span>
+                <PriceTag value={tier.price} originalValue={tier.originalPrice} />
               </button>
             );
           })}
@@ -4969,7 +5509,7 @@ function BoxCard({ box, addToCart, cartQty, products, cart }) {
             : boxBlurb(box.blurb, lang)}
         </p>
         <div style={{ marginTop: 10 }}>
-          <PriceTag value={box.price} size="lg" />
+          <PriceTag value={effectiveBoxPrice(box)} originalValue={effectiveBoxPrice(box) !== box.price ? box.price : undefined} size="lg" />
         </div>
       </div>
       <div style={{ padding: "16px 22px 4px" }}>
@@ -5022,7 +5562,7 @@ function BoxCard({ box, addToCart, cartQty, products, cart }) {
             <PrimaryButton
               full
               onClick={() => {
-                addToCart({ id: box.id, name: box.name, unit: "box", price: box.price, qty, kind: "box" });
+                addToCart({ id: box.id, name: box.name, unit: "box", price: effectiveBoxPrice(box), qty, kind: "box" });
                 setQty(1);
               }}
             >
@@ -5043,7 +5583,7 @@ function BoxCard({ box, addToCart, cartQty, products, cart }) {
               id: `${box.id}-${Date.now().toString(36)}`,
               name: box.name,
               unit: "box",
-              price: box.price,
+              price: effectiveBoxPrice(box),
               qty: 1,
               kind: "box",
               breakdown,
@@ -5133,9 +5673,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
                 {boxName(box.name, lang)}
               </div>
               <div style={{ fontSize: 12.5, opacity: 0.85, marginTop: 3 }}>
-                {lang === "ar"
-                  ? `اختر ${box.pieceCount} قطعة بالضبط — بسعر ثابت ${money(box.price)}`
-                  : `Pick exactly ${box.pieceCount} pieces — fixed price ${money(box.price)}`}
+                {lang === "ar" ? `اختر ${box.pieceCount} قطعة بالضبط` : `Pick exactly ${box.pieceCount} pieces`}
               </div>
             </div>
             <button onClick={onClose} aria-label="Close" style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: "50%", width: 30, height: 30, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -5156,9 +5694,11 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
               const step = boxItemStep(p);
               const plusDisabled = remaining < 1 || atStockMax || atPerBoxMax;
               return (
-                <div key={p.id} style={{ background: BRAND.cream, border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 10, textAlign: "center" }}>
-                  <Thumb product={p} size={64} radius={10} />
-                  <div style={{ fontWeight: 700, fontSize: 12.5, marginTop: 6 }}>{localName(p.name, lang)}</div>
+                <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: "14px 10px 12px", textAlign: "center", boxShadow: "0 2px 8px rgba(18,56,34,0.05)" }}>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Thumb product={p} size={60} radius={30} />
+                  </div>
+                  <div style={{ fontWeight: 700, fontSize: 12.5, marginTop: 8 }}>{localName(p.name, lang)}</div>
                   {hasStockLimit && stockRemaining > 0 && stockRemaining <= 5 && (
                     <div style={{ fontSize: 10, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 2 }}>
                       {lang === "ar" ? `متبقٍ ${stockRemaining}` : `${stockRemaining} left`}
@@ -5174,7 +5714,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
                       {lang === "ar" ? `بمجموعات من ${step}` : `In sets of ${step}`}
                     </div>
                   )}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 6 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 8 }}>
                     <button
                       onClick={() => setItemQty(p.id, n - step, p)}
                       disabled={n === 0}
@@ -5186,7 +5726,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
                     <button
                       onClick={() => setItemQty(p.id, n + step, p)}
                       disabled={plusDisabled}
-                      style={{ width: 26, height: 26, borderRadius: "50%", border: "none", background: plusDisabled ? BRAND.creamDeep : BRAND.green, color: "#fff", cursor: plusDisabled ? "default" : "pointer", fontWeight: 700 }}
+                      style={{ width: 26, height: 26, borderRadius: "50%", border: "none", background: plusDisabled ? BRAND.creamDeep : BRAND.gold, color: "#fff", cursor: plusDisabled ? "default" : "pointer", fontWeight: 700 }}
                     >
                       +
                     </button>
@@ -5207,7 +5747,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
             <div style={{ fontSize: 13, fontWeight: 700 }}>
               {Math.round(total)} / {box.pieceCount} {lang === "ar" ? "قطعة محددة" : "pieces selected"}
             </div>
-            <div style={{ fontWeight: 800, color: BRAND.green, fontFamily: "IBM Plex Mono, monospace" }}>{money(box.price)}</div>
+            <div style={{ fontWeight: 800, color: BRAND.green, fontFamily: "IBM Plex Mono, monospace" }}>{money(effectiveBoxPrice(box))}</div>
           </div>
           <div style={{ height: 6, background: BRAND.creamDeep, borderRadius: 999, overflow: "hidden", marginBottom: 14 }}>
             <div style={{ height: "100%", width: `${Math.min(100, (total / box.pieceCount) * 100)}%`, background: BRAND.green, transition: "width 0.15s" }} />
@@ -5243,6 +5783,31 @@ function CommercialView({ onSubmitLead }) {
     if (!canSubmit) return;
     onSubmitLead({ company, contact, phone, bizType, volume, message });
     setSent(true);
+  }
+
+  // Separate, lightweight lead form for the Office Friday Box pitch — kept
+  // apart from the main wholesale form above since the audience (an office
+  // manager ordering a weekly team treat) and the info needed (headcount,
+  // which day) are different from a restaurant's kitchen volume. Feeds the
+  // exact same lead schema/Backstage table as the main form — just tagged
+  // with a distinct bizType so it's easy to tell apart in the Leads list.
+  const [officeCompany, setOfficeCompany] = useState("");
+  const [officeContact, setOfficeContact] = useState("");
+  const [officePhone, setOfficePhone] = useState("");
+  const [officeHeadcount, setOfficeHeadcount] = useState("");
+  const [officeDay, setOfficeDay] = useState("Friday");
+  const [officeSent, setOfficeSent] = useState(false);
+  const canSubmitOffice = officeCompany.trim() && officeContact.trim() && officePhone.trim();
+
+  function submitOffice() {
+    if (!canSubmitOffice) return;
+    onSubmitLead({
+      company: officeCompany, contact: officeContact, phone: officePhone,
+      bizType: "Office Box", volume: officeHeadcount ? `${officeHeadcount} employees` : "",
+      headcount: Number(officeHeadcount) || 0,
+      message: `Preferred delivery day: ${officeDay}`,
+    });
+    setOfficeSent(true);
   }
 
   const isAr = lang === "ar";
@@ -5315,6 +5880,67 @@ function CommercialView({ onSubmitLead }) {
             <span key={f} style={{ fontSize: 12, background: BRAND.greenSoft, color: BRAND.green, borderRadius: 999, padding: "5px 11px", fontWeight: 600 }}>{f}</span>
           ))}
         </div>
+      </div>
+
+      {/* Office Friday Box */}
+      <div
+        style={{
+          marginTop: 44, background: `linear-gradient(160deg, ${BRAND.greenDark}, ${BRAND.green})`, borderRadius: 24, padding: "36px 30px",
+          color: BRAND.cream, display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 28, alignItems: "center", overflow: "hidden",
+        }}
+        className="dsf-hero"
+      >
+        <div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.14)", padding: "5px 12px", borderRadius: 999, fontSize: 12, fontWeight: 700, letterSpacing: "0.05em", marginBottom: 16 }}>
+            🍓 OFFICE FRIDAY BOX
+          </div>
+          <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 26, lineHeight: 1.2, fontWeight: 800, margin: "0 0 12px" }}>
+            A fresh fruit box for the whole team, <span style={{ color: BRAND.gold, fontStyle: "italic" }}>every Friday.</span>
+          </h2>
+          <p style={{ fontSize: 14, opacity: 0.88, maxWidth: 440, marginBottom: 18 }}>
+            One recurring order, sized for your headcount, delivered to your office on the same day every week — no reordering, no reminders, just a standing team treat that shows up on time.
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 12.5, opacity: 0.85 }}>
+            <div>✓ Sized to your team — small office to enterprise floor</div>
+            <div>✓ Friday or Monday delivery</div>
+            <div>✓ One recurring order, no admin each week</div>
+          </div>
+        </div>
+
+        {officeSent ? (
+          <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 16, padding: 24, textAlign: "center" }}>
+            <div style={{ fontSize: 32, marginBottom: 8 }}>✓</div>
+            <div style={{ fontWeight: 700, fontSize: 15 }}>Thanks — we'll be in touch shortly to set up your first Friday box.</div>
+          </div>
+        ) : (
+          <div style={{ background: "#fff", borderRadius: 16, padding: 22, color: BRAND.ink }}>
+            <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>Get a quote for your office</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <input value={officeCompany} onChange={(e) => setOfficeCompany(e.target.value)} placeholder="Company name" style={{ ...inputStyle, padding: "9px 12px", fontSize: 13.5 }} />
+              <input value={officeContact} onChange={(e) => setOfficeContact(e.target.value)} placeholder="Your name" style={{ ...inputStyle, padding: "9px 12px", fontSize: 13.5 }} />
+              <input value={officePhone} onChange={(e) => setOfficePhone(e.target.value)} placeholder="Phone / WhatsApp" style={{ ...inputStyle, padding: "9px 12px", fontSize: 13.5 }} />
+              <input value={officeHeadcount} onChange={(e) => setOfficeHeadcount(e.target.value)} placeholder="Roughly how many employees?" style={{ ...inputStyle, padding: "9px 12px", fontSize: 13.5 }} />
+              <div style={{ display: "flex", gap: 8 }}>
+                {["Friday", "Monday"].map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setOfficeDay(d)}
+                    style={{
+                      flex: 1, padding: "9px 0", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer",
+                      border: `1.5px solid ${officeDay === d ? BRAND.green : BRAND.creamDeep}`,
+                      background: officeDay === d ? BRAND.greenSoft : "#fff", color: officeDay === d ? BRAND.green : BRAND.ink,
+                    }}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <PrimaryButton full disabled={!canSubmitOffice} onClick={submitOffice} style={{ marginTop: 14, padding: "11px 0" }}>
+              Request a quote
+            </PrimaryButton>
+          </div>
+        )}
       </div>
 
       {/* How it works */}
@@ -6583,6 +7209,150 @@ function DriverModeView({ orderId, lang }) {
 
 /* ------------------------------------ Invoice (printable) ------------------------------------ */
 
+// A simple, printable B2B quotation for Office Friday Box leads — opened as
+// an overlay from the Leads tab, using the exact same "browser print → save
+// as PDF" approach as the customer invoice, so no PDF library is needed.
+// The price starts from the suggested tier but is editable, since the admin
+// may have already agreed something different on a call before generating
+// this document.
+function QuotationView({ lead, onClose }) {
+  const [orderType, setOrderType] = useState("recurring"); // "recurring" | "one-time"
+  const [weeklyPrice, setWeeklyPrice] = useState(() => {
+    const suggested = suggestedOfficeBoxWeeklyPrice(lead.headcount);
+    const match = suggested && suggested.match(/[\d,]+/);
+    return match ? Number(match[0].replace(",", "")) : 0;
+  });
+  const quoteNumber = "Q" + lead.id.slice(-6).toUpperCase();
+  const quoteDate = new Date();
+  const validUntil = new Date(quoteDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+  const deliveryDay = (lead.message || "").replace("Preferred delivery day: ", "") || "Friday";
+  const monthlyEstimate = weeklyPrice * 4.33;
+  const isRecurring = orderType === "recurring";
+
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(18,56,34,0.5)", zIndex: 200, overflowY: "auto", padding: "24px 16px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div className="no-print" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <div style={{ color: "#fff", fontSize: 13 }}>Print-ready — use your browser's Print → "Save as PDF" to download.</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <GhostButton onClick={onClose} style={{ background: "#fff" }}>Close</GhostButton>
+            <PrimaryButton onClick={() => window.print()}>🖨 Print / Save as PDF</PrimaryButton>
+          </div>
+        </div>
+        <div className="no-print" style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+          {[{ key: "recurring", label: "Recurring weekly" }, { key: "one-time", label: "One-time order" }].map((o) => (
+            <button
+              key={o.key}
+              onClick={() => setOrderType(o.key)}
+              style={{
+                flex: 1, padding: "10px 0", borderRadius: 10, fontSize: 13.5, fontWeight: 700, cursor: "pointer",
+                border: `1.5px solid ${orderType === o.key ? BRAND.gold : "rgba(255,255,255,0.4)"}`,
+                background: orderType === o.key ? BRAND.gold : "rgba(255,255,255,0.1)", color: orderType === o.key ? BRAND.ink : "#fff",
+              }}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 36 }}>
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: `2px solid ${BRAND.green}`, paddingBottom: 20, marginBottom: 24 }}>
+            <Logo size={150} />
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>QUOTATION</div>
+              <div style={{ fontSize: 13, opacity: 0.7, marginTop: 6, fontFamily: "IBM Plex Mono, monospace" }}>Quote #: {quoteNumber}</div>
+              <div style={{ fontSize: 13, opacity: 0.7 }}>Date: {quoteDate.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</div>
+              <div style={{ fontSize: 13, opacity: 0.7 }}>Valid until: {validUntil.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</div>
+            </div>
+          </div>
+
+          {/* From / To */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 26 }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: BRAND.orangeDeep, textTransform: "uppercase", marginBottom: 6 }}>From</div>
+              <div style={{ fontWeight: 700, fontSize: 14.5 }}>Darousha Fresh</div>
+              <div style={{ fontSize: 13, opacity: 0.7, lineHeight: 1.6 }}>
+                {BUSINESS_ADDRESS}<br />
+                {formatPhoneDisplay(WHATSAPP_NUMBER)}<br />
+                {BUSINESS_EMAIL}
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: BRAND.orangeDeep, textTransform: "uppercase", marginBottom: 6 }}>Quotation For</div>
+              <div style={{ fontWeight: 700, fontSize: 14.5 }}>{lead.company}</div>
+              <div style={{ fontSize: 13, opacity: 0.7, lineHeight: 1.6 }}>
+                Attn: {lead.contact}<br />
+                {lead.phone}
+              </div>
+            </div>
+          </div>
+
+          {/* Line item */}
+          <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: 20 }}>
+            <thead>
+              <tr style={{ borderBottom: `2px solid ${BRAND.green}`, textAlign: "left" }}>
+                <th style={{ padding: "8px 4px", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.04em" }}>Description</th>
+                <th style={{ padding: "8px 4px", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.04em", textAlign: "right" }}>
+                  {isRecurring ? "Weekly Rate (AED)" : "Price (AED)"}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: `1px solid ${BRAND.creamDeep}` }}>
+                <td style={{ padding: "12px 4px" }}>
+                  <div style={{ fontWeight: 700 }}>
+                    Office Box — {isRecurring ? "recurring weekly delivery" : "one-time delivery"}
+                  </div>
+                  <div style={{ fontSize: 12.5, opacity: 0.65, marginTop: 2 }}>
+                    Sized for ~{lead.headcount || "—"} employees
+                    {isRecurring ? ` · Delivered every ${deliveryDay}` : " · Single delivery on a date to be agreed"}
+                    · Hand-picked, same-day fresh produce
+                  </div>
+                </td>
+                <td style={{ padding: "12px 4px", textAlign: "right", verticalAlign: "top" }}>
+                  <div className="no-print">
+                    <input
+                      type="number"
+                      value={weeklyPrice}
+                      onChange={(e) => setWeeklyPrice(Number(e.target.value) || 0)}
+                      style={{ ...inputStyle, width: 90, textAlign: "right", padding: "6px 8px" }}
+                    />
+                  </div>
+                  <div className="print-only-inline" style={{ fontWeight: 700 }}>{money(weeklyPrice)}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 28 }}>
+            <div style={{ minWidth: 220 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, padding: "4px 0" }}>
+                <span style={{ opacity: 0.7 }}>{isRecurring ? "Per week" : "Total (this order)"}</span>
+                <span style={{ fontWeight: 700 }}>{money(weeklyPrice)}</span>
+              </div>
+              {isRecurring && (
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, padding: "4px 0", borderTop: `1px solid ${BRAND.creamDeep}` }}>
+                  <span style={{ opacity: 0.7 }}>Estimated per month</span>
+                  <span style={{ fontWeight: 700 }}>{money(monthlyEstimate)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Terms */}
+          <div style={{ fontSize: 12, opacity: 0.65, lineHeight: 1.7, borderTop: `1px solid ${BRAND.creamDeep}`, paddingTop: 16 }}>
+            <b>Terms:</b> This quotation is valid for 14 days from the date above. {isRecurring
+              ? "Delivery is recurring weekly on the agreed day; the order can be paused or cancelled with prior notice."
+              : "This is a single, one-time delivery on a date to be agreed after acceptance."} Payment terms (cash on delivery or monthly invoicing) to be confirmed upon acceptance. Prices are in AED and exclude VAT unless stated otherwise.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 function InvoiceView({ orderId, orders }) {
   const [order, setOrder] = useState(() => orders.find((o) => o.id === orderId) || null);
 
@@ -6919,6 +7689,15 @@ const RECIPE_META = {
   "mushroom-saute": { time: 12, level: "Easy", levelAr: "سهل", servings: "2–3" },
   "sweet-potato-wedges": { time: 30, level: "Easy", levelAr: "سهل", servings: "2–4" },
   "garlic-broccoli": { time: 20, level: "Easy", levelAr: "سهل", servings: "2–3" },
+  "ratatouille": { time: 45, level: "Medium", levelAr: "متوسط", servings: "3–4" },
+  "borscht": { time: 50, level: "Medium", levelAr: "متوسط", servings: "4–6" },
+  "olivier-salad": { time: 30, level: "Easy", levelAr: "سهل", servings: "4–5" },
+  "mjadara": { time: 40, level: "Easy", levelAr: "سهل", servings: "3–4" },
+  "foul-medames": { time: 15, level: "Easy", levelAr: "سهل", servings: "2–3" },
+  "minestrone": { time: 40, level: "Easy", levelAr: "سهل", servings: "4–6" },
+  "coleslaw": { time: 15, level: "Easy", levelAr: "سهل", servings: "4" },
+  "vinegret": { time: 45, level: "Medium", levelAr: "متوسط", servings: "4–5" },
+  "draniki": { time: 30, level: "Easy", levelAr: "سهل", servings: "2–3" },
 };
 
 function IngredientThumb({ product, size }) {
@@ -7769,9 +8548,10 @@ function useWakeLock(active) {
   }, [active]);
 }
 
-function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOrderStatus, acknowledgeOrder, leads, promoCodesDb, savePromoCode, deletePromoCode, reviews, approveReview, deleteReview, customProducts, addCustomProduct, updateCustomProduct, deleteCustomProduct, suppliers, addSupplier, deleteSupplier }) {
+function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOrderStatus, acknowledgeOrder, leads, promoCodesDb, savePromoCode, deletePromoCode, reviews, approveReview, deleteReview, customProducts, addCustomProduct, updateCustomProduct, deleteCustomProduct, suppliers, addSupplier, deleteSupplier, itemRequests, updateItemRequestStatus }) {
   const [tab, setTab] = useState("catalog");
   const [cat, setCat] = useState(CATALOG[0].cat);
+  const [quotingLead, setQuotingLead] = useState(null); // the Office Box lead currently open in the quotation view, or null
   const { unacknowledged, notifPermission, requestNotifPermission, testRing } = useNewOrderAlert(orders);
   useWakeLock(true); // keep the screen awake for as long as Backstage is open, not just while an order is pending
 
@@ -7822,12 +8602,14 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
         <Pill active={tab === "newproduct"} onClick={() => setTab("newproduct")}>➕ Add New Product</Pill>
         <Pill active={tab === "customers"} onClick={() => setTab("customers")}>📧 Customers</Pill>
         <Pill active={tab === "subscriptions"} onClick={() => setTab("subscriptions")}>🔁 Subscriptions</Pill>
+        <Pill active={tab === "itemrequests"} onClick={() => setTab("itemrequests")}>🙋 Item Requests ({(itemRequests || []).filter((r) => r.status === "pending").length} new)</Pill>
       </div>
 
       {tab === "pricing" && <PricingCalculator products={products} boxes={boxes} updateProduct={updateProduct} updateBox={updateBox} />}
       {tab === "reviews" && <ReviewModeration reviews={reviews || []} approveReview={approveReview} deleteReview={deleteReview} />}
       {tab === "customers" && <CustomerExport orders={orders} reviews={reviews || []} />}
       {tab === "subscriptions" && <SubscriptionsPanel />}
+      {tab === "itemrequests" && <ItemRequestsPanel itemRequests={itemRequests || []} updateItemRequestStatus={updateItemRequestStatus} />}
       {tab === "newproduct" && (
         <CustomProductManager
           customProducts={customProducts || []}
@@ -7840,7 +8622,7 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
       {tab === "catalog" && (
         <div>
           <LowStockBanner products={products} suppliers={suppliers || []} addSupplier={addSupplier} deleteSupplier={deleteSupplier} />
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>Boxes (Daily / Family / Signature / Chef's)</div>
+          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>Boxes (Vegetable, Fruit &amp; Frozen)</div>
           <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, overflow: "hidden", marginBottom: 26 }}>
             <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", padding: "10px 16px", background: BRAND.greenSoft, fontWeight: 700, fontSize: 12.5 }}>
               <div>Box</div><div>Weight</div><div>Price (AED)</div><div>Status</div>
@@ -7906,11 +8688,24 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
               <div style={{ fontSize: 12.5, opacity: 0.65 }}>{l.contact} · {l.phone}</div>
               {l.volume && <div style={{ fontSize: 12.5, opacity: 0.65 }}>Est. volume: {l.volume}</div>}
               {l.message && <div style={{ fontSize: 12.5, opacity: 0.65, marginTop: 4 }}>"{l.message}"</div>}
-              <div style={{ fontSize: 11, opacity: 0.45, marginTop: 6 }}>{new Date(l.createdAt).toLocaleString()}</div>
+              {l.bizType === "Office Box" && suggestedOfficeBoxWeeklyPrice(l.headcount) && (
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: BRAND.green, marginTop: 4 }}>
+                  💰 Suggested: {suggestedOfficeBoxWeeklyPrice(l.headcount)}
+                </div>
+              )}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
+                <div style={{ fontSize: 11, opacity: 0.45 }}>{new Date(l.createdAt).toLocaleString()}</div>
+                {l.bizType === "Office Box" && (
+                  <GhostButton style={{ padding: "6px 12px", fontSize: 12 }} onClick={() => setQuotingLead(l)}>
+                    📄 Generate quotation
+                  </GhostButton>
+                )}
+              </div>
             </div>
           ))}
         </div>
       )}
+      {quotingLead && <QuotationView lead={quotingLead} onClose={() => setQuotingLead(null)} />}
 
       {tab === "reports" && <SalesReportPanel orders={orders} />}
       {tab === "promos" && <PromoCodesPanel promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} />}
@@ -8384,7 +9179,10 @@ function OrderRow({ order: o, updateOrderStatus, acknowledgeOrder }) {
 function BoxRow({ box, updateBox }) {
   const [price, setPrice] = useState(box.price);
   const [pieces, setPieces] = useState(box.pieceCount || "");
+  const [discountOpen, setDiscountOpen] = useState(false);
+  const [salePrice, setSalePrice] = useState(box.salePrice == null ? "" : box.salePrice);
   const [justSaved, setJustSaved] = useState(null); // null | "price" | "pieces" | "price-failed" | "pieces-failed"
+  const hasDiscount = typeof box.salePrice === "number" && box.salePrice > 0 && box.salePrice < box.price;
 
   async function commitPieces(e) {
     const n = Math.max(1, Number(pieces) || box.pieceCount);
@@ -8402,8 +9200,20 @@ function BoxRow({ box, updateBox }) {
     setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
   }
 
+  async function commitSalePrice() {
+    const n = salePrice === "" ? null : Math.max(0, Number(salePrice) || 0);
+    if (n !== null && n >= box.price) {
+      window.alert("Sale price must be lower than the regular price to show as a discount.");
+      return;
+    }
+    const ok = await updateBox(box.id, { salePrice: n });
+    setJustSaved(ok ? "salePrice" : "salePrice-failed");
+    setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
+  }
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", padding: "10px 16px", alignItems: "center", borderTop: `1px solid ${BRAND.creamDeep}`, fontSize: 13.5 }}>
+    <div style={{ borderTop: `1px solid ${BRAND.creamDeep}` }}>
+    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", padding: "10px 16px", alignItems: "center", fontSize: 13.5 }}>
       <div>{box.name}</div>
       {box.customizable ? (
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -8433,6 +9243,16 @@ function BoxRow({ box, updateBox }) {
         />
         {justSaved === "price" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700 }}>✓ Saved</span>}
         {justSaved === "price-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700 }}>⚠ Failed — try again</span>}
+        <button
+          onClick={() => setDiscountOpen((o) => !o)}
+          title={hasDiscount ? `On sale: ${money(box.salePrice)}` : "Add a discount price"}
+          style={{
+            border: `1px solid ${hasDiscount ? BRAND.tomato : BRAND.creamDeep}`, borderRadius: 8, padding: "5px 7px", cursor: "pointer",
+            background: hasDiscount ? "#FDEAEA" : "#fff", color: hasDiscount ? BRAND.tomato : BRAND.ink, fontSize: 12, flexShrink: 0,
+          }}
+        >
+          🏷️
+        </button>
       </div>
       <div>
         <button
@@ -8446,6 +9266,31 @@ function BoxRow({ box, updateBox }) {
           {box.available ? "Available" : "Hidden"}
         </button>
       </div>
+    </div>
+    {discountOpen && (
+      <div style={{ padding: "0 16px 12px", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <span style={{ fontSize: 12, opacity: 0.7 }}>Sale price (AED):</span>
+        <input
+          type="number"
+          value={salePrice}
+          onChange={(e) => setSalePrice(e.target.value)}
+          onBlur={commitSalePrice}
+          onKeyDown={(e) => e.key === "Enter" && commitSalePrice()}
+          placeholder="e.g. 45"
+          style={{ ...inputStyle, padding: "6px 8px", width: 90 }}
+        />
+        {salePrice !== "" && (
+          <button
+            onClick={() => { setSalePrice(""); updateBox(box.id, { salePrice: null }); }}
+            style={{ background: "none", border: "none", color: BRAND.tomato, fontSize: 12, fontWeight: 700, cursor: "pointer" }}
+          >
+            Clear
+          </button>
+        )}
+        {justSaved === "salePrice" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700 }}>✓ Saved</span>}
+        {justSaved === "salePrice-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700 }}>⚠ Failed to save — try again</span>}
+      </div>
+    )}
     </div>
   );
 }
@@ -8612,6 +9457,80 @@ function ReviewModeration({ reviews, approveReview, deleteReview }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {approved.map((r) => <ReviewCard key={r.id} r={r} />)}
       </div>
+    </div>
+  );
+}
+
+const ITEM_REQUEST_STATUSES = ["pending", "sourcing", "added", "declined"];
+const ITEM_REQUEST_STATUS_LABEL = { pending: "New", sourcing: "Sourcing", added: "Added ✓", declined: "Declined" };
+const ITEM_REQUEST_STATUS_COLOR = { pending: "#C6A24C", sourcing: "#2F6DB3", added: "#2E7D32", declined: "#B23B3B" };
+
+function ItemRequestsPanel({ itemRequests, updateItemRequestStatus }) {
+  // Group by normalized item name so repeat asks for the same thing are
+  // obvious at a glance — the strongest signal for what to add next.
+  const grouped = useMemo(() => {
+    const map = new Map();
+    itemRequests.forEach((r) => {
+      const key = (r.itemName || "").trim().toLowerCase();
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(r);
+    });
+    return [...map.entries()]
+      .map(([key, reqs]) => ({ key, name: reqs[0].itemName, requests: reqs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) }))
+      .sort((a, b) => b.requests.length - a.requests.length);
+  }, [itemRequests]);
+
+  if (itemRequests.length === 0) {
+    return <div style={{ opacity: 0.5, fontSize: 13 }}>No item requests yet. When a customer can't find something, it'll show up here.</div>;
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      {grouped.map((g) => (
+        <div key={g.key} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+            <div style={{ fontWeight: 800, fontSize: 15 }}>
+              {g.name} {g.requests.length > 1 && <span style={{ fontWeight: 700, fontSize: 12, color: BRAND.orangeDeep }}>× {g.requests.length} requests</span>}
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>
+            {g.requests.map((r) => (
+              <div key={r.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap", borderTop: `1px solid ${BRAND.creamDeep}`, paddingTop: 8 }}>
+                <div style={{ fontSize: 12.5, minWidth: 0 }}>
+                  {r.quantity && <span style={{ opacity: 0.7 }}>Qty: {r.quantity} · </span>}
+                  {r.customerName && <span style={{ opacity: 0.7 }}>{r.customerName} · </span>}
+                  {r.customerPhone && (
+                    <a href={`https://wa.me/${r.customerPhone.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" style={{ color: BRAND.green, fontWeight: 700 }}>
+                      {r.customerPhone}
+                    </a>
+                  )}
+                  {r.note && <div style={{ opacity: 0.6, marginTop: 2 }}>"{r.note}"</div>}
+                  <div style={{ opacity: 0.45, marginTop: 2 }}>{new Date(r.createdAt).toLocaleString()}</div>
+                </div>
+                <select
+                  value={r.status || "pending"}
+                  onChange={(e) => updateItemRequestStatus(r.id, e.target.value)}
+                  style={{ border: `1px solid ${ITEM_REQUEST_STATUS_COLOR[r.status || "pending"]}`, color: ITEM_REQUEST_STATUS_COLOR[r.status || "pending"], borderRadius: 8, padding: "5px 8px", fontSize: 12, fontWeight: 700, background: "#fff" }}
+                >
+                  {ITEM_REQUEST_STATUSES.map((s) => (
+                    <option key={s} value={s}>{ITEM_REQUEST_STATUS_LABEL[s]}</option>
+                  ))}
+                </select>
+                {r.status === "added" && r.customerPhone && (
+                  <a
+                    href={buildItemRequestNotifyLink(r)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ background: BRAND.green, color: "#fff", borderRadius: 8, padding: "5px 10px", fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}
+                  >
+                    📣 Notify customer
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -9210,6 +10129,11 @@ function CatalogRow({ product, updateProduct }) {
   const [shippingOpen, setShippingOpen] = useState(false);
   const [origin, setOrigin] = useState(product.origin || "");
   const [salePrice, setSalePrice] = useState(product.salePrice == null ? "" : product.salePrice);
+  const [tierPiecesOpen, setTierPiecesOpen] = useState(false);
+  const savedTiers = product.tierPieces || {};
+  const [tierSmall, setTierSmall] = useState(savedTiers.small ?? 1);
+  const [tierMedium, setTierMedium] = useState(savedTiers.medium ?? 3);
+  const [tierBig, setTierBig] = useState(savedTiers.big ?? 6);
   const [photoUrl, setPhotoUrl] = useState(product.photoUrl || "");
   const [uploadPct, setUploadPct] = useState(null);
   const [uploadError, setUploadError] = useState("");
@@ -9220,6 +10144,8 @@ function CatalogRow({ product, updateProduct }) {
   const hasDiscount = typeof product.salePrice === "number" && product.salePrice > 0 && product.salePrice < product.price;
   const hasOrigin = !!product.origin;
   const hasShipping = !!product.shippingMethod;
+  const showsTierPieces = product.unit === "piece" || product.unit === "bunch";
+  const hasCustomTiers = !!product.tierPieces;
 
   async function commitOrigin() {
     const ok = await updateProduct(product.id, { origin: origin.trim() || null });
@@ -9258,6 +10184,27 @@ function CatalogRow({ product, updateProduct }) {
     }
     const ok = await updateProduct(product.id, { salePrice: n });
     setJustSaved(ok ? "salePrice" : "salePrice-failed");
+    setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
+  }
+
+  async function commitTierPieces() {
+    const small = Math.max(1, Number(tierSmall) || 1);
+    const medium = Math.max(1, Number(tierMedium) || 1);
+    const big = Math.max(1, Number(tierBig) || 1);
+    if (!(small < medium && medium < big)) {
+      window.alert("Each box size should have more pieces than the one before it (Small < Medium < Large).");
+      return;
+    }
+    setTierSmall(small); setTierMedium(medium); setTierBig(big);
+    const ok = await updateProduct(product.id, { tierPieces: { small, medium, big } });
+    setJustSaved(ok ? "tierPieces" : "tierPieces-failed");
+    setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
+  }
+
+  async function resetTierPieces() {
+    setTierSmall(1); setTierMedium(3); setTierBig(6);
+    const ok = await updateProduct(product.id, { tierPieces: null });
+    setJustSaved(ok ? "tierPieces" : "tierPieces-failed");
     setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
   }
 
@@ -9329,6 +10276,18 @@ function CatalogRow({ product, updateProduct }) {
           >
             🏷️
           </button>
+          {showsTierPieces && (
+            <button
+              onClick={() => setTierPiecesOpen((o) => !o)}
+              title={hasCustomTiers ? `Custom box sizes: ${product.tierPieces.small}/${product.tierPieces.medium}/${product.tierPieces.big} pieces` : "Edit how many pieces go in each box size"}
+              style={{
+                border: `1px solid ${hasCustomTiers ? BRAND.green : BRAND.creamDeep}`, borderRadius: 8, padding: "5px 7px", cursor: "pointer",
+                background: hasCustomTiers ? BRAND.greenSoft : "#fff", color: hasCustomTiers ? BRAND.green : BRAND.ink, fontSize: 12, flexShrink: 0,
+              }}
+            >
+              📦
+            </button>
+          )}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <input
@@ -9469,6 +10428,37 @@ function CatalogRow({ product, updateProduct }) {
           </div>
           <div style={{ fontSize: 11, opacity: 0.55 }}>
             Customers will see the regular price struck through next to this sale price, everywhere the item appears (shop, fruit box builder, cart, invoice). Leave blank and save to remove the discount.
+          </div>
+        </div>
+      )}
+      {tierPiecesOpen && (
+        <div style={{ padding: "0 16px 14px 58px", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <div>
+              <div style={{ fontSize: 10.5, opacity: 0.6, marginBottom: 3 }}>Small</div>
+              <input type="number" min="1" value={tierSmall} onChange={(e) => setTierSmall(e.target.value)} style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 60 }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 10.5, opacity: 0.6, marginBottom: 3 }}>Medium</div>
+              <input type="number" min="1" value={tierMedium} onChange={(e) => setTierMedium(e.target.value)} style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 60 }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 10.5, opacity: 0.6, marginBottom: 3 }}>Large</div>
+              <input type="number" min="1" value={tierBig} onChange={(e) => setTierBig(e.target.value)} style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 60 }} />
+            </div>
+            <GhostButton style={{ padding: "7px 12px", fontSize: 12.5, alignSelf: "flex-end" }} onClick={commitTierPieces}>
+              Save box sizes
+            </GhostButton>
+            {justSaved === "tierPieces" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700, alignSelf: "flex-end", marginBottom: 8 }}>✓ Saved</span>}
+            {justSaved === "tierPieces-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700, alignSelf: "flex-end", marginBottom: 8 }}>⚠ Failed to save — try again</span>}
+            {hasCustomTiers && (
+              <button onClick={resetTierPieces} style={{ background: "none", border: "none", color: BRAND.tomato, fontSize: 12, cursor: "pointer", fontWeight: 600, alignSelf: "flex-end", marginBottom: 8 }}>
+                Reset to default (1/3/6)
+              </button>
+            )}
+          </div>
+          <div style={{ fontSize: 11, opacity: 0.55 }}>
+            How many pieces go in the Small, Medium and Large box for this item — shown to customers on the shop page (e.g. "Large Box · {tierBig} pieces") and used to calculate each box's price. Must increase from Small to Large.
           </div>
         </div>
       )}
