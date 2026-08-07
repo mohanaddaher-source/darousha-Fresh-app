@@ -1,0 +1,12 @@
+{
+  "appId": "com.darousha.fresh",
+  "appName": "Darousha Fresh",
+  "webDir": "dist",
+  "backgroundColor": "#123822",
+  "ios": {
+    "contentInset": "automatic"
+  },
+  "android": {
+    "backgroundColor": "#123822"
+  }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://darousha-fresh-app-38yw5.vercel.app/sitemap.xml
