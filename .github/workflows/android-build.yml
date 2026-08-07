@@ -37,20 +37,12 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      # Regenerated fresh every run rather than committed to the repo — a
-      # native Android project is thousands of generated files that don't
-      # need to live in git and would just go stale between updates.
       - name: Add Android platform via Capacitor
         run: |
           rm -rf android
           npx cap add android
           npx cap sync android
 
-      # Capacitor 6 generates projects targeting API level 34 by default,
-      # but Google now requires at least API level 35 for new releases —
-      # this bumps both compile and target SDK versions in the generated
-      # project before building, so every build stays compliant even as
-      # Google raises this minimum again in the future.
       - name: Bump target SDK to meet Google Play's current requirement
         run: |
           sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/' android/variables.gradle
@@ -65,7 +57,52 @@ jobs:
           name: darousha-fresh-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
-      # GitHub Actions doesn't allow checking secrets directly inside an
-      # if: condition (it's rejected at parse time, not just at runtime) —
-      # so the secret has to be checked inside a normal script step instead,
-      # which then records the result as a step "
+      - name: Check whether signing secrets are set up
+        id: check-secrets
+        run: |
+          if [ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Decode signing keystore
+        if: steps.check-secrets.outputs.ready == 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_BASE64" | base64 -d > android/app/darousha-release-key.keystore
+
+      - name: Add release signing config
+        if: steps.check-secrets.outputs.ready == 'true'
+        run: |
+          cat >> android/app/build.gradle << 'EOF'
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file("darousha-release-key.keystore")
+                      storePassword System.getenv("KEYSTORE_PASSWORD")
+                      keyAlias "darousha-fresh"
+                      keyPassword System.getenv("KEYSTORE_PASSWORD")
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
+
+      - name: Build signed release AAB (for Play Console)
+        if: steps.check-secrets.outputs.ready == 'true'
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: cd android && ./gradlew bundleRelease
+
+      - name: Upload release AAB
+        if: steps.check-secrets.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: darousha-fresh-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
