@@ -22,7 +22,7 @@ import {
    DAROUSHA FRESH — brand tokens
    Palette: soil-deep green (leaves), warm carrot orange (CTA), cream (base),
    soil brown (ink), tomato red (alerts/sale).
-   Type: display = "Fraunces" (characterful serif, a little rustic) for
+   Type: display = "Playfair Display" (elegant high-contrast serif) for
    headings; body = "Manrope" for UI copy; mono = "IBM Plex Mono" for prices,
    used like real market stall tags.
    Signature: circular "farm stamp" badge logo + tilted price-tag chips that
@@ -37,7 +37,7 @@ function useBrandFonts() {
     link.id = FONT_LINK_ID;
     link.rel = "stylesheet";
     link.href =
-      "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=Cairo:wght@400;500;600;700;800&display=swap";
+      "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=Cairo:wght@400;500;600;700;800&display=swap";
     document.head.appendChild(link);
   }, []);
 }
@@ -435,7 +435,7 @@ function Wordmark({ onDark = false, size = "md", center = false }) {
     <div style={{ lineHeight: 1.05, textAlign: center ? "center" : "left" }}>
       <div
         style={{
-          fontFamily: "Fraunces, serif",
+          fontFamily: "Playfair Display, serif",
           fontWeight: 800,
           fontSize: 19 * scale,
           color,
@@ -447,7 +447,7 @@ function Wordmark({ onDark = false, size = "md", center = false }) {
       </div>
       <div
         style={{
-          fontFamily: "Fraunces, serif",
+          fontFamily: "Playfair Display, serif",
           fontWeight: 500,
           fontStyle: "italic",
           fontSize: 13.5 * scale,
@@ -3500,10 +3500,10 @@ function PrimaryButton({ children, onClick, disabled, style, full }) {
       onClick={onClick}
       disabled={disabled}
       style={{
-        background: disabled ? "#C9C2B2" : BRAND.orange,
+        background: disabled ? "#C9C2B2" : BRAND.green,
         color: "#fff",
         border: "none",
-        borderRadius: 12,
+        borderRadius: 8,
         padding: "13px 22px",
         fontFamily: "Manrope, sans-serif",
         fontWeight: 700,
@@ -3514,8 +3514,8 @@ function PrimaryButton({ children, onClick, disabled, style, full }) {
         alignItems: "center",
         justifyContent: "center",
         gap: 8,
-        boxShadow: disabled ? "none" : "0 6px 16px rgba(224,122,44,0.32)",
-        transition: "transform .12s ease",
+        boxShadow: disabled ? "none" : "0 6px 16px rgba(18,56,34,0.28)",
+        transition: "transform .12s ease, background .2s ease",
         ...style,
       }}
       onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.98)")}
@@ -3532,9 +3532,9 @@ function GhostButton({ children, onClick, style }) {
       onClick={onClick}
       style={{
         background: "transparent",
-        border: `1.5px solid ${BRAND.green}`,
+        border: `1.5px solid ${BRAND.orange}`,
         color: BRAND.green,
-        borderRadius: 12,
+        borderRadius: 8,
         padding: "11px 18px",
         fontFamily: "Manrope, sans-serif",
         fontWeight: 700,
@@ -4315,8 +4315,8 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
         style={{
           background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center",
           gap: 12, width: "100%", textAlign: "start", padding: "14px 6px",
-          borderBottom: `1px solid rgba(255,255,255,0.12)`,
-          color: isActive ? BRAND.orange : BRAND.cream,
+          borderBottom: `1px solid rgba(35,31,22,0.10)`,
+          color: isActive ? BRAND.orangeDeep : BRAND.green,
           fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif",
           fontWeight: 700, fontSize: 16,
         }}
@@ -4335,7 +4335,7 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
           gap: 6,
           flexShrink: 0,
           whiteSpace: "nowrap",
-          color: isActive ? BRAND.orange : BRAND.cream,
+          color: isActive ? BRAND.orangeDeep : BRAND.green,
           fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif",
           fontWeight: 700,
           fontSize: 14,
@@ -4360,10 +4360,21 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
     </>
   );
   return (
-    <header className="no-print" style={{ background: BRAND.green, position: "sticky", top: 0, zIndex: 40, boxShadow: "0 2px 12px rgba(0,0,0,0.12)" }}>
+    <header
+      className="no-print"
+      style={{
+        background: "rgba(247,241,228,0.86)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        position: "sticky",
+        top: 0,
+        zIndex: 40,
+        borderBottom: `1px solid rgba(35,31,22,0.08)`,
+      }}
+    >
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "10px 18px", display: "flex", alignItems: "center", gap: 22 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", flexShrink: 0 }} onClick={() => setView("home")}>
-          <Logo size={72} onDark />
+          <Logo size={64} />
         </div>
         <nav
           className="dsf-header-nav"
@@ -4380,9 +4391,9 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
             onClick={() => setView("cart")}
             style={{
               position: "relative",
-              background: BRAND.orange,
+              background: BRAND.green,
               border: "none",
-              borderRadius: 10,
+              borderRadius: 8,
               padding: "9px 12px",
               color: "#fff",
               cursor: "pointer",
@@ -4400,8 +4411,8 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
             onClick={() => setMenuOpen((o) => !o)}
             aria-label="Menu"
             style={{
-              display: "none", background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 8,
-              padding: 9, color: "#fff", cursor: "pointer", alignItems: "center", justifyContent: "center",
+              display: "none", background: "rgba(35,31,22,0.08)", border: "none", borderRadius: 8,
+              padding: 9, color: BRAND.green, cursor: "pointer", alignItems: "center", justifyContent: "center",
             }}
           >
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
@@ -4432,45 +4443,49 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
 
   return (
     <div>
-      {/* HERO */}
+      {/* HERO — full-bleed photo with editorial overlay */}
       <section
         style={{
-          background: `linear-gradient(160deg, ${BRAND.green} 0%, ${BRAND.greenDark} 100%)`,
-          borderRadius: 24,
-          marginTop: 22,
-          padding: "48px 28px",
-          color: BRAND.cream,
-          display: "grid",
-          gridTemplateColumns: "1.2fr 0.8fr",
-          gap: 24,
-          alignItems: "center",
-          overflow: "hidden",
           position: "relative",
+          minHeight: "62vh",
+          marginTop: 22,
+          borderRadius: 24,
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
         }}
         className="dsf-hero"
       >
-        <div style={{ position: "relative", zIndex: 2 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", padding: "5px 12px", borderRadius: 999, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", marginBottom: 16 }}>
-            <Truck size={13} /> {t("hero_badge")}
+        <img
+          src="/images/veg-crate-hero.jpg"
+          alt="Abundant crate of fresh, vibrant vegetables"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            background: `linear-gradient(90deg, ${BRAND.cream} 0%, rgba(247,241,228,0.62) 45%, rgba(247,241,228,0.05) 78%)`,
+          }}
+        />
+        <div style={{ position: "relative", zIndex: 2, padding: "48px 40px", maxWidth: 480 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, color: BRAND.orangeDeep, padding: "5px 0", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 16 }}>
+            {t("hero_badge")}
           </div>
-          <h1 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontSize: 44, lineHeight: 1.08, margin: "0 0 14px", fontWeight: 800 }}>
-            {t("hero_h1a")}<br /> {t("hero_h1b")} <span style={{ color: BRAND.orange, fontStyle: "italic" }}>{t("hero_h1c")}</span>
+          <h1 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif", fontSize: 44, lineHeight: 1.08, margin: "0 0 14px", fontWeight: 800, color: BRAND.ink }}>
+            {t("hero_h1a")}<br /> {t("hero_h1b")} <span style={{ color: BRAND.orangeDeep, fontStyle: "italic" }}>{t("hero_h1c")}</span>
           </h1>
-          <p style={{ fontSize: 15.5, opacity: 0.88, maxWidth: 440, marginBottom: 26 }}>
+          <p style={{ fontSize: 15.5, color: BRAND.ink, opacity: 0.75, maxWidth: 420, marginBottom: 26 }}>
             {t("hero_sub")}
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <PrimaryButton onClick={() => setView("boxes")}>
               {t("hero_cta_boxes")} <ChevronRight size={16} />
             </PrimaryButton>
-            <GhostButton onClick={() => setView("commercial")} style={{ borderColor: BRAND.cream, color: BRAND.cream }}>
+            <GhostButton onClick={() => setView("commercial")}>
               {lang === "ar" ? "للأعمال التجارية" : "For Business"}
             </GhostButton>
-          </div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center", position: "relative", zIndex: 2 }}>
-          <div style={{ background: BRAND.cream, borderRadius: 20, padding: "22px 26px", boxShadow: "0 20px 50px rgba(0,0,0,0.25)", display: "inline-flex" }}>
-            <Logo size={200} />
           </div>
         </div>
       </section>
@@ -4501,11 +4516,11 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
             { icon: Package, title: t("how2_t"), body: t("how2_b") },
             { icon: Truck, title: t("how3_t"), body: t("how3_b") },
           ].map((s, i) => (
-            <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 22, border: `1px solid ${BRAND.creamDeep}` }}>
+            <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)" }}>
               <div style={{ width: 42, height: 42, borderRadius: 12, background: BRAND.greenSoft, display: "flex", alignItems: "center", justifyContent: "center", color: BRAND.green, marginBottom: 12 }}>
                 <s.icon size={20} />
               </div>
-              <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontWeight: 700, fontSize: 17, marginBottom: 6 }}>{s.title}</div>
+              <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif", fontWeight: 700, fontSize: 17, marginBottom: 6 }}>{s.title}</div>
               <div style={{ fontSize: 13.5, opacity: 0.75, lineHeight: 1.5 }}>{s.body}</div>
             </div>
           ))}
@@ -4524,7 +4539,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
         >
           <div style={{ padding: "36px 30px", color: BRAND.cream, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div style={{ fontSize: 26 }}>🍓</div>
-            <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 28, fontWeight: 800, margin: "10px 0 8px" }}>
+            <h2 style={{ fontFamily: "Playfair Display, serif", fontSize: 28, fontWeight: 800, margin: "10px 0 8px" }}>
               {lang === "ar" ? "الطزاجة، بطريقتك." : "Freshness, your way."}
             </h2>
             <p style={{ fontSize: 14.5, opacity: 0.9, lineHeight: 1.7, maxWidth: 420 }}>
@@ -4564,7 +4579,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
         >
           <div style={{ padding: "28px 26px", color: BRAND.cream, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div style={{ fontSize: 22 }}>🥬</div>
-            <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 23, fontWeight: 800, margin: "8px 0 6px" }}>
+            <h2 style={{ fontFamily: "Playfair Display, serif", fontSize: 23, fontWeight: 800, margin: "8px 0 6px" }}>
               {lang === "ar" ? "الطزاجة، بطريقتك أيضًا." : "Freshness, your way too."}
             </h2>
             <p style={{ fontSize: 13.5, opacity: 0.9, lineHeight: 1.65, maxWidth: 420 }}>
@@ -4620,7 +4635,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
         <SectionTitle eyebrow={t("boxes_eyebrow")} title={t("boxes_title")} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px,1fr))", gap: 16, marginTop: 18 }}>
           {boxes.filter((b) => b.available).map((b) => (
-            <div key={b.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+            <div key={b.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 18, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <img src={boxPhotoFor(b)} alt={`${b.name} — Darousha Fresh`} style={{ width: "100%", height: 130, objectFit: "cover", display: "block" }} />
               <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
@@ -4639,7 +4654,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
                   </span>
                 )}
               </div>
-              <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontWeight: 800, fontSize: 21 }}>{boxName(b.name, lang)}</div>
+              <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif", fontWeight: 800, fontSize: 21 }}>{boxName(b.name, lang)}</div>
               <div style={{ fontSize: 12.5, opacity: 0.65 }}>{boxTag(b.tag, lang)}</div>
               <p style={{ fontSize: 13, opacity: 0.7, minHeight: 36 }}>
                 {b.customizable
@@ -4672,7 +4687,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px,1fr))", gap: 16, marginTop: 20 }}>
             {gourmetProducts.map((p) => (
-              <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 16, textAlign: "center" }}>
+              <div key={p.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, padding: 16, textAlign: "center" }}>
                 <Thumb product={p} size={90} radius={12} />
                 <div style={{ fontWeight: 700, fontSize: 14, marginTop: 10 }}>{prodName(p.name, lang)}</div>
                 {productDescription(p, lang) && (
@@ -4702,7 +4717,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px,1fr))", gap: 16, marginTop: 20 }}>
             {approvedReviews.slice(0, 6).map((r) => (
-              <div key={r.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, overflow: "hidden" }}>
+              <div key={r.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, overflow: "hidden" }}>
                 {r.photoUrl && (
                   <img src={r.photoUrl} alt="" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
                 )}
@@ -4746,7 +4761,7 @@ function SectionTitle({ eyebrow, title }) {
   return (
     <div>
       <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 11.5, letterSpacing: "0.16em", textTransform: lang === "ar" ? "none" : "uppercase", color: BRAND.orangeDeep, fontWeight: 600 }}>{eyebrow}</div>
-      <h2 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontSize: 26, margin: "4px 0 0", fontWeight: 700 }}>{title}</h2>
+      <h2 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif", fontSize: 26, margin: "4px 0 0", fontWeight: 700 }}>{title}</h2>
     </div>
   );
 }
@@ -4766,7 +4781,7 @@ function ShopView({ products, activeCategory, setActiveCategory, addToCart, cart
   return (
     <div style={{ paddingTop: 22 }}>
       <SectionTitle eyebrow={t("shop_eyebrow")} title={t("shop_title")} />
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 16, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: "10px 14px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 16, background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 12, padding: "10px 14px" }}>
         <Search size={16} color={BRAND.green} />
         <input
           value={query}
@@ -4840,7 +4855,7 @@ function ItemRequestForm({ prefillName = "", onSubmitItemRequest, onClose }) {
 
   if (sent) {
     return (
-      <div style={{ background: BRAND.greenSoft, border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 14, fontSize: 13.5 }}>
+      <div style={{ background: BRAND.greenSoft, border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 12, padding: 14, fontSize: 13.5 }}>
         {lang === "ar" ? "شكرًا لك! تلقينا طلبك وسنتحقق من توفره قريبًا." : "Thanks! We got your request and we'll check availability soon."}
       </div>
     );
@@ -4866,8 +4881,8 @@ function ItemRequestForm({ prefillName = "", onSubmitItemRequest, onClose }) {
   }
 
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 16, maxWidth: 420 }}>
-      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 16, maxWidth: 420 }}>
+      <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15, marginBottom: 10 }}>
         {lang === "ar" ? "اطلب صنفًا غير متوفر" : "Request an item"}
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -4875,26 +4890,26 @@ function ItemRequestForm({ prefillName = "", onSubmitItemRequest, onClose }) {
           value={itemName}
           onChange={(e) => setItemName(e.target.value)}
           placeholder={lang === "ar" ? "اسم الصنف" : "Item name"}
-          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
+          style={{ border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
         />
         <input
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           placeholder={lang === "ar" ? "الكمية (اختياري)" : "Quantity (optional)"}
-          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
+          style={{ border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
         />
         <input
           value={customerPhone}
           onChange={(e) => setCustomerPhone(e.target.value)}
           placeholder={lang === "ar" ? "رقم الجوال (اختياري)" : "Phone number (optional)"}
-          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
+          style={{ border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif" }}
         />
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder={lang === "ar" ? "ملاحظة (اختياري)" : "Note (optional)"}
           rows={2}
-          style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif", resize: "vertical" }}
+          style={{ border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 10, padding: "9px 12px", fontSize: 13.5, fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif", resize: "vertical" }}
         />
       </div>
       <div style={{ display: "flex", gap: 8, marginTop: 12, alignItems: "center", flexWrap: "wrap" }}>
@@ -4927,7 +4942,7 @@ function ProductCard({ product, addToCart, cartQty }) {
     if (hasStockLimit && qty > remaining) setQty(Math.max(1, remaining));
   }, [remaining, hasStockLimit]);
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 14, display: "flex", flexDirection: "column", gap: 8, opacity: canOrder ? 1 : 0.55, position: "relative" }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, padding: 14, display: "flex", flexDirection: "column", gap: 8, opacity: canOrder ? 1 : 0.55, position: "relative" }}>
       {!product.available && (
         <div style={{ position: "absolute", top: 10, right: 10, background: BRAND.tomato, color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "3px 8px", borderRadius: 999 }}>
           {t("out_of_stock")}
@@ -4994,7 +5009,7 @@ function FreshBoxesView({ products, addToCart, cart, setView, lang, activeCatego
         <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 12, letterSpacing: "0.15em", color: BRAND.gold, fontWeight: 700 }}>
           {lang === "ar" ? "توصيل منزلي" : "HOME DELIVERY"}
         </div>
-        <h1 style={{ fontFamily: "Fraunces, serif", fontStyle: "italic", fontWeight: 700, fontSize: 38, color: "#fff", margin: "8px 0 10px" }}>
+        <h1 style={{ fontFamily: "Playfair Display, serif", fontStyle: "italic", fontWeight: 700, fontSize: 38, color: "#fff", margin: "8px 0 10px" }}>
           {lang === "ar" ? "توصيل صناديق طازجة" : "Fresh Boxes Delivery"}
         </h1>
         <p style={{ color: BRAND.creamDeep, fontSize: 15, lineHeight: 1.5, maxWidth: 560 }}>
@@ -5091,7 +5106,7 @@ function FruitBoxBuilder({ products, addToCart, cart, setView, lang }) {
           <ArrowLeft size={18} /> {lang === "ar" ? "رجوع" : "Back"}
         </button>
         <div style={{ fontSize: 26 }}>🍓</div>
-        <h1 style={{ fontFamily: "Fraunces, serif", fontStyle: "italic", fontWeight: 700, fontSize: 32, color: "#fff", margin: "8px 0 10px" }}>
+        <h1 style={{ fontFamily: "Playfair Display, serif", fontStyle: "italic", fontWeight: 700, fontSize: 32, color: "#fff", margin: "8px 0 10px" }}>
           {lang === "ar" ? "ابنِ صندوق الفواكه الخاص بك" : "Build Your Fruit Box"}
         </h1>
         <p style={{ color: BRAND.creamDeep, fontSize: 14.5, lineHeight: 1.6, maxWidth: 560 }}>
@@ -5109,7 +5124,7 @@ function FruitBoxBuilder({ products, addToCart, cart, setView, lang }) {
           const remaining = hasStockLimit ? Math.max(0, p.stock - existingCartQty) : Infinity;
           const atMax = hasStockLimit && n >= remaining;
           return (
-            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, textAlign: "center", position: "relative" }}>
+            <div key={p.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 12, textAlign: "center", position: "relative" }}>
               {effectivePrice(p) !== p.price && (
                 <div style={{ position: "absolute", top: 8, insetInlineStart: 8, fontSize: 9, fontWeight: 800, letterSpacing: "0.04em", color: "#fff", background: BRAND.tomato, borderRadius: 999, padding: "2px 7px", textTransform: lang === "ar" ? "none" : "uppercase" }}>
                   {lang === "ar" ? "خصم" : "Sale"}
@@ -5132,7 +5147,7 @@ function FruitBoxBuilder({ products, addToCart, cart, setView, lang }) {
                 <button
                   onClick={() => setItemQty(p.id, n - 1)}
                   disabled={n === 0}
-                  style={{ width: 28, height: 28, borderRadius: "50%", border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: n === 0 ? "default" : "pointer", opacity: n === 0 ? 0.4 : 1, fontWeight: 700 }}
+                  style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", background: "#fff", cursor: n === 0 ? "default" : "pointer", opacity: n === 0 ? 0.4 : 1, fontWeight: 700 }}
                 >
                   −
                 </button>
@@ -5210,7 +5225,7 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
           <ArrowLeft size={18} /> {lang === "ar" ? "رجوع" : "Back"}
         </button>
         <div style={{ fontSize: 26 }}>🥬</div>
-        <h1 style={{ fontFamily: "Fraunces, serif", fontStyle: "italic", fontWeight: 700, fontSize: 32, color: "#fff", margin: "8px 0 10px" }}>
+        <h1 style={{ fontFamily: "Playfair Display, serif", fontStyle: "italic", fontWeight: 700, fontSize: 32, color: "#fff", margin: "8px 0 10px" }}>
           {lang === "ar" ? "ابنِ صندوق الخضروات الخاص بك" : "Build Your Vegetable Box"}
         </h1>
         <p style={{ color: BRAND.creamDeep, fontSize: 14.5, lineHeight: 1.6, maxWidth: 560 }}>
@@ -5228,7 +5243,7 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
           const remaining = hasStockLimit ? Math.max(0, p.stock - existingCartQty) : Infinity;
           const atMax = hasStockLimit && n >= remaining;
           return (
-            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, textAlign: "center", position: "relative" }}>
+            <div key={p.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 12, textAlign: "center", position: "relative" }}>
               {effectivePrice(p) !== p.price && (
                 <div style={{ position: "absolute", top: 8, insetInlineStart: 8, fontSize: 9, fontWeight: 800, letterSpacing: "0.04em", color: "#fff", background: BRAND.tomato, borderRadius: 999, padding: "2px 7px", textTransform: lang === "ar" ? "none" : "uppercase" }}>
                   {lang === "ar" ? "خصم" : "Sale"}
@@ -5251,7 +5266,7 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
                 <button
                   onClick={() => setItemQty(p.id, n - 1)}
                   disabled={n === 0}
-                  style={{ width: 28, height: 28, borderRadius: "50%", border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: n === 0 ? "default" : "pointer", opacity: n === 0 ? 0.4 : 1, fontWeight: 700 }}
+                  style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", background: "#fff", cursor: n === 0 ? "default" : "pointer", opacity: n === 0 ? 0.4 : 1, fontWeight: 700 }}
                 >
                   −
                 </button>
@@ -5304,12 +5319,12 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
 function BoxSizeCard({ product, addToCart, cart, lang }) {
   const tiers = computeBoxTiers(product);
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 18, overflow: "hidden" }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 18, overflow: "hidden" }}>
       <div style={{ height: 220, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Thumb product={product} size={220} radius={0} />
       </div>
       <div style={{ padding: 18 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 22, marginBottom: product.origin ? 4 : 12 }}>{localName(product.name, lang)}</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 22, marginBottom: product.origin ? 4 : 12 }}>{localName(product.name, lang)}</div>
         {(product.origin || product.shippingMethod) && (
           <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
             {product.origin && <span>🌍 {lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`}</span>}
@@ -5375,12 +5390,12 @@ function GourmetItemCard({ product, addToCart, cart, lang }) {
   const soldOut = hasStockLimit && remaining === 0;
   const canOrder = product.available && !soldOut;
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 18, overflow: "hidden", opacity: canOrder ? 1 : 0.6 }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 18, overflow: "hidden", opacity: canOrder ? 1 : 0.6 }}>
       <div style={{ height: 220, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Thumb product={product} size={220} radius={0} />
       </div>
       <div style={{ padding: 18 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 22, marginBottom: 6 }}>{prodName(product.name, lang)}</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 22, marginBottom: 6 }}>{prodName(product.name, lang)}</div>
         {(product.origin || product.shippingMethod) && (
           <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 6, display: "flex", gap: 10, flexWrap: "wrap" }}>
             {product.origin && <span>🌍 {lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`}</span>}
@@ -5470,7 +5485,7 @@ function BoxCard({ box, addToCart, cartQty, products, cart }) {
       })
     : [];
   return (
-    <div style={{ background: "#fff", border: `1.5px solid ${BRAND.creamDeep}`, borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+    <div style={{ background: "#fff", border: "1.5px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
       <div style={{ position: "relative" }}>
         <img src={photo} alt={`${box.name} — Darousha Fresh`} style={{ width: "100%", height: 190, objectFit: "cover", display: "block" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(11,36,23,0.85) 0%, rgba(11,36,23,0.05) 55%)" }} />
@@ -5496,7 +5511,7 @@ function BoxCard({ box, addToCart, cartQty, products, cart }) {
             <span style={{ fontSize: 11, fontWeight: 700, background: BRAND.gold, color: BRAND.greenDark, borderRadius: 999, padding: "3px 10px" }}>{box.weight}</span>
             <span style={{ fontSize: 11, opacity: 0.85, letterSpacing: "0.06em", textTransform: lang === "ar" ? "none" : "uppercase" }}>{box.size}</span>
           </div>
-          <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>{boxName(box.name, lang)}</div>
+          <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif", fontWeight: 800, fontSize: 22 }}>{boxName(box.name, lang)}</div>
         </div>
       </div>
       <div style={{ padding: "14px 22px 0" }}>
@@ -5541,7 +5556,7 @@ function BoxCard({ box, addToCart, cartQty, products, cart }) {
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {box.includes.map((n) => (
-              <span key={n} style={{ fontSize: 11.5, background: BRAND.cream, border: `1px solid ${BRAND.creamDeep}`, borderRadius: 999, padding: "3px 9px" }}>
+              <span key={n} style={{ fontSize: 11.5, background: BRAND.cream, border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 999, padding: "3px 9px" }}>
                 {prodName(n, lang)}
               </span>
             ))}
@@ -5669,7 +5684,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
         <div style={{ background: `linear-gradient(180deg, ${BRAND.green}, ${BRAND.greenDark})`, padding: "18px 20px", color: "#fff", flexShrink: 0 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              <div style={{ fontFamily: "Fraunces, serif", fontStyle: "italic", fontWeight: 700, fontSize: 20 }}>
+              <div style={{ fontFamily: "Playfair Display, serif", fontStyle: "italic", fontWeight: 700, fontSize: 20 }}>
                 {boxName(box.name, lang)}
               </div>
               <div style={{ fontSize: 12.5, opacity: 0.85, marginTop: 3 }}>
@@ -5694,7 +5709,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
               const step = boxItemStep(p);
               const plusDisabled = remaining < 1 || atStockMax || atPerBoxMax;
               return (
-                <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: "14px 10px 12px", textAlign: "center", boxShadow: "0 2px 8px rgba(18,56,34,0.05)" }}>
+                <div key={p.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", borderRadius: 16, padding: "14px 10px 12px", textAlign: "center", boxShadow: "0 2px 8px rgba(18,56,34,0.05)" }}>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <Thumb product={p} size={60} radius={30} />
                   </div>
@@ -5718,7 +5733,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
                     <button
                       onClick={() => setItemQty(p.id, n - step, p)}
                       disabled={n === 0}
-                      style={{ width: 26, height: 26, borderRadius: "50%", border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: n === 0 ? "default" : "pointer", opacity: n === 0 ? 0.4 : 1, fontWeight: 700 }}
+                      style={{ width: 26, height: 26, borderRadius: "50%", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", background: "#fff", cursor: n === 0 ? "default" : "pointer", opacity: n === 0 ? 0.4 : 1, fontWeight: 700 }}
                     >
                       −
                     </button>
@@ -5851,7 +5866,7 @@ function CommercialView({ onSubmitLead }) {
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.14)", padding: "5px 12px", borderRadius: 999, fontSize: 12, fontWeight: 700, letterSpacing: "0.05em", marginBottom: 16 }}>
             <Building2 size={13} /> LAUNCHING SOON — B2B & WHOLESALE PROGRAM
           </div>
-          <h1 style={{ fontFamily: "Fraunces, serif", fontSize: 34, lineHeight: 1.15, fontWeight: 800, margin: "0 0 14px" }}>
+          <h1 style={{ fontFamily: "Playfair Display, serif", fontSize: 34, lineHeight: 1.15, fontWeight: 800, margin: "0 0 14px" }}>
             Your kitchen's fresh supply,<br /><span style={{ color: BRAND.gold, fontStyle: "italic" }}>handled like a partner.</span>
           </h1>
           <p style={{ fontSize: 15, opacity: 0.88, maxWidth: 460 }}>
@@ -5866,11 +5881,11 @@ function CommercialView({ onSubmitLead }) {
         <SectionTitle eyebrow="Why kitchens choose us" title="Built for how a real kitchen runs" />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px,1fr))", gap: 16, marginTop: 18 }}>
           {whyItems.map((w) => (
-            <div key={w.t} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 20 }}>
+            <div key={w.t} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, padding: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: BRAND.greenSoft, display: "flex", alignItems: "center", justifyContent: "center", color: BRAND.green, marginBottom: 12 }}>
                 <w.icon size={19} />
               </div>
-              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15.5, marginBottom: 6 }}>{w.t}</div>
+              <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15.5, marginBottom: 6 }}>{w.t}</div>
               <div style={{ fontSize: 13, opacity: 0.72, lineHeight: 1.5 }}>{w.b}</div>
             </div>
           ))}
@@ -5894,7 +5909,7 @@ function CommercialView({ onSubmitLead }) {
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.14)", padding: "5px 12px", borderRadius: 999, fontSize: 12, fontWeight: 700, letterSpacing: "0.05em", marginBottom: 16 }}>
             🍓 OFFICE FRIDAY BOX
           </div>
-          <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 26, lineHeight: 1.2, fontWeight: 800, margin: "0 0 12px" }}>
+          <h2 style={{ fontFamily: "Playfair Display, serif", fontSize: 26, lineHeight: 1.2, fontWeight: 800, margin: "0 0 12px" }}>
             A fresh fruit box for the whole team, <span style={{ color: BRAND.gold, fontStyle: "italic" }}>every Friday.</span>
           </h2>
           <p style={{ fontSize: 14, opacity: 0.88, maxWidth: 440, marginBottom: 18 }}>
@@ -5948,7 +5963,7 @@ function CommercialView({ onSubmitLead }) {
         <SectionTitle eyebrow="Getting started" title="From first message to first delivery" />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px,1fr))", gap: 16, marginTop: 18 }}>
           {steps.map((s) => (
-            <div key={s.n} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 18 }}>
+            <div key={s.n} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, padding: 18 }}>
               <div style={{ width: 30, height: 30, borderRadius: "50%", background: BRAND.green, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, marginBottom: 10 }}>{s.n}</div>
               <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{s.t}</div>
               <div style={{ fontSize: 12.5, opacity: 0.68, lineHeight: 1.5 }}>{s.b}</div>
@@ -5962,8 +5977,8 @@ function CommercialView({ onSubmitLead }) {
         <SectionTitle eyebrow="Sized to your business" title="Wholesale volume tiers" />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))", gap: 16, marginTop: 18 }}>
           {tiers.map((t) => (
-            <div key={t.name} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 20 }}>
-              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 17 }}>{t.name}</div>
+            <div key={t.name} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, padding: 20 }}>
+              <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 17 }}>{t.name}</div>
               <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 6 }}>{t.vol}</div>
               <div style={{ fontSize: 12.5, opacity: 0.68, marginTop: 8, lineHeight: 1.5 }}>{t.fit}</div>
               <div style={{ marginTop: 12, fontSize: 12, fontWeight: 700, color: BRAND.green }}>Early access →</div>
@@ -5974,17 +5989,17 @@ function CommercialView({ onSubmitLead }) {
       </div>
 
       {/* Lead form */}
-      <div style={{ marginTop: 48, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 20, padding: 28, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}>
+      <div style={{ marginTop: 48, background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 20, padding: 28, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}>
         {sent ? (
           <div style={{ textAlign: "center", padding: "20px 0" }}>
             <CheckCircle2 size={34} color={BRAND.green} style={{ marginBottom: 10 }} />
-            <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 19, marginBottom: 6 }}>You're on the launch list</div>
+            <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 19, marginBottom: 6 }}>You're on the launch list</div>
             <p style={{ fontSize: 13.5, opacity: 0.7 }}>We'll reach out to you personally as soon as commercial ordering opens, with early wholesale pricing for {company || "your business"}.</p>
           </div>
         ) : (
           <>
             <div style={{ textAlign: "center", marginBottom: 18 }}>
-              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 22 }}>Become a launch partner</div>
+              <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 22 }}>Become a launch partner</div>
               <p style={{ fontSize: 13, opacity: 0.65, marginTop: 4 }}>Tell us about your kitchen — we'll reach out personally as we onboard our first wholesale partners.</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -6022,7 +6037,7 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
     return (
       <div style={{ paddingTop: 60, textAlign: "center" }}>
         <ShoppingCart size={40} color={BRAND.green} style={{ opacity: 0.4 }} />
-        <h2 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif" }}>{t("cart_empty")}</h2>
+        <h2 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif" }}>{t("cart_empty")}</h2>
         <p style={{ opacity: 0.65, marginBottom: 20 }}>{t("cart_empty_sub")}</p>
         <PrimaryButton onClick={() => setView("boxes")}>{t("browse_shop")}</PrimaryButton>
       </div>
@@ -6033,7 +6048,7 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
       <SectionTitle eyebrow={t("cart_eyebrow")} title={t("cart_title")} />
       <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
         {cart.map((item) => (
-          <div key={item.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 14, display: "flex", alignItems: "center", gap: 14 }}>
+          <div key={item.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 14, display: "flex", alignItems: "center", gap: 14 }}>
             <div style={{ width: 44, height: 44, borderRadius: 10, background: BRAND.greenSoft, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               {item.kind === "box" ? <Package size={20} color={BRAND.green} /> : <Thumb product={item} size={40} radius={8} />}
             </div>
@@ -6063,7 +6078,7 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
 
       {addOnProducts.length > 0 && (
         <div style={{ marginTop: 24 }}>
-          <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>
+          <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Playfair Display, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>
             {lang === "ar" ? "أكمل طلبك" : "Complete your order"}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -6071,7 +6086,7 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
               const hasStockLimit = typeof p.stock === "number";
               const soldOut = hasStockLimit && p.stock <= 0;
               return (
-                <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, display: "flex", alignItems: "center", gap: 12, opacity: soldOut ? 0.5 : 1 }}>
+                <div key={p.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 12, display: "flex", alignItems: "center", gap: 12, opacity: soldOut ? 0.5 : 1 }}>
                   <Thumb product={p} size={48} radius={10} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: 13.5 }}>{prodName(p.name, lang)}</div>
@@ -6096,7 +6111,7 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
         </div>
       )}
 
-      <div style={{ marginTop: 22, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, maxWidth: 360, marginLeft: "auto" }}>
+      <div style={{ marginTop: 22, background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18, maxWidth: 360, marginLeft: "auto" }}>
         {appliedPromo ? (
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: BRAND.greenSoft, borderRadius: 8, padding: "8px 10px", marginBottom: 12, fontSize: 12.5 }}>
             <span style={{ color: BRAND.green, fontWeight: 700 }}>🏷 {appliedPromo.code} — {appliedPromo.label}</span>
@@ -6314,7 +6329,7 @@ function LocationPicker({ geo, setGeo, lang }) {
           style={inputStyle}
         />
         {results.length > 0 && (
-          <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, marginTop: 4, zIndex: 20, boxShadow: "0 8px 20px rgba(0,0,0,0.12)", maxHeight: 220, overflowY: "auto" }}>
+          <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", border: "1px solid rgba(198,162,76,0.22)", borderRadius: 10, marginTop: 4, zIndex: 20, boxShadow: "0 8px 20px rgba(0,0,0,0.12)", maxHeight: 220, overflowY: "auto" }}>
             {results.map((r) => (
               <div
                 key={r.place_id}
@@ -6346,7 +6361,7 @@ function LocationPicker({ geo, setGeo, lang }) {
       {geoStatus === "denied" && <div style={{ fontSize: 11.5, color: BRAND.tomato, marginTop: 6 }}>{t_geo(lang, "denied")}</div>}
       {geoStatus === "timeout" && <div style={{ fontSize: 11.5, color: BRAND.tomato, marginTop: 6 }}>{t_geo(lang, "timeout")}</div>}
 
-      <div ref={mapRef} style={{ width: "100%", height: 220, borderRadius: 12, marginTop: 10, border: `1px solid ${BRAND.creamDeep}` }} />
+      <div ref={mapRef} style={{ width: "100%", height: 220, borderRadius: 12, marginTop: 10, border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)" }} />
       <div style={{ fontSize: 11, opacity: 0.55, marginTop: 6 }}>
         {lang === "ar" ? "اسحب الدبوس لضبط موقعك بدقة، أو اضغط على الخريطة." : "Drag the pin to fine-tune your exact spot, or tap the map."}
       </div>
@@ -6583,8 +6598,8 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
           </FormCard>
         </div>
 
-        <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, position: "sticky", top: 90 }}>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 17, marginBottom: 12 }}>{t("order_summary")}</div>
+        <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18, position: "sticky", top: 90 }}>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 17, marginBottom: 12 }}>{t("order_summary")}</div>
           <Row label={t("subtotal")} value={money(subtotal)} />
           {discount > 0 && <Row label={lang === "ar" ? "الخصم" : "Discount"} value={`-${money(discount)}`} />}
           <Row label={t("delivery_fee")} value={deliveryFee === 0 ? t("free") : money(deliveryFee)} />
@@ -6629,10 +6644,10 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
 
 function FormCard({ title, icon: Icon, children }) {
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18 }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
         <Icon size={16} color={BRAND.green} />
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16 }}>{title}</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 16 }}>{title}</div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>{children}</div>
     </div>
@@ -6668,7 +6683,7 @@ function ConfirmationView({ order, orderId, setView }) {
       <div style={{ width: 68, height: 68, borderRadius: "50%", background: BRAND.greenSoft, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
         <CheckCircle2 size={34} color={BRAND.green} />
       </div>
-      <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 26 }}>{t("confirm_title")}</h2>
+      <h2 style={{ fontFamily: "Playfair Display, serif", fontSize: 26 }}>{t("confirm_title")}</h2>
       <p style={{ opacity: 0.7 }}>
         {t("order_label")} <b style={{ fontFamily: "IBM Plex Mono, monospace" }}>{orderId}</b> {t("confirm_sub")}
       </p>
@@ -6763,7 +6778,7 @@ function ReviewForm({ order }) {
   }
 
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 16, marginTop: 16 }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 12, padding: 16, marginTop: 16 }}>
       <div style={{ fontWeight: 700, marginBottom: 10 }}>
         📸 {lang === "ar" ? `شارك تجربتك — احصل على ${REVIEW_BONUS_POINTS} نقاط إضافية!` : `Share your experience — earn ${REVIEW_BONUS_POINTS} bonus points!`}
       </div>
@@ -6871,7 +6886,7 @@ function TrackView({ orders, initialId }) {
       )}
 
       {order && (
-        <div style={{ marginTop: 26, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 24, maxWidth: 640 }}>
+        <div style={{ marginTop: 26, background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 16, padding: 24, maxWidth: 640 }}>
           <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
             <div>
               <div style={{ fontSize: 12, opacity: 0.6 }}>{t("order_label")}</div>
@@ -7062,7 +7077,7 @@ function LiveTrackingMap({ driverLat, driverLng, destLat, destLng, lang }) {
           )}
         </div>
       )}
-      <div ref={mapRef} style={{ width: "100%", height: 240, borderRadius: 12, border: `1px solid ${BRAND.creamDeep}` }} />
+      <div ref={mapRef} style={{ width: "100%", height: 240, borderRadius: 12, border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)" }} />
     </div>
   );
 }
@@ -7161,7 +7176,7 @@ function DriverModeView({ orderId, lang }) {
   return (
     <div style={{ paddingTop: 40, maxWidth: 420, margin: "0 auto", textAlign: "center" }}>
       <Truck size={32} color={BRAND.green} />
-      <h2 style={{ fontFamily: "Fraunces, serif", marginTop: 10 }}>{lang === "ar" ? "وضع التوصيل" : "Delivery Mode"}</h2>
+      <h2 style={{ fontFamily: "Playfair Display, serif", marginTop: 10 }}>{lang === "ar" ? "وضع التوصيل" : "Delivery Mode"}</h2>
       {order ? (
         <>
           <div style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 700, marginTop: 6 }}>{order.id}</div>
@@ -7260,7 +7275,7 @@ function QuotationView({ lead, onClose }) {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: `2px solid ${BRAND.green}`, paddingBottom: 20, marginBottom: 24 }}>
             <Logo size={150} />
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>QUOTATION</div>
+              <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>QUOTATION</div>
               <div style={{ fontSize: 13, opacity: 0.7, marginTop: 6, fontFamily: "IBM Plex Mono, monospace" }}>Quote #: {quoteNumber}</div>
               <div style={{ fontSize: 13, opacity: 0.7 }}>Date: {quoteDate.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</div>
               <div style={{ fontSize: 13, opacity: 0.7 }}>Valid until: {validUntil.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</div>
@@ -7379,14 +7394,14 @@ function InvoiceView({ orderId, orders }) {
         <PrimaryButton onClick={() => window.print()}>🖨 Print Invoice</PrimaryButton>
       </div>
 
-      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 36 }}>
+      <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 12, padding: 36 }}>
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: `2px solid ${BRAND.green}`, paddingBottom: 20, marginBottom: 24 }}>
           <div>
             <Logo size={150} />
           </div>
           <div style={{ textAlign: "right" }}>
-            <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>TAX INVOICE</div>
+            <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>TAX INVOICE</div>
             <div style={{ fontSize: 13, opacity: 0.7, marginTop: 6, fontFamily: "IBM Plex Mono, monospace" }}>Invoice #: {order.id}</div>
             <div style={{ fontSize: 13, opacity: 0.7 }}>Date: {invoiceDate}</div>
           </div>
@@ -7459,7 +7474,7 @@ function InvoiceView({ orderId, orders }) {
 
         {/* Footer */}
         <div style={{ marginTop: 34, paddingTop: 18, borderTop: `1px solid ${BRAND.creamDeep}`, textAlign: "center" }}>
-          <div style={{ fontFamily: "Fraunces, serif", fontStyle: "italic", fontSize: 14, color: BRAND.green }}>Thank you for choosing Darousha Fresh 🌿</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontStyle: "italic", fontSize: 14, color: BRAND.green }}>Thank you for choosing Darousha Fresh 🌿</div>
           <div style={{ fontSize: 11, opacity: 0.5, marginTop: 6 }}>Questions about this order? WhatsApp us at {formatPhoneDisplay(WHATSAPP_NUMBER)}</div>
         </div>
       </div>
@@ -7477,9 +7492,9 @@ function TermsView({ setView }) {
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
         <Logo size={200} />
       </div>
-      <h2 style={{ fontFamily: "Fraunces, serif", marginTop: 8, textAlign: "center" }}>{isAr ? "الشروط والأحكام" : "Terms & Conditions"}</h2>
+      <h2 style={{ fontFamily: "Playfair Display, serif", marginTop: 8, textAlign: "center" }}>{isAr ? "الشروط والأحكام" : "Terms & Conditions"}</h2>
       <p style={{ textAlign: "center", fontSize: 12, opacity: 0.6, marginBottom: 12 }}>{isAr ? "آخر تحديث: يوليو ٢٠٢٦" : "Last updated: July 2026"}</p>
-      <div style={{ textAlign: isAr ? "right" : "left", background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 24, fontSize: 13.5, lineHeight: 1.75, opacity: 0.9 }}>
+      <div style={{ textAlign: isAr ? "right" : "left", background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 24, fontSize: 13.5, lineHeight: 1.75, opacity: 0.9 }}>
         {isAr ? (
           <>
             <p><b>الطلبات.</b> يُعد تقديم طلب عبر هذا الموقع طلبًا لشراء العناصر الموجودة في سلتك بالسعر المُدرج. سنؤكد طلبك فور استلامه؛ لا يُضمن توفر كل عنصر حتى يتم التأكيد.</p>
@@ -7541,7 +7556,7 @@ function DeliveryZoneMap() {
     setTimeout(() => map.invalidateSize(), 200);
   }, [leafletReady]);
 
-  return <div ref={mapRef} style={{ width: "100%", height: 320, borderRadius: 14, border: `1px solid ${BRAND.creamDeep}`, marginTop: 20 }} />;
+  return <div ref={mapRef} style={{ width: "100%", height: 320, borderRadius: 14, border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", marginTop: 20 }} />;
 }
 
 function LocationView({ setView }) {
@@ -7567,10 +7582,10 @@ function LocationView({ setView }) {
         Shaded circles show roughly where we deliver — not exact boundaries. Not sure if we reach your exact address? Ask us on WhatsApp below.
       </p>
 
-      <div style={{ marginTop: 32, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 22 }}>
+      <div style={{ marginTop: 32, background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 22 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
           <MapPin size={16} color={BRAND.green} />
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 17 }}>Get in touch</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 17 }}>Get in touch</div>
         </div>
         <p style={{ fontSize: 13.5, opacity: 0.75, lineHeight: 1.7 }}>
           Darousha Fresh delivers across Dubai. For questions about whether we cover your area, or to arrange delivery outside our standard zones, reach us on WhatsApp:
@@ -7780,7 +7795,7 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
                   <img src={REAL_LOGO_IMG} alt="Darousha Fresh" style={{ height: 22, borderRadius: 3 }} />
                 </div>
-                <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22, lineHeight: 1.2 }}>{isAr ? r.nameAr : r.name}</div>
+                <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 22, lineHeight: 1.2 }}>{isAr ? r.nameAr : r.name}</div>
                 <div style={{ fontSize: 12.5, opacity: 0.85, fontStyle: "italic", marginTop: 4 }}>{isAr ? r.taglineAr : r.tagline}</div>
                 <div style={{ display: "flex", gap: 16, marginTop: 14, fontSize: 11, fontWeight: 700, opacity: 0.92 }}>
                   <span>⏱ {meta.time} {isAr ? "دقيقة" : "min"}</span>
@@ -7898,7 +7913,7 @@ function BlogView({ setView }) {
         {sorted.map((post) => {
           const open = openId === post.id;
           return (
-            <div key={post.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, overflow: "hidden" }}>
+            <div key={post.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, overflow: "hidden" }}>
               {post.image && (
                 <img src={post.image} alt={isAr ? post.titleAr : post.title} style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }} />
               )}
@@ -7906,7 +7921,7 @@ function BlogView({ setView }) {
               <div style={{ fontSize: 11.5, opacity: 0.5, marginBottom: 4 }}>
                 {new Date(post.date).toLocaleDateString(isAr ? "ar" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
               </div>
-              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 19 }}>{isAr ? post.titleAr : post.title}</div>
+              <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 19 }}>{isAr ? post.titleAr : post.title}</div>
               {!open && <p style={{ fontSize: 13.5, opacity: 0.72, marginTop: 8, lineHeight: 1.6 }}>{isAr ? post.excerptAr : post.excerpt}</p>}
               {open && (
                 <div style={{ marginTop: 12 }}>
@@ -7978,9 +7993,9 @@ function PrivacyView({ setView }) {
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
         <Logo size={200} />
       </div>
-      <h2 style={{ fontFamily: "Fraunces, serif", marginTop: 8, textAlign: "center" }}>{isAr ? "سياسة الخصوصية" : "Privacy Policy"}</h2>
+      <h2 style={{ fontFamily: "Playfair Display, serif", marginTop: 8, textAlign: "center" }}>{isAr ? "سياسة الخصوصية" : "Privacy Policy"}</h2>
       <p style={{ textAlign: "center", fontSize: 12, opacity: 0.6, marginBottom: 12 }}>{isAr ? "آخر تحديث: يوليو ٢٠٢٦" : "Last updated: July 2026"}</p>
-      <div style={{ textAlign: isAr ? "right" : "left", background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 24, fontSize: 13.5, lineHeight: 1.75, opacity: 0.9 }}>
+      <div style={{ textAlign: isAr ? "right" : "left", background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 24, fontSize: 13.5, lineHeight: 1.75, opacity: 0.9 }}>
         {isAr ? (
           <>
             <p>تحترم Darousha Fresh خصوصيتك. توضح هذه السياسة ما نجمعه، وكيف نستخدمه، ومن نشاركه معه.</p>
@@ -8034,11 +8049,11 @@ function MySubscriptions({ uid, lang }) {
   const freqLabel = { weekly: lang === "ar" ? "أسبوعيًا" : "Weekly", biweekly: lang === "ar" ? "كل أسبوعين" : "Every 2 weeks", monthly: lang === "ar" ? "شهريًا" : "Monthly" };
 
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginTop: 16 }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18, marginTop: 16 }}>
       <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>🔁 {lang === "ar" ? "اشتراكاتي" : "My Subscriptions"}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}>
         {subs.map((s) => (
-          <div key={s.id} style={{ border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: 12 }}>
+          <div key={s.id} style={{ border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 10, padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700 }}>
@@ -8127,7 +8142,7 @@ function AccountView({ user, profile, authLoading, orders, setView, onProfileSav
 
       <MySubscriptions uid={user.uid} lang={lang} />
 
-      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginTop: 16 }}>
+      <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18, marginTop: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
           <Mail size={15} color={BRAND.green} />
           <div style={{ fontSize: 13.5 }}>{user.email}</div>
@@ -8146,7 +8161,7 @@ function AccountView({ user, profile, authLoading, orders, setView, onProfileSav
       </div>
 
       <div style={{ marginTop: 20, background: BRAND.greenSoft, borderRadius: 14, padding: 18 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16, color: BRAND.green }}>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 16, color: BRAND.green }}>
           {lang === "ar" ? "🎁 أحِل صديقًا، وفّرا معًا" : "🎁 Give AED 15, Get AED 15"}
         </div>
         <p style={{ fontSize: 12.5, opacity: 0.75, marginTop: 6, lineHeight: 1.6 }}>
@@ -8174,14 +8189,14 @@ function AccountView({ user, profile, authLoading, orders, setView, onProfileSav
       </div>
 
       <div style={{ marginTop: 28 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 18, marginBottom: 12 }}>{t("your_orders")}</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 18, marginBottom: 12 }}>{t("your_orders")}</div>
         {myOrders.length === 0 && <div style={{ opacity: 0.6, fontSize: 14 }}>{t("no_orders_yet")}</div>}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {myOrders.map((o) => {
             const stepIndex = STATUS_STEPS.findIndex((s) => s.key === o.status);
             const step = STATUS_STEPS[stepIndex];
             return (
-              <div key={o.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 14 }}>
+              <div key={o.id} style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 12, padding: 14 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 700, fontSize: 13.5 }}>{o.id}</div>
                   <div style={{ fontWeight: 700, fontSize: 13.5 }}>{money(o.total)}</div>
@@ -8373,7 +8388,7 @@ function AdminLogin({ onSuccess }) {
   return (
     <div style={{ paddingTop: 70, maxWidth: 340, margin: "0 auto", textAlign: "center" }}>
       <Lock size={30} color={BRAND.green} style={{ marginBottom: 10 }} />
-      <h2 style={{ fontFamily: "Fraunces, serif" }}>Backstage access</h2>
+      <h2 style={{ fontFamily: "Playfair Display, serif" }}>Backstage access</h2>
       <p style={{ fontSize: 13, opacity: 0.65, marginBottom: 16 }}>Enter the staff password to manage prices and orders.</p>
       <input
         type="password"
@@ -8622,7 +8637,7 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
       {tab === "catalog" && (
         <div>
           <LowStockBanner products={products} suppliers={suppliers || []} addSupplier={addSupplier} deleteSupplier={deleteSupplier} />
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>Boxes (Vegetable, Fruit &amp; Frozen)</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>Boxes (Vegetable, Fruit &amp; Frozen)</div>
           <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, overflow: "hidden", marginBottom: 26 }}>
             <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", padding: "10px 16px", background: BRAND.greenSoft, fontWeight: 700, fontSize: 12.5 }}>
               <div>Box</div><div>Weight</div><div>Price (AED)</div><div>Status</div>
@@ -8632,7 +8647,7 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
             ))}
           </div>
 
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>Individual items, by category</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 16, marginBottom: 10 }}>Individual items, by category</div>
           <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 12 }}>
             {CATALOG.map((c) => (
               <Pill key={c.cat} active={c.cat === cat} onClick={() => setCat(c.cat)}>{c.cat}</Pill>
@@ -8741,7 +8756,7 @@ function PromoCodesPanel({ promoCodesDb, savePromoCode, deletePromoCode }) {
   return (
     <div>
       <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginBottom: 20 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>Create a new code</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>Create a new code</div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px,1fr))", gap: 10 }}>
           <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="CODE (e.g. SUMMER15)" style={inputStyle} />
           <select value={type} onChange={(e) => setType(e.target.value)} style={inputStyle}>
@@ -8901,7 +8916,7 @@ function SalesReportPanel({ orders }) {
     return (
       <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, flex: 1, minWidth: 160 }}>
         <div style={{ fontSize: 11.5, fontWeight: 700, opacity: 0.6, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 26, color: accent || BRAND.green, marginTop: 6 }}>{money(stat.total)}</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 26, color: accent || BRAND.green, marginTop: 6 }}>{money(stat.total)}</div>
         <div style={{ fontSize: 12, opacity: 0.6, marginTop: 4 }}>{stat.count} order{stat.count === 1 ? "" : "s"} · avg {money(stat.avg)}</div>
       </div>
     );
@@ -8943,7 +8958,7 @@ function SalesReportPanel({ orders }) {
       </div>
 
       <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginBottom: 18 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 14 }}>Last 7 days</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15, marginBottom: 14 }}>Last 7 days</div>
         <div style={{ display: "flex", alignItems: "flex-end", gap: 10, height: 100 }}>
           {dayBars.map((d, i) => (
             <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
@@ -8956,7 +8971,7 @@ function SalesReportPanel({ orders }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 18 }} className="dsf-about-grid">
         <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18 }}>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>Top items ({rangeLabel})</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>Top items ({rangeLabel})</div>
           {topItems.length === 0 && <div style={{ opacity: 0.6, fontSize: 13 }}>No orders in this range.</div>}
           {topItems.map((it, i) => (
             <div key={it.name} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: i < topItems.length - 1 ? `1px solid ${BRAND.creamDeep}` : "none" }}>
@@ -8969,7 +8984,7 @@ function SalesReportPanel({ orders }) {
         </div>
 
         <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18 }}>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>Top delivery areas ({rangeLabel})</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>Top delivery areas ({rangeLabel})</div>
           {topAreas.length === 0 && <div style={{ opacity: 0.6, fontSize: 13 }}>No orders in this range.</div>}
           {topAreas.map((a, i) => (
             <div key={a.area} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: i < topAreas.length - 1 ? `1px solid ${BRAND.creamDeep}` : "none" }}>
@@ -8982,7 +8997,7 @@ function SalesReportPanel({ orders }) {
       </div>
 
       <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>
           Orders in this range ({filtered.length})
         </div>
         {filtered.length === 0 ? (
@@ -9338,7 +9353,7 @@ function PricingCalculator({ products, boxes, updateProduct, updateBox }) {
 
   return (
     <div>
-      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Pricing Calculator</div>
+      <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Pricing Calculator</div>
       <p style={{ fontSize: 12.5, opacity: 0.65, marginBottom: 18, maxWidth: 560 }}>
         Add up every real cost behind an order, pick a margin or markup, and see what to actually charge. Margin and markup give different numbers for the same target profit — this calculator always shows both so you know exactly what you're getting.
       </p>
@@ -9610,7 +9625,7 @@ function CustomProductManager({ customProducts, addCustomProduct, updateCustomPr
 
   return (
     <div>
-      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Add a New Product</div>
+      <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Add a New Product</div>
       <p style={{ fontSize: 12.5, opacity: 0.65, marginBottom: 18, maxWidth: 560 }}>
         Add a product that isn't part of the built-in catalog — it appears on the site immediately, in whichever category you choose, with its own price, description, and photo.
       </p>
@@ -9798,7 +9813,7 @@ function CustomerExport({ orders, reviews }) {
 
   return (
     <div>
-      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Registered Customers</div>
+      <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Registered Customers</div>
       <p style={{ fontSize: 12.5, opacity: 0.65, marginBottom: 16, maxWidth: 560 }}>
         Every customer who's created an account, with their email for marketing use, how many orders they've placed, and how many reviews they've left. Only accounts with an email on file are shown.
       </p>
@@ -9863,7 +9878,7 @@ function SubscriptionsPanel() {
 
   return (
     <div>
-      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Recurring Subscriptions</div>
+      <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Recurring Subscriptions</div>
       <p style={{ fontSize: 12.5, opacity: 0.65, marginBottom: 16, maxWidth: 620 }}>
         Every customer on an automatic recurring order. A due subscription turns into a real order in your Orders tab on its own the next time anyone opens the app — nothing for you to trigger manually.
       </p>
@@ -9871,15 +9886,15 @@ function SubscriptionsPanel() {
       <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20 }}>
         <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 16, flex: 1, minWidth: 140 }}>
           <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.6, textTransform: "uppercase" }}>Active</div>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>{active.length}</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>{active.length}</div>
         </div>
         <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 16, flex: 1, minWidth: 140 }}>
           <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.6, textTransform: "uppercase" }}>Paused</div>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 24, color: BRAND.orangeDeep }}>{paused.length}</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 24, color: BRAND.orangeDeep }}>{paused.length}</div>
         </div>
         <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 16, flex: 1, minWidth: 140 }}>
           <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.6, textTransform: "uppercase" }}>Due within 7 days</div>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>{in7Days.length}</div>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 800, fontSize: 24, color: BRAND.green }}>{in7Days.length}</div>
         </div>
       </div>
 
