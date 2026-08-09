@@ -4315,8 +4315,8 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
         style={{
           background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center",
           gap: 12, width: "100%", textAlign: "start", padding: "14px 6px",
-          borderBottom: `1px solid rgba(35,31,22,0.10)`,
-          color: isActive ? BRAND.orangeDeep : BRAND.green,
+          borderBottom: `1px solid rgba(255,255,255,0.12)`,
+          color: isActive ? BRAND.orange : BRAND.cream,
           fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Manrope, sans-serif",
           fontWeight: 700, fontSize: 16,
         }}
@@ -6598,20 +6598,28 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
           </FormCard>
         </div>
 
-        <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18, position: "sticky", top: 90 }}>
-          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 17, marginBottom: 12 }}>{t("order_summary")}</div>
+        <div style={{ background: BRAND.greenDark, color: BRAND.cream, borderRadius: 16, padding: 22, position: "sticky", top: 90, boxShadow: "0 12px 30px rgba(11,36,23,0.28)" }}>
+          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 19, marginBottom: 16 }}>{t("order_summary")}</div>
           <Row label={t("subtotal")} value={money(subtotal)} />
           {discount > 0 && <Row label={lang === "ar" ? "الخصم" : "Discount"} value={`-${money(discount)}`} />}
           <Row label={t("delivery_fee")} value={deliveryFee === 0 ? t("free") : money(deliveryFee)} />
           <Row label={t("vat_label")} value={money(vat)} />
-          <hr style={{ border: "none", borderTop: `1px dashed ${BRAND.creamDeep}`, margin: "10px 0" }} />
-          <Row label={t("total")} value={money(total)} bold />
-          <PrimaryButton full disabled={!canSubmit || placing} onClick={submit} style={{ marginTop: 16 }}>
+          <hr style={{ border: "none", borderTop: `1px dashed rgba(247,241,228,0.28)`, margin: "12px 0" }} />
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
+            <span>{t("total")}</span>
+            <span style={{ fontFamily: "IBM Plex Mono, monospace", color: BRAND.orange }}>{money(total)}</span>
+          </div>
+          <PrimaryButton
+            full
+            disabled={!canSubmit || placing}
+            onClick={submit}
+            style={{ marginTop: 18, background: (!canSubmit || placing) ? "#C9C2B2" : BRAND.orange, color: BRAND.ink, boxShadow: "none" }}
+          >
             {placing ? t("placing_order") : `${t("place_order")} · ${money(total)}`}
           </PrimaryButton>
-          {!canSubmit && <div style={{ fontSize: 11.5, opacity: 0.55, marginTop: 8 }}>{t("fill_fields")}</div>}
+          {!canSubmit && <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 8 }}>{t("fill_fields")}</div>}
           {placeError && (
-            <div style={{ fontSize: 12.5, color: BRAND.tomato, marginTop: 10, background: "#FDEAEA", border: `1px solid ${BRAND.tomato}`, borderRadius: 8, padding: 10 }}>
+            <div style={{ fontSize: 12.5, color: "#fff", marginTop: 10, background: "rgba(168,59,50,0.35)", border: `1px solid ${BRAND.tomato}`, borderRadius: 8, padding: 10 }}>
               {placeError.reason === "stock" ? (
                 <>
                   {lang === "ar"
@@ -6644,10 +6652,10 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
 
 function FormCard({ title, icon: Icon, children }) {
   return (
-    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 14, padding: 18 }}>
+    <div style={{ background: "#fff", border: "1px solid rgba(198,162,76,0.22)", boxShadow: "0 2px 10px rgba(35,31,22,0.05)", borderRadius: 10, padding: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
         <Icon size={16} color={BRAND.green} />
-        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 16 }}>{title}</div>
+        <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 17 }}>{title}</div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>{children}</div>
     </div>
@@ -6664,7 +6672,7 @@ function Field({ label, children }) {
 const inputStyle = {
   width: "100%",
   border: `1.5px solid ${BRAND.creamDeep}`,
-  borderRadius: 10,
+  borderRadius: 8,
   padding: "10px 12px",
   fontFamily: "Manrope, sans-serif",
   fontSize: 14,
