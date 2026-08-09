@@ -43,10 +43,10 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Bump target SDK to meet Google Play's current requirement
+      - name: Bump target/compile SDK to meet Google Play requirements
         run: |
-          sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 35/' android/variables.gradle
-          sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 35/' android/variables.gradle
+          sed -i 's/compileSdkVersion = [0-9]*/compileSdkVersion = 36/' android/variables.gradle
+          sed -i 's/targetSdkVersion = [0-9]*/targetSdkVersion = 36/' android/variables.gradle
 
       - name: Set a unique, incrementing version code
         run: |
@@ -82,19 +82,19 @@ jobs:
           cat >> android/app/build.gradle << 'EOF'
 
           android {
-              signingConfigs {
-                  release {
-                      storeFile file("darousha-release-key.keystore")
-                      storePassword System.getenv("KEYSTORE_PASSWORD")
-                      keyAlias "darousha-fresh"
-                      keyPassword System.getenv("KEYSTORE_PASSWORD")
-                  }
+            signingConfigs {
+              release {
+                storeFile file("darousha-release-key.keystore")
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias "darousha-fresh"
+                keyPassword System.getenv("KEYSTORE_PASSWORD")
               }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                  }
+            }
+            buildTypes {
+              release {
+                signingConfig signingConfigs.release
               }
+            }
           }
           EOF
 
@@ -109,4 +109,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: darousha-fresh-release-aab
-          path: android/app/build/outputs/bundle/release/app-release.aab
+          path: android/app/build/outputs/bundle/release/app-release.aab          
+        
