@@ -108,9 +108,22 @@ const TRANSLATIONS = {
     nav_shop: "Shop", nav_boxes: "Boxes", nav_commercial: "Commercial", nav_track: "Track",
     nav_signin: "Sign in", nav_account: "Account",
     hero_badge: "SAME-DAY DELIVERY IN YOUR AREA",
-    hero_h1a: "Farm-fresh vegetables,", hero_h1b: "at your door", hero_h1c: "today.",
-    hero_sub: "Your personal shopper hand-picks every item, packs it with care, and delivers it fresh to your door.",
-    hero_cta_boxes: "Choose a box", hero_cta_shop: "Shop vegetables",
+    hero_h1a: "What are you", hero_h1b: "cooking", hero_h1c: "today?",
+    hero_sub: "Fresh ingredients. Perfect quantities. One easy basket.",
+    hero_cta_recipes: "Explore Recipes", hero_cta_boxes: "Choose a box", hero_cta_shop: "Shop Fresh",
+    promise_eyebrow: "The Darousha Fresh Promise", promise_title: "We don't just deliver groceries. We carefully select what goes into your basket.",
+    promise_1: "Quality checked", promise_2: "Carefully packed", promise_3: "Fresh-focused delivery", promise_4: "Premium selection",
+    promise_footer: "Not satisfied with the quality? We'll make it right.",
+    why_eyebrow: "Why Darousha?", why_title: "A fresh food experience, not another supermarket",
+    why1_t: "Cook easier", why1_b: "Choose the dish. We'll help you get the ingredients.",
+    why2_t: "Buy smarter", why2_b: "Get the quantities you actually need, nothing wasted.",
+    why3_t: "Fresh by choice", why3_b: "We focus on selecting and handling fresh ingredients carefully.",
+    why4_t: "Made for Dubai", why4_b: "A fresh-food experience designed around Dubai households.",
+    cook_eyebrow: "From our kitchen", cook_title: "Cook Something Delicious",
+    office_eyebrow: "For teams & offices", office_title: "Fresh produce for your whole office, twice a week.",
+    office_sub: "No more ad-hoc snack runs. One recurring order, delivered straight to your office on Mondays and Fridays — fruit, veg, and healthy staples your team will actually reach for.",
+    office_pill1: "📅 Monday & Friday delivery", office_pill2: "🏢 Built for teams of any size", office_pill3: "📋 One invoice, no hassle",
+    office_cta: "Get an Office Box quote", office_cta2: "See what's included",
     badge_quality: "Naturally Grown", badge_fresh: "Fresh Every Day", badge_supply: "Personal Shopper", badge_delivery: "On Time Delivery",
     how_eyebrow: "How it works", how_title: "Home delivery, made simple",
     how1_t: "Pick your box", how1_b: "Choose a Daily, Family, Signature, or Chef's Box — or pick any single item as its own Small, Medium, or Large box.",
@@ -183,9 +196,22 @@ const TRANSLATIONS = {
     nav_shop: "المتجر", nav_boxes: "الصناديق", nav_commercial: "تجاري", nav_track: "تتبع الطلب",
     nav_signin: "تسجيل الدخول", nav_account: "حسابي",
     hero_badge: "توصيل في نفس اليوم إلى منطقتك",
-    hero_h1a: "خضروات طازجة من المزرعة،", hero_h1b: "إلى بابك", hero_h1c: "اليوم.",
-    hero_sub: "شخصي التسوق لدينا يختار كل صنف بعناية يدويًا، يغلّفه بحرص، ويوصله طازجًا إلى بابك.",
-    hero_cta_boxes: "اختر صندوقًا", hero_cta_shop: "تسوق الخضروات",
+    hero_h1a: "ماذا", hero_h1b: "تطبخ", hero_h1c: "اليوم؟",
+    hero_sub: "مكونات طازجة. كميات مناسبة تمامًا. سلة واحدة سهلة.",
+    hero_cta_recipes: "استكشف الوصفات", hero_cta_boxes: "اختر صندوقًا", hero_cta_shop: "تسوق الطازج",
+    promise_eyebrow: "وعد Darousha Fresh", promise_title: "نحن لا نوصل البقالة فقط. نختار بعناية كل ما يدخل سلتك.",
+    promise_1: "جودة مفحوصة", promise_2: "تغليف بعناية", promise_3: "توصيل يركّز على الطزاجة", promise_4: "اختيار مميز",
+    promise_footer: "غير راضٍ عن الجودة؟ سنصلح الأمر.",
+    why_eyebrow: "لماذا Darousha؟", why_title: "تجربة طعام طازج، ليست سوبرماركت آخر",
+    why1_t: "اطبخ بسهولة أكبر", why1_b: "اختر الطبق. نحن نساعدك في الحصول على المكونات.",
+    why2_t: "تسوّق بذكاء", why2_b: "احصل على الكميات التي تحتاجها فعلاً، دون هدر.",
+    why3_t: "طازج بالاختيار", why3_b: "نركّز على اختيار المكونات الطازجة والتعامل معها بعناية.",
+    why4_t: "مصمم لدبي", why4_b: "تجربة طعام طازج مصممة خصيصًا لمنازل دبي.",
+    cook_eyebrow: "من مطبخنا", cook_title: "اطبخ شيئًا لذيذًا",
+    office_eyebrow: "للشركات والمكاتب", office_title: "منتجات طازجة لمكتبك بالكامل، مرتين أسبوعيًا.",
+    office_sub: "لا حاجة لتوصيل الوجبات الخفيفة بشكل عشوائي بعد الآن. طلب واحد متكرر، يصل إلى مكتبك أيام الإثنين والجمعة — فواكه وخضروات ومنتجات صحية سيستخدمها فريقك فعلاً.",
+    office_pill1: "📅 توصيل الإثنين والجمعة", office_pill2: "🏢 مناسب لأي حجم فريق", office_pill3: "📋 فاتورة واحدة، بلا تعقيد",
+    office_cta: "احصل على عرض سعر", office_cta2: "شاهد ما يتضمنه",
     badge_quality: "نمو طبيعي", badge_fresh: "طازج كل يوم", badge_supply: "شخصي تسوق مخصص", badge_delivery: "توصيل في الموعد",
     how_eyebrow: "كيف تعمل الخدمة", how_title: "توصيل منزلي بكل بساطة",
     how1_t: "اختر صندوقك", how1_b: "اختر الصندوق اليومي أو صندوق العائلة أو المميز أو صندوق الشيف — أو اختر أي صنف بمفرده كصندوق صغير أو متوسط أو كبير.",
@@ -2472,6 +2498,15 @@ const ADMIN_PASSWORD = "Mo8122616";
 // Authentication → Users → Add user, using this email and a real password,
 // then update ADMIN_PASSWORD above to match whatever you set there.
 const ADMIN_EMAIL = "backstage@darousha-fresh.local";
+// Driver's own separate login — same real-Firebase-Auth reasoning as above,
+// but a distinct account so it can carry its own restricted Firestore rules
+// (Packing Center + Driver View only — no pricing, leads, or customer data)
+// and can be changed/revoked independently of the main Backstage password.
+// Create this exact account once in Firebase Console → Authentication →
+// Users → Add user, using this email and a real password, then update
+// DRIVER_PASSWORD below to match whatever you set there.
+const DRIVER_EMAIL = "driver@darousha-fresh.local";
+const DRIVER_PASSWORD = "DFdriver2026";
 const DELIVERY_FEE = 25;
 const LOYALTY_EARN_RATE = 0.02; // 2% of what's actually paid, back as points — 1 point = AED 1 when redeemed
 const REVIEW_BONUS_POINTS = 10; // flat bonus for leaving a photo review, regardless of order size
@@ -2492,7 +2527,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260808072752"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260818211739"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -2798,6 +2833,122 @@ function sendOrderNotificationWhatsApp(order) {
 }
 
 const LOW_STOCK_THRESHOLD = 10; // send an alert (and show the Backstage banner) once stock is at or below this
+
+// ---- Procurement conversion ----
+// Applies only when a product's customer-facing unit differs from how it's
+// actually bought from a supplier — kg items need no conversion since they're
+// already bought in the same unit they're sold in.
+const DEFAULT_PROCUREMENT_BUFFER_PCT = 8; // used whenever a product doesn't have its own bufferPct set
+// Reasonable industry-standard average piece weights, used ONLY as a starting
+// point when an admin hasn't set a real one yet in Backstage (⚖️ icon on each
+// product) — these are estimates, not verified supplier data, and should be
+// corrected once real numbers are known. Deliberately left blank for items
+// where "piece" is ambiguous (e.g. grapes, strawberries sold as a cluster/
+// punnet rather than a true single piece) rather than guessing wildly.
+const DEFAULT_AVG_WEIGHT_G = {
+  "Apple": 170, "Banana": 120, "Orange": 200, "Mango": 300, "Kiwi": 80,
+  "Pineapple": 1200, "Pomegranate": 280, "Pear": 180, "Honey Peach": 150,
+  "Dragon Fruit": 350, "Mandarin": 100,
+  "Lettuce (Iceberg)": 500, "Romaine Lettuce": 400, "Green Leaf Lettuce": 350, "Red Leaf Lettuce": 350,
+  "Artichoke": 150, "Corn": 300,
+};
+// Converts a required quantity in the customer-facing unit into what to actually
+// buy from the supplier, applying the safety buffer and rounding up (never down)
+// to a practical purchase increment. Returns null when no conversion applies
+// (e.g. kg items, or piece items with no weight configured or defaulted).
+function procurementBuySuggestion(product, requiredQty) {
+  if (!product) return null;
+  const bufferPct = product.bufferPct != null ? product.bufferPct : DEFAULT_PROCUREMENT_BUFFER_PCT;
+  const bufferMult = 1 + bufferPct / 100;
+
+  if (product.unit === "piece") {
+    const avgG = product.avgWeightG != null ? product.avgWeightG : DEFAULT_AVG_WEIGHT_G[product.name];
+    if (!avgG) return null; // no weight known — can't convert, buy by piece count as-is
+    const kgNeeded = (requiredQty * avgG / 1000) * bufferMult;
+    const roundingKg = 0.5; // most fresh suppliers sell loose produce in half-kilo increments
+    const buyKg = Math.ceil(kgNeeded / roundingKg) * roundingKg;
+    return { unit: "kg", buyQty: Math.round(buyKg * 100) / 100, isEstimatedWeight: product.avgWeightG == null };
+  }
+
+  if ((product.unit === "box" || product.unit === "bunch" || product.unit === "set") && product.caseSize) {
+    const needed = requiredQty * bufferMult;
+    const buyCases = Math.ceil(needed / product.caseSize);
+    return { unit: "case", buyQty: buyCases, caseSize: product.caseSize, totalUnits: buyCases * product.caseSize };
+  }
+
+  return null; // kg items, or piece/box items with no conversion data configured — buy exactly what's required
+}
+
+// ---- "What do you want to cook?" — AI recipe ingredient matching ----
+// CRITICAL RULE: the AI (called via /api/ai-recipe) only ever returns plain
+// text {name, quantity, unit} — never a product ID, never a price. Every
+// ingredient must be matched here, against the real, already-loaded product
+// catalog, before anything can be shown as purchasable. If nothing matches,
+// the ingredient is shown as unavailable — the AI can never invent a product.
+function normalizeForMatch(s) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ");
+}
+function matchIngredientToProduct(ingredientName, products) {
+  const target = normalizeForMatch(ingredientName);
+  const targetWords = target.split(" ").filter(Boolean);
+  const candidates = products.filter((p) => p.available); // only ever match against active/available real products
+
+  // 1. Exact name match
+  let best = candidates.find((p) => normalizeForMatch(p.name) === target);
+  if (best) return best;
+
+  // 2. Substring match either direction (e.g. "olive oil" ↔ "Extra Virgin Olive Oil")
+  best = candidates.find((p) => {
+    const pn = normalizeForMatch(p.name);
+    return pn.includes(target) || target.includes(pn);
+  });
+  if (best) return best;
+
+  // 3. Shared-word scoring — pick whichever real product shares the most words
+  let bestScore = 0, bestProduct = null;
+  candidates.forEach((p) => {
+    const pWords = normalizeForMatch(p.name).split(" ").filter(Boolean);
+    const shared = targetWords.filter((w) => w.length > 2 && pWords.includes(w)).length;
+    if (shared > bestScore) { bestScore = shared; bestProduct = p; }
+  });
+  return bestScore > 0 ? bestProduct : null; // null = genuinely not sold — never invent a fallback
+}
+
+// Converts what the AI said is needed (e.g. "300 gram") into how many of the
+// MATCHED product's real selling unit to add to cart (e.g. "2 pieces", or
+// "1 × 250g bottle"). Exact whenever the admin has set real weight/pack data
+// for that product (via the ⚖️ icon in Prices & Availability); otherwise
+// falls back to a clearly-flagged estimate rather than silently guessing.
+function convertIngredientToProductQty(ingredient, product) {
+  const sameUnit = (ingredient.unit === "piece" && product.unit === "piece") || (ingredient.unit === "bunch" && product.unit === "bunch");
+  if (sameUnit) {
+    return { qty: Math.max(1, Math.ceil(ingredient.quantity)), estimated: false, note: null };
+  }
+
+  const gramsNeeded = ingredient.unit === "gram" || ingredient.unit === "ml" ? ingredient.quantity : null;
+
+  if (product.unit === "kg" && gramsNeeded !== null) {
+    const kg = Math.max(0.1, Math.round((gramsNeeded / 1000) * 20) / 20); // round to nearest 50g
+    return { qty: kg, estimated: false, note: null };
+  }
+
+  if (product.unit === "piece" && gramsNeeded !== null) {
+    const avg = product.avgWeightG || DEFAULT_AVG_WEIGHT_G[product.name];
+    if (!avg) return { qty: 1, estimated: true, note: "Quantity estimated — weight not set for this product yet" };
+    return { qty: Math.max(1, Math.ceil(gramsNeeded / avg)), estimated: false, note: null };
+  }
+
+  if ((product.unit === "box" || product.unit === "set") && gramsNeeded !== null) {
+    if (!product.packSizeG) return { qty: 1, estimated: true, note: "Quantity estimated — pack size not set for this product yet" };
+    const packs = Math.max(1, Math.ceil(gramsNeeded / product.packSizeG));
+    return { qty: packs, estimated: false, note: `${packs} × ${product.packSizeG}g` };
+  }
+
+  // Ingredient given as "piece" but product isn't piece-sold (or vice versa
+  // with no gram figure to convert from) — safest honest fallback.
+  return { qty: 1, estimated: true, note: "Quantity estimated — please adjust if needed" };
+}
+
 function sendLowStockAlertWhatsApp(lowStockItems) {
   if (!CALLMEBOT_READY || lowStockItems.length === 0) return;
   const list = lowStockItems.map((p) => `${p.name} (${p.stock} left)`).join(", ");
@@ -3204,6 +3355,18 @@ async function updateOrderStatusDoc(id, status) {
     return false;
   }
 }
+// Packing workflow status — deliberately a SEPARATE field from the customer-facing
+// `status` (placed/out_for_delivery/delivered) above, so the internal pick & pack
+// workflow can never interfere with what the customer sees on their tracking page.
+async function updatePackingStatusDoc(id, packingStatus, extra = {}) {
+  try {
+    await setDoc(doc(db, "orders", id), { id, packingStatus, ...extra }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore packing status update failed:", e);
+    return false;
+  }
+}
 async function acknowledgeOrderDoc(id) {
   try {
     // Written to Firestore (not just local state) so pressing "Receive" on
@@ -3234,6 +3397,47 @@ function subscribeToOrder(id, onUpdate) {
   } catch (e) {
     console.error("Firestore order subscription failed:", e);
     return () => {};
+  }
+}
+// One shared "picking batch" doc per calendar day (id = YYYY-MM-DD), so whoever
+// is physically picking stock and whoever's watching Packing Center on another
+// screen both see the same live Picked totals — this is what "Purchased" in the
+// Traceability report is drawn from too, so there's only one number to keep in sync.
+function subscribeToPickingBatch(dateStr, onUpdate) {
+  try {
+    return onSnapshot(doc(db, "pickingBatches", dateStr), (snap) => {
+      onUpdate(snap.exists() ? snap.data() : { picked: {}, qualityOk: {}, notes: {} });
+    });
+  } catch (e) {
+    console.error("Firestore picking batch subscription failed:", e);
+    return () => {};
+  }
+}
+async function setPickedQtyDoc(dateStr, productName, qty) {
+  try {
+    await setDoc(doc(db, "pickingBatches", dateStr), { picked: { [productName]: qty } }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore picked-qty update failed:", e);
+    return false;
+  }
+}
+async function setQualityCheckDoc(dateStr, productName, ok) {
+  try {
+    await setDoc(doc(db, "pickingBatches", dateStr), { qualityOk: { [productName]: ok } }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore quality-check update failed:", e);
+    return false;
+  }
+}
+async function setReceivingNoteDoc(dateStr, productName, note) {
+  try {
+    await setDoc(doc(db, "pickingBatches", dateStr), { notes: { [productName]: note } }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore receiving-note update failed:", e);
+    return false;
   }
 }
 async function fetchAllLeads() {
@@ -3392,6 +3596,29 @@ function storageSubscribe(key, onUpdate) {
 }
 
 /* ------------------------------------ Small UI atoms ------------------------------------ */
+
+function PaymentBadges({ style }) {
+  const badge = { display: "inline-flex", alignItems: "center", justifyContent: "center", height: 26, padding: "0 10px", borderRadius: 6, border: `1px solid ${BRAND.creamDeep}`, background: "#fff" };
+  return (
+    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", ...style }}>
+      <div style={badge} aria-label="Apple Pay">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#000" style={{ marginRight: 4 }}>
+          <path d="M16.5 3.5c-1 .06-2.2.7-2.9 1.5-.63.72-1.18 1.87-.97 2.98 1.1.03 2.24-.63 2.9-1.44.65-.8 1.14-1.9.97-3.04zM19.9 8.6c-1.6-.1-2.96.9-3.72.9-.77 0-1.94-.86-3.2-.84-1.65.02-3.17.96-4.02 2.44-1.72 2.98-.44 7.4 1.23 9.83.82 1.19 1.8 2.53 3.08 2.48 1.23-.05 1.7-.8 3.19-.8s1.9.8 3.2.78c1.33-.02 2.17-1.2 2.98-2.4.94-1.36 1.32-2.68 1.34-2.75-.03-.01-2.57-.99-2.6-3.92-.02-2.45 2-3.62 2.09-3.68-1.14-1.68-2.92-1.87-3.57-1.9z"/>
+        </svg>
+        <span style={{ fontSize: 11.5, fontWeight: 700 }}>Pay</span>
+      </div>
+      <div style={badge} aria-label="Visa">
+        <span style={{ fontFamily: "Georgia, serif", fontStyle: "italic", fontWeight: 800, fontSize: 13, color: "#1A1F71", letterSpacing: "-0.02em" }}>VISA</span>
+      </div>
+      <div style={badge} aria-label="Mastercard">
+        <svg width="26" height="16" viewBox="0 0 40 24">
+          <circle cx="15" cy="12" r="11" fill="#EB001B" />
+          <circle cx="25" cy="12" r="11" fill="#F79E1B" fillOpacity="0.9" />
+        </svg>
+      </div>
+    </div>
+  );
+}
 
 function PriceTag({ value, unit, size = "md", originalValue }) {
   const { lang } = useLang();
@@ -3576,6 +3803,34 @@ function AppShell() {
       return null;
     }
   }
+  function getPackOrderParam() {
+    try {
+      return new URLSearchParams(window.location.search).get("packorder");
+    } catch {
+      return null;
+    }
+  }
+  function getLabelParam() {
+    try {
+      return new URLSearchParams(window.location.search).get("label");
+    } catch {
+      return null;
+    }
+  }
+  function getBackstageParam() {
+    try {
+      return new URLSearchParams(window.location.search).get("backstage");
+    } catch {
+      return null;
+    }
+  }
+  function getDriverPortalParam() {
+    try {
+      return new URLSearchParams(window.location.search).get("driver");
+    } catch {
+      return null;
+    }
+  }
   function getInvoiceParam() {
     try {
       return new URLSearchParams(window.location.search).get("invoice");
@@ -3609,7 +3864,8 @@ function AppShell() {
     }
   }
 
-  const [view, setView] = useState(() => (getInvoiceParam() ? "invoice" : getDriveParam() ? "drive" : getTrackParam() ? "track" : getRecipeParam() ? "recipes" : getPrivacyParam() ? "privacy" : getDeleteAccountParam() ? "delete-account" : "home"));
+  const [view, setView] = useState(() => (getInvoiceParam() ? "invoice" : getLabelParam() ? "label" : getDriveParam() ? "drive" : getPackOrderParam() ? "admin" : getBackstageParam() ? "admin" : getDriverPortalParam() ? "driverportal" : getTrackParam() ? "track" : getRecipeParam() ? "recipes" : getPrivacyParam() ? "privacy" : getDeleteAccountParam() ? "delete-account" : "home"));
+  const [packOrderId] = useState(getPackOrderParam); // set once on load; a printed label's QR code deep-links straight to that order's packing checklist once admin logs in
   // Makes the browser's own Back button work for in-app navigation. Without
   // this, every setView() call only changes React state — the URL and
   // history never move, so there's nothing for Back to go back to, and the
@@ -3644,6 +3900,7 @@ function AppShell() {
   const [driveOrderId] = useState(getDriveParam); // set once on load; doesn't change
   const [deepLinkRecipeId] = useState(getRecipeParam); // set once on load; doesn't change
   const [invoiceOrderId] = useState(getInvoiceParam); // set once on load; doesn't change
+  const [labelOrderId] = useState(getLabelParam); // set once on load; doesn't change
   const [manualTrackId, setManualTrackId] = useState(null); // set when a customer taps "Track" on an order in their history
   const [products, setProducts] = useState(PRODUCTS);
   const [customProducts, setCustomProducts] = useState([]); // products added live from Backstage, not baked into the code
@@ -3699,6 +3956,7 @@ function AppShell() {
   const [lastOrderId, setLastOrderId] = useState(null);
   const [lastOrder, setLastOrder] = useState(null);
   const [adminAuthed, setAdminAuthed] = useState(false);
+  const [driverAuthed, setDriverAuthed] = useState(false);
   useEffect(() => {
     if (adminAuthed) {
       processDueSubscriptions(); // fire-and-forget — only the admin session should write to other customers' subscriptions/orders
@@ -3991,6 +4249,11 @@ function AppShell() {
     return await updateOrderStatusDoc(id, status);
   }
 
+  async function updatePackingStatus(id, packingStatus, extra = {}) {
+    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, packingStatus, ...extra } : o)));
+    return await updatePackingStatusDoc(id, packingStatus, extra);
+  }
+
   async function acknowledgeOrder(id) {
     const acknowledgedAt = new Date().toISOString();
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, acknowledgedAt } : o)));
@@ -4064,7 +4327,7 @@ function AppShell() {
     setProducts(next);
     const overrides = {};
     next.forEach((p) => {
-      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null };
+      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null, avgWeightG: p.avgWeightG == null ? null : p.avgWeightG, caseSize: p.caseSize == null ? null : p.caseSize, bufferPct: p.bufferPct == null ? null : p.bufferPct, packSizeG: p.packSizeG == null ? null : p.packSizeG };
     });
     return await storageSet("dsf-catalog-overrides", overrides, true);
   }
@@ -4089,7 +4352,14 @@ function AppShell() {
   // changed (e.g. another customer bought the last few) between adding to
   // cart and hitting "Place order". Returns a list of items that no longer
   // fit, empty if everything's fine.
+  // NOTE: Darousha no longer carries on-hand inventory — everything is bought
+  // fresh each morning to match the day's orders exactly (see Packing Center's
+  // Buy List). So this deliberately never blocks checkout on stock anymore;
+  // the `stock` field survives elsewhere purely as an optional reference note.
   function findStockShortfalls(order) {
+    return [];
+  }
+  function _findStockShortfalls_unused(order) {
     const deductions = computeDeductions(order);
     const shortfalls = [];
     Object.entries(deductions).forEach(([productId, needed]) => {
@@ -4118,7 +4388,7 @@ function AppShell() {
     setProducts(next);
     const overrides = {};
     next.forEach((p) => {
-      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null };
+      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null, avgWeightG: p.avgWeightG == null ? null : p.avgWeightG, caseSize: p.caseSize == null ? null : p.caseSize, bufferPct: p.bufferPct == null ? null : p.bufferPct, packSizeG: p.packSizeG == null ? null : p.packSizeG };
     });
     await storageSet("dsf-catalog-overrides", overrides, true);
     // Deliberately no alert fired from here — this function runs inside
@@ -4238,12 +4508,14 @@ function AppShell() {
         {view === "track" && <TrackView orders={orders} initialId={manualTrackId || deepLinkOrderId || lastOrderId} lang={lang} />}
         {view === "drive" && <DriverModeView orderId={driveOrderId} lang={lang} />}
         {view === "invoice" && <InvoiceView orderId={invoiceOrderId} orders={orders} />}
+        {view === "label" && <OrderLabelView orderId={labelOrderId} orders={orders} products={allProducts} />}
         {view === "privacy" && <PrivacyView setView={setView} />}
         {view === "delete-account" && <DeleteAccountView setView={setView} />}
         {view === "terms" && <TermsView setView={setView} />}
         {view === "location" && <LocationView setView={setView} />}
         {view === "about" && <AboutView setView={setView} />}
         {view === "recipes" && <RecipesView setView={setView} products={allProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
+        {view === "aicook" && <AiRecipeBuilderView setView={setView} products={allProducts} addToCart={addToCart} />}
         {view === "blog" && <BlogView setView={setView} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
@@ -4265,9 +4537,15 @@ function AppShell() {
         )}
         {view === "admin" &&
           (adminAuthed ? (
-            <AdminView products={products} updateProduct={updateProduct} boxes={boxes} updateBox={updateBox} orders={orders} updateOrderStatus={updateOrderStatus} acknowledgeOrder={acknowledgeOrder} leads={leads} promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} reviews={reviews} approveReview={approveReview} deleteReview={deleteReview} customProducts={customProducts} addCustomProduct={addCustomProduct} updateCustomProduct={updateCustomProduct} deleteCustomProduct={deleteCustomProduct} suppliers={suppliers} addSupplier={addSupplier} deleteSupplier={deleteSupplier} itemRequests={itemRequests} updateItemRequestStatus={updateItemRequestStatus} />
+            <AdminView products={products} updateProduct={updateProduct} boxes={boxes} updateBox={updateBox} orders={orders} updateOrderStatus={updateOrderStatus} updatePackingStatus={updatePackingStatus} acknowledgeOrder={acknowledgeOrder} leads={leads} promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} reviews={reviews} approveReview={approveReview} deleteReview={deleteReview} customProducts={customProducts} addCustomProduct={addCustomProduct} updateCustomProduct={updateCustomProduct} deleteCustomProduct={deleteCustomProduct} suppliers={suppliers} addSupplier={addSupplier} deleteSupplier={deleteSupplier} itemRequests={itemRequests} updateItemRequestStatus={updateItemRequestStatus} packOrderId={packOrderId} />
           ) : (
             <AdminLogin onSuccess={() => setAdminAuthed(true)} />
+          ))}
+        {view === "driverportal" &&
+          (driverAuthed ? (
+            <DriverPortalView orders={orders} products={products} boxes={boxes} updatePackingStatus={updatePackingStatus} updateOrderStatus={updateOrderStatus} />
+          ) : (
+            <DriverLogin onSuccess={() => setDriverAuthed(true)} />
           ))}
       </main>
       <Footer setView={setView} lang={lang} />
@@ -4368,11 +4646,11 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
   };
   const navLinks = (mobile) => (
     <>
-      {navItem("boxes", t("nav_boxes"), Package, undefined, undefined, mobile)}
-      {navItem("freshboxes", lang === "ar" ? "كل الأصناف" : "All Items", Store, () => { setActiveCategory && setActiveCategory("All"); setView("freshboxes"); }, view === "freshboxes" && activeCategory !== "Fruits" && activeCategory !== "Gourmet & Gifts", mobile)}
-      {navItem("freshboxes", lang === "ar" ? "فواكه" : "Fruits", Citrus, () => { setActiveCategory && setActiveCategory("Fruits"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Fruits", mobile)}
-      {navItem("freshboxes", lang === "ar" ? "أطعمة فاخرة" : "Gourmet & Gifts", Gift, () => { setActiveCategory && setActiveCategory("Gourmet & Gifts"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Gourmet & Gifts", mobile)}
       {navItem("recipes", lang === "ar" ? "وصفات" : "Recipes", BookOpen, undefined, undefined, mobile)}
+      {navItem("freshboxes", lang === "ar" ? "الطازج" : "Fresh", Store, () => { setActiveCategory && setActiveCategory("All"); setView("freshboxes"); }, view === "freshboxes" && activeCategory !== "Fruits" && activeCategory !== "Gourmet & Gifts", mobile)}
+      {navItem("freshboxes", lang === "ar" ? "فواكه" : "Fruits", Citrus, () => { setActiveCategory && setActiveCategory("Fruits"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Fruits", mobile)}
+      {navItem("freshboxes", lang === "ar" ? "أطعمة فاخرة" : "Gourmet", Gift, () => { setActiveCategory && setActiveCategory("Gourmet & Gifts"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Gourmet & Gifts", mobile)}
+      {navItem("boxes", t("nav_boxes"), Package, undefined, undefined, mobile)}
       {navItem("commercial", t("nav_commercial"), Building2, undefined, undefined, mobile)}
       {navItem("track", t("nav_track"), Truck, undefined, undefined, mobile)}
       {navItem("account", user ? (profile?.name || t("nav_account")) : t("nav_signin"), UserIcon, undefined, undefined, mobile)}
@@ -4448,6 +4726,7 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
   const { t, lang } = useLang();
   const gourmetProducts = (products || []).filter((p) => p.category === "Gourmet & Gifts" && p.available);
   const approvedReviews = (reviews || []).filter((r) => r.approved);
+  const findRecipeProduct = (name) => (products || []).find((p) => p.name === name);
 
   return (
     <div>
@@ -4479,11 +4758,11 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
             {t("hero_sub")}
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <PrimaryButton onClick={() => setView("boxes")}>
-              {t("hero_cta_boxes")} <ChevronRight size={16} />
+            <PrimaryButton onClick={() => setView("recipes")}>
+              {t("hero_cta_recipes")} <ChevronRight size={16} />
             </PrimaryButton>
-            <GhostButton onClick={() => setView("commercial")} style={{ borderColor: BRAND.cream, color: BRAND.cream }}>
-              {lang === "ar" ? "للأعمال التجارية" : "For Business"}
+            <GhostButton onClick={() => { setActiveCategory && setActiveCategory("All"); setView("freshboxes"); }} style={{ borderColor: BRAND.cream, color: BRAND.cream }}>
+              {t("hero_cta_shop")}
             </GhostButton>
           </div>
         </div>
@@ -4511,126 +4790,157 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
         ))}
       </div>
 
-      {/* 3-step delivery explainer */}
+      {/* What do you want to cook? — AI ingredient builder entry point */}
       <section style={{ marginTop: 40 }}>
-        <SectionTitle eyebrow={t("how_eyebrow")} title={t("how_title")} />
+        <div style={{ background: `linear-gradient(155deg, ${BRAND.green}, ${BRAND.greenDark})`, borderRadius: 20, padding: "26px 24px", color: "#fff" }}>
+          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 20, marginBottom: 4 }}>
+            {lang === "ar" ? "ماذا تريد أن تطبخ؟" : "What do you want to cook?"}
+          </div>
+          <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 14 }}>
+            {lang === "ar" ? "أخبرنا، وسنبني لك قائمة المكونات — مثل \"شاورما دجاج لـ 4\"" : "Tell us, and we'll build your ingredient list — try \"chicken shawarma for 4\""}
+          </div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <input
+              placeholder={lang === "ar" ? "أخبرنا بما تريد طبخه..." : "Tell us what you want to make..."}
+              onFocus={() => setView("aicook")}
+              readOnly
+              style={{ ...inputStyle, flex: 1, minWidth: 200, cursor: "pointer" }}
+            />
+            <PrimaryButton onClick={() => setView("aicook")}>
+              {lang === "ar" ? "جهّز مكوناتي" : "Build My Ingredients"} <ChevronRight size={16} />
+            </PrimaryButton>
+          </div>
+        </div>
+      </section>
+
+      {/* Cook Something Delicious — recipe teaser */}
+      <section style={{ marginTop: 40 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+          <SectionTitle eyebrow={t("cook_eyebrow")} title={t("cook_title")} />
+          <GhostButton onClick={() => setView("recipes")}>
+            {lang === "ar" ? "كل الوصفات" : "All recipes"} <ChevronRight size={15} />
+          </GhostButton>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px,1fr))", gap: 16, marginTop: 18 }}>
+          {RECIPES.slice(0, 6).map((r) => {
+            const meta = RECIPE_META[r.id] || { time: 20, level: "Easy", levelAr: "سهل", servings: "2–4" };
+            return (
+              <div
+                key={r.id}
+                onClick={() => setView("recipes")}
+                style={{
+                  cursor: "pointer", borderRadius: 16, overflow: "hidden", border: `1px solid ${BRAND.creamDeep}`,
+                  background: "#fff", transition: "transform 0.15s ease",
+                }}
+              >
+                <div style={{ background: `linear-gradient(160deg, ${BRAND.green}, ${BRAND.greenDark})`, color: "#fff", padding: "16px 16px 0" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 3, marginBottom: 12 }}>
+                    {r.produce.slice(0, 4).map((name, i) => {
+                      const p = findRecipeProduct(name);
+                      return (
+                        <div key={i} style={{ aspectRatio: "1", borderRadius: 8, overflow: "hidden", background: "rgba(255,255,255,0.15)" }}>
+                          <IngredientThumb product={p} size="100%" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ paddingBottom: 16 }}>
+                    <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 17, lineHeight: 1.2 }}>
+                      {lang === "ar" ? r.nameAr : r.name}
+                    </div>
+                    <div style={{ display: "flex", gap: 10, marginTop: 8, fontSize: 10.5, fontWeight: 700, opacity: 0.9 }}>
+                      <span>👥 {meta.servings}</span>
+                      <span>⏱ {meta.time} {lang === "ar" ? "د" : "min"}</span>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ padding: "12px 16px", fontSize: 12, opacity: 0.7, lineHeight: 1.4 }}>
+                  {lang === "ar" ? r.taglineAr : r.tagline}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Darousha Fresh Promise */}
+      <section style={{ marginTop: 44 }}>
+        <div style={{ background: BRAND.creamDeep, borderRadius: 20, padding: "32px 26px" }}>
+          <SectionTitle eyebrow={t("promise_eyebrow")} title={t("promise_title")} />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}>
+            {[t("promise_1"), t("promise_2"), t("promise_3"), t("promise_4")].map((p) => (
+              <span key={p} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, background: "#fff", border: `1px solid ${BRAND.green}33`, color: BRAND.greenDark, borderRadius: 999, padding: "7px 14px", fontWeight: 700 }}>
+                ✓ {p}
+              </span>
+            ))}
+          </div>
+          <div style={{ marginTop: 16, fontSize: 13.5, fontWeight: 700, color: BRAND.orangeDeep }}>
+            {t("promise_footer")}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Darousha */}
+      <section style={{ marginTop: 44 }}>
+        <SectionTitle eyebrow={t("why_eyebrow")} title={t("why_title")} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))", gap: 16, marginTop: 18 }}>
           {[
-            { icon: Store, title: t("how1_t"), body: t("how1_b") },
-            { icon: Package, title: t("how2_t"), body: t("how2_b") },
-            { icon: Truck, title: t("how3_t"), body: t("how3_b") },
-          ].map((s, i) => (
-            <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 22, border: `1px solid ${BRAND.creamDeep}` }}>
-              <div style={{ width: 42, height: 42, borderRadius: 12, background: BRAND.greenSoft, display: "flex", alignItems: "center", justifyContent: "center", color: BRAND.green, marginBottom: 12 }}>
-                <s.icon size={20} />
-              </div>
-              <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontWeight: 700, fontSize: 17, marginBottom: 6 }}>{s.title}</div>
-              <div style={{ fontSize: 13.5, opacity: 0.75, lineHeight: 1.5 }}>{s.body}</div>
+            { icon: "🍽️", t: t("why1_t"), b: t("why1_b") },
+            { icon: "📦", t: t("why2_t"), b: t("why2_b") },
+            { icon: "🌿", t: t("why3_t"), b: t("why3_b") },
+            { icon: "🇦🇪", t: t("why4_t"), b: t("why4_b") },
+          ].map((w) => (
+            <div key={w.t} style={{ background: "#fff", borderRadius: 16, padding: 20, border: `1px solid ${BRAND.creamDeep}` }}>
+              <div style={{ fontSize: 26, marginBottom: 10 }}>{w.icon}</div>
+              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15.5, marginBottom: 6 }}>{w.t}</div>
+              <div style={{ fontSize: 13, opacity: 0.72, lineHeight: 1.5 }}>{w.b}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Build Your Own Fruit Box */}
+      {/* Build Your Own Box — fruit + veg, combined into one compact section
+          instead of two full-width banners back to back */}
       <section style={{ marginTop: 44 }}>
-        <div
-          style={{
-            background: `linear-gradient(160deg, ${BRAND.green} 0%, ${BRAND.greenDark} 100%)`,
-            borderRadius: 24, overflow: "hidden", display: "grid",
-            gridTemplateColumns: "1fr 1fr", alignItems: "stretch",
-          }}
-          className="dsf-hero"
-        >
-          <div style={{ padding: "36px 30px", color: BRAND.cream, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ fontSize: 26 }}>🍓</div>
-            <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 28, fontWeight: 800, margin: "10px 0 8px" }}>
-              {lang === "ar" ? "الطزاجة، بطريقتك." : "Freshness, your way."}
-            </h2>
-            <p style={{ fontSize: 14.5, opacity: 0.9, lineHeight: 1.7, maxWidth: 420 }}>
-              {lang === "ar"
-                ? "في داروشة فريش، يمكنك الآن تكوين صندوق الفواكه المميز الخاص بك باختيار فواكهك المفضلة. سواء كان لعائلتك، أو هدية مميزة، أو لأسلوب حياة صحي، سنختار كل فاكهة بعناية ونوصلها طازجة إلى باب منزلك."
-                : "You can now build your own premium fruit box by selecting your favorite fruits. Whether it's for your family, a thoughtful gift, or a healthy lifestyle, we'll handpick every fruit with care and deliver it fresh to your doorstep."}
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 16, fontSize: 13.5, fontWeight: 600 }}>
-              <span>🍎 {lang === "ar" ? "فواكه مميزة مختارة يدويًا" : "Handpicked Premium Fruits"}</span>
-              <span>🍇 {lang === "ar" ? "قابل للتخصيص بالكامل" : "Fully Customizable"}</span>
-              <span>🎁 {lang === "ar" ? "تغليف أنيق كهدية" : "Elegant Gift Packaging"}</span>
-              <span>🚚 {lang === "ar" ? "توصيل طازج في جميع أنحاء دبي" : "Fresh Delivery Across Dubai"}</span>
-            </div>
-            <div style={{ marginTop: 20 }}>
+        <SectionTitle
+          eyebrow={lang === "ar" ? "بصمتك الخاصة" : "Build your own"}
+          title={lang === "ar" ? "الطزاجة، بطريقتك." : "Freshness, your way."}
+        />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px,1fr))", gap: 16, marginTop: 18 }}>
+          <div style={{ background: `linear-gradient(160deg, ${BRAND.green} 0%, ${BRAND.greenDark} 100%)`, borderRadius: 20, overflow: "hidden", position: "relative" }}>
+            <img src="/images/fruit-basket-hero.jpg" alt="Darousha Fresh premium fruit box" style={{ width: "100%", height: 150, objectFit: "cover", display: "block" }} />
+            <div style={{ padding: 22, color: BRAND.cream }}>
+              <div style={{ fontSize: 20 }}>🍓</div>
+              <h3 style={{ fontFamily: "Fraunces, serif", fontSize: 19, fontWeight: 800, margin: "8px 0 6px" }}>
+                {lang === "ar" ? "صندوق الفواكه" : "Fruit Box"}
+              </h3>
+              <p style={{ fontSize: 13, opacity: 0.85, lineHeight: 1.55, marginBottom: 16 }}>
+                {lang === "ar"
+                  ? "اختر فواكهك المفضلة — لعائلتك، كهدية، أو لأسلوب حياة صحي."
+                  : "Pick your favorite fruits — for your family, a gift, or a healthy lifestyle."}
+              </p>
               <PrimaryButton onClick={() => setView("fruitbuilder")}>
-                {lang === "ar" ? "ابنِ صندوق الفواكه الخاص بك" : "Build Your Fruit Box"} <ChevronRight size={16} />
+                {lang === "ar" ? "ابنِ صندوقك" : "Build your box"} <ChevronRight size={16} />
               </PrimaryButton>
             </div>
           </div>
-          <img
-            src="/images/fruit-basket-hero.jpg"
-            alt="Darousha Fresh premium fruit box"
-            style={{ width: "100%", height: "100%", minHeight: 260, objectFit: "cover", display: "block" }}
-          />
-        </div>
-      </section>
-
-      {/* Build Your Own Vegetable Box — same structure as the fruit hero above, at a slightly smaller scale */}
-      <section style={{ marginTop: 20 }}>
-        <div
-          style={{
-            background: `linear-gradient(160deg, ${BRAND.greenDark} 0%, ${BRAND.green} 100%)`,
-            borderRadius: 22, overflow: "hidden", display: "grid",
-            gridTemplateColumns: "1fr 0.85fr", alignItems: "stretch",
-          }}
-          className="dsf-hero"
-        >
-          <div style={{ padding: "28px 26px", color: BRAND.cream, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ fontSize: 22 }}>🥬</div>
-            <h2 style={{ fontFamily: "Fraunces, serif", fontSize: 23, fontWeight: 800, margin: "8px 0 6px" }}>
-              {lang === "ar" ? "الطزاجة، بطريقتك أيضًا." : "Freshness, your way too."}
-            </h2>
-            <p style={{ fontSize: 13.5, opacity: 0.9, lineHeight: 1.65, maxWidth: 420 }}>
-              {lang === "ar"
-                ? "ابنِ صندوق الخضروات الخاص بك باختيار خضرواتك المفضلة، بالكمية التي تريدها بالضبط. مثالي لعائلتك، لأسلوب حياة صحي، أو لتموين مطبخك الأسبوعي — سنختار كل خضار بعناية ونوصله طازجًا إلى باب منزلك."
-                : "Build your own vegetable box by choosing exactly which vegetables you want, and exactly how much of each. Perfect for your family, a healthy routine, or restocking the kitchen for the week — we'll handpick every item with care and deliver it fresh to your door."}
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: 14, fontSize: 13, fontWeight: 600 }}>
-              <span>🥕 {lang === "ar" ? "خضروات طازجة مختارة يدويًا" : "Handpicked Fresh Vegetables"}</span>
-              <span>⚖️ {lang === "ar" ? "اختر الكمية بالضبط كما تريد" : "Choose the Exact Quantity You Want"}</span>
-              <span>💰 {lang === "ar" ? "ادفع فقط لما تختاره" : "Pay Only for What You Choose"}</span>
-              <span>🚚 {lang === "ar" ? "توصيل طازج في جميع أنحاء دبي" : "Fresh Delivery Across Dubai"}</span>
-            </div>
-            <div style={{ marginTop: 16 }}>
+          <div style={{ background: `linear-gradient(160deg, ${BRAND.greenDark} 0%, ${BRAND.green} 100%)`, borderRadius: 20, overflow: "hidden", position: "relative" }}>
+            <img src="/images/veg-crate-hero.jpg" alt="Darousha Fresh premium vegetable box" style={{ width: "100%", height: 150, objectFit: "cover", display: "block" }} />
+            <div style={{ padding: 22, color: BRAND.cream }}>
+              <div style={{ fontSize: 20 }}>🥬</div>
+              <h3 style={{ fontFamily: "Fraunces, serif", fontSize: 19, fontWeight: 800, margin: "8px 0 6px" }}>
+                {lang === "ar" ? "صندوق الخضروات" : "Vegetable Box"}
+              </h3>
+              <p style={{ fontSize: 13, opacity: 0.85, lineHeight: 1.55, marginBottom: 16 }}>
+                {lang === "ar"
+                  ? "اختر خضرواتك، بالكمية التي تريدها بالضبط — ادفع فقط لما تختاره."
+                  : "Choose exactly which vegetables and how much — pay only for what you pick."}
+              </p>
               <PrimaryButton onClick={() => setView("vegetablebuilder")}>
-                {lang === "ar" ? "ابنِ صندوق الخضروات الخاص بك" : "Build Your Vegetable Box"} <ChevronRight size={16} />
+                {lang === "ar" ? "ابنِ صندوقك" : "Build your box"} <ChevronRight size={16} />
               </PrimaryButton>
             </div>
           </div>
-          <img
-            src="/images/veg-crate-hero.jpg"
-            alt="Darousha Fresh premium vegetable box"
-            style={{ width: "100%", height: "100%", minHeight: 220, objectFit: "cover", display: "block" }}
-          />
-        </div>
-      </section>
-
-      {/* Fresh From Nature — poster gallery */}
-      <section style={{ marginTop: 44 }}>
-        <SectionTitle eyebrow={lang === "ar" ? "من الطبيعة" : "Fresh From Nature"} title={lang === "ar" ? "مباشرة من الحقل إلى بابك" : "Straight from the field to your door"} />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px,1fr))", gap: 14, marginTop: 18 }}>
-          {[
-            { src: POSTER_CHERRY_TOMATO_IMG, alt: "Darousha Fresh cherry tomatoes, freshly harvested" },
-            { src: POSTER_RED_PEPPER_IMG, alt: "Darousha Fresh red bell peppers, freshly harvested" },
-            { src: POSTER_CUCUMBER_IMG, alt: "Darousha Fresh cucumbers, freshly harvested" },
-          ].map((p) => (
-            <div key={p.alt} style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "3/4", boxShadow: "0 6px 18px rgba(0,0,0,0.12)" }}>
-              <img src={p.src} alt={p.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Delivery fleet banner */}
-      <section style={{ marginTop: 44 }}>
-        <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}>
-          <img src={POSTER_VAN_IMG} alt="Darousha Fresh delivery van" style={{ width: "100%", display: "block", objectFit: "cover" }} />
         </div>
       </section>
 
@@ -4674,6 +4984,36 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Office & Team Deliveries */}
+      <section style={{ marginTop: 44 }}>
+        <div style={{ background: `linear-gradient(155deg, ${BRAND.green}, ${BRAND.greenDark})`, borderRadius: 22, padding: "36px 28px", color: BRAND.cream, position: "relative", overflow: "hidden" }}>
+          <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.08em", textTransform: lang === "ar" ? "none" : "uppercase", color: BRAND.gold, marginBottom: 10 }}>
+            {t("office_eyebrow")}
+          </div>
+          <h2 style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 25, lineHeight: 1.2, margin: "0 0 12px", maxWidth: 440 }}>
+            {t("office_title")}
+          </h2>
+          <p style={{ fontSize: 14, opacity: 0.85, maxWidth: 440, lineHeight: 1.6, marginBottom: 20 }}>
+            {t("office_sub")}
+          </p>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 22 }}>
+            {[t("office_pill1"), t("office_pill2"), t("office_pill3")].map((p) => (
+              <span key={p} style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "7px 14px", fontSize: 12.5, fontWeight: 700 }}>
+                {p}
+              </span>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <PrimaryButton onClick={() => setView("commercial")}>
+              {t("office_cta")} <ChevronRight size={16} />
+            </PrimaryButton>
+            <GhostButton onClick={() => setView("commercial")} style={{ borderColor: "rgba(255,255,255,0.4)", color: "#fff" }}>
+              {t("office_cta2")}
+            </GhostButton>
+          </div>
         </div>
       </section>
 
@@ -4938,7 +5278,7 @@ function ItemRequestForm({ prefillName = "", onSubmitItemRequest, onClose }) {
 function ProductCard({ product, addToCart, cartQty }) {
   const { t, lang } = useLang();
   const [qty, setQty] = useState(1);
-  const hasStockLimit = typeof product.stock === "number";
+  const hasStockLimit = false; // Darousha no longer carries on-hand inventory — everything is bought fresh to match orders, so nothing is ever quantity-limited or "sold out" here
   const remaining = hasStockLimit ? Math.max(0, product.stock - cartQty) : Infinity;
   const soldOut = hasStockLimit && remaining === 0;
   const canOrder = product.available && !soldOut;
@@ -5124,7 +5464,7 @@ function FruitBoxBuilder({ products, addToCart, cart, setView, lang }) {
         {fruits.map((p) => {
           const n = qty[p.id] || 0;
           const existingCartQty = cart.find((c) => c.id === p.id)?.qty || 0;
-          const hasStockLimit = typeof p.stock === "number";
+          const hasStockLimit = false; // see note above — stock no longer limits ordering
           const remaining = hasStockLimit ? Math.max(0, p.stock - existingCartQty) : Infinity;
           const atMax = hasStockLimit && n >= remaining;
           return (
@@ -5243,7 +5583,7 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
         {veg.map((p) => {
           const n = qty[p.id] || 0;
           const existingCartQty = cart.find((c) => c.id === p.id)?.qty || 0;
-          const hasStockLimit = typeof p.stock === "number";
+          const hasStockLimit = false; // see note above — stock no longer limits ordering
           const remaining = hasStockLimit ? Math.max(0, p.stock - existingCartQty) : Infinity;
           const atMax = hasStockLimit && n >= remaining;
           return (
@@ -5389,7 +5729,7 @@ function BoxSizeCard({ product, addToCart, cart, lang }) {
 
 function GourmetItemCard({ product, addToCart, cart, lang }) {
   const cartQty = cart.find((c) => c.id === product.id)?.qty || 0;
-  const hasStockLimit = typeof product.stock === "number";
+  const hasStockLimit = false; // Darousha no longer carries on-hand inventory — everything is bought fresh to match orders, so nothing is ever quantity-limited or "sold out" here
   const remaining = hasStockLimit ? Math.max(0, product.stock - cartQty) : Infinity;
   const soldOut = hasStockLimit && remaining === 0;
   const canOrder = product.available && !soldOut;
@@ -5651,10 +5991,8 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
     const delta = clamped - current; // physical pieces
     const step = boxItemStep(product);
     if (delta > 0 && delta / step > remaining) return; // can't exceed the fixed total slots
-    if (delta > 0 && typeof product.stock === "number") {
-      const stockRemaining = product.stock - committedElsewhere(product) - current;
-      if (delta > stockRemaining) return; // can't exceed what's actually in stock
-    }
+    // Stock no longer limits ordering (see note near findStockShortfalls) — only
+    // the box's own fixed slot count and any per-box premium-item cap apply below.
     const perBoxMax = boxItemMaxPerBox(product);
     if (delta > 0 && typeof perBoxMax === "number" && clamped > perBoxMax) return; // premium item — capped regardless of box size
     setQty((prev) => ({ ...prev, [id]: clamped }));
@@ -5705,7 +6043,7 @@ function FruitBoxPicker({ box, fruits, lang, cart, onClose, onConfirm }) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px,1fr))", gap: 12 }}>
             {fruits.map((p) => {
               const n = qty[p.id] || 0;
-              const hasStockLimit = typeof p.stock === "number";
+              const hasStockLimit = false; // see note above — stock no longer limits ordering
               const stockRemaining = hasStockLimit ? Math.max(0, p.stock - committedElsewhere(p) - n) : Infinity;
               const atStockMax = hasStockLimit && stockRemaining < boxItemStep(p);
               const perBoxMax = boxItemMaxPerBox(p);
@@ -6087,7 +6425,7 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {addOnProducts.map((p) => {
-              const hasStockLimit = typeof p.stock === "number";
+              const hasStockLimit = false; // see note above — stock no longer limits ordering
               const soldOut = hasStockLimit && p.stock <= 0;
               return (
                 <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 12, display: "flex", alignItems: "center", gap: 12, opacity: soldOut ? 0.5 : 1 }}>
@@ -6419,6 +6757,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
   const [placeError, setPlaceError] = useState(null);
   const [geo, setGeo] = useState(null); // { lat, lng } once set via search, GPS, or map pin
   const [leaveAtDoor, setLeaveAtDoor] = useState(false);
+  const [washItems, setWashItems] = useState(false);
   const [subscribeWeekly, setSubscribeWeekly] = useState(false);
   const [subscriptionFrequency, setSubscriptionFrequency] = useState("weekly");
   const [isGift, setIsGift] = useState(false);
@@ -6447,7 +6786,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
       id: genOrderId(),
       createdAt: new Date().toISOString(),
       customer: {
-        name, phone, address, area, date, slot, payment, leaveAtDoor, subscribeWeekly,
+        name, phone, address, area, date, slot, payment, leaveAtDoor, washItems, subscribeWeekly,
         ...(subscribeWeekly ? { subscriptionFrequency } : {}),
         ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
         ...(isGift ? { isGift: true, giftRecipientName: giftRecipientName.trim(), giftNote: giftNote.trim() } : {}),
@@ -6493,6 +6832,18 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
             <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4, fontSize: 13, cursor: "pointer" }}>
               <input type="checkbox" checked={leaveAtDoor} onChange={(e) => setLeaveAtDoor(e.target.checked)} style={{ width: 16, height: 16 }} />
               {t("leave_at_door")}
+            </label>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 10, fontSize: 13, cursor: "pointer" }}>
+              <input type="checkbox" checked={washItems} onChange={(e) => setWashItems(e.target.checked)} style={{ width: 16, height: 16, marginTop: 2 }} />
+              <span>
+                <b>{lang === "ar" ? "اغسلوا المنتجات قبل التوصيل" : "Wash items before delivery"}</b>
+                <br />
+                <span style={{ opacity: 0.65, fontSize: 12 }}>
+                  {lang === "ar"
+                    ? "سنغسل المنتجات المناسبة للغسل قريبًا من وقت التوصيل."
+                    : "We'll wash suitable produce close to your delivery time."}
+                </span>
+              </span>
             </label>
             <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, fontSize: 13, cursor: "pointer" }}>
               <input type="checkbox" checked={isGift} onChange={(e) => setIsGift(e.target.checked)} style={{ width: 16, height: 16 }} />
@@ -6587,6 +6938,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
               <Pill active={payment === "cod"} onClick={() => setPayment("cod")}><Banknote size={13} style={{ marginRight: 4 }} />{t("cod")}</Pill>
               <Pill active={payment === "card"} onClick={() => setPayment("card")}><CreditCard size={13} style={{ marginRight: 4 }} />{t("card")}</Pill>
             </div>
+            <PaymentBadges style={{ marginBottom: 14 }} />
             {payment === "card" && (
               <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 10, display: "flex", gap: 6, alignItems: "center" }}>
@@ -6874,48 +7226,40 @@ function TrackView({ orders, initialId }) {
   }, [order?.status]);
 
   return (
-    <div style={{ paddingTop: 22 }}>
-      <SectionTitle eyebrow={t("track_eyebrow")} title={t("track_title")} />
-      <div style={{ display: "flex", gap: 10, marginTop: 16, maxWidth: 420 }}>
-        <input value={id} onChange={(e) => setId(e.target.value)} placeholder={t("track_placeholder")} style={inputStyle} />
-      </div>
-
-      {!id.trim() && <p style={{ opacity: 0.6, marginTop: 14, fontSize: 14 }}>{t("track_enter_id")}</p>}
-      {id.trim() && !order && <p style={{ opacity: 0.6, marginTop: 14, fontSize: 14 }}>{t("track_not_found")}</p>}
-
-      {justDelivered && (
-        <div style={{ background: BRAND.green, color: "#fff", borderRadius: 12, padding: "14px 18px", marginTop: 16, maxWidth: 640, fontWeight: 700, textAlign: "center" }}>
-          🎉 {lang === "ar" ? "تم توصيل طلبك للتو! بالهناء والشفاء." : "Your order has just arrived! Enjoy."}
+    <div style={{ paddingTop: 22, paddingBottom: 40 }}>
+      {/* Full-page van background — fixed so it stays put behind everything
+          while the page scrolls, with a dark tint so white text/cards on top
+          of it stay readable no matter how far down the page you are. */}
+      <div
+        style={{
+          position: "fixed", inset: 0, zIndex: 0,
+          backgroundImage: `linear-gradient(180deg, ${BRAND.greenDark}D9 0%, ${BRAND.greenDark}E0 100%), url(${POSTER_VAN_IMG})`,
+          backgroundSize: "cover", backgroundPosition: "center 30%", backgroundAttachment: "fixed", backgroundRepeat: "no-repeat",
+        }}
+      />
+      <div style={{ maxWidth: 640, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 11.5, letterSpacing: "0.16em", textTransform: lang === "ar" ? "none" : "uppercase", color: BRAND.gold, fontWeight: 700 }}>
+          {t("track_eyebrow")}
         </div>
-      )}
+        <h2 style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontSize: 28, margin: "6px 0 0", fontWeight: 800, color: "#fff" }}>
+          {t("track_title")}
+        </h2>
+        <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+          <input value={id} onChange={(e) => setId(e.target.value)} placeholder={t("track_placeholder")} style={inputStyle} />
+        </div>
 
-      {order && (
-        <div style={{ marginTop: 26, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 24, maxWidth: 640 }}>
-          {order.status === "out_for_delivery" && (
-            <div
-              style={{
-                background: `linear-gradient(120deg, ${BRAND.green}, ${BRAND.greenDark})`,
-                borderRadius: 12,
-                padding: "16px 20px",
-                color: "#fff",
-                marginBottom: 20,
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <Truck size={20} color={BRAND.orange} />
-              <div>
-                <div style={{ fontWeight: 800, fontSize: 15 }}>
-                  {lang === "ar" ? "في الطريق — يصل اليوم" : "On the way — arriving today"}
-                </div>
-                <div style={{ fontSize: 12.5, opacity: 0.85 }}>
-                  {lang === "ar" ? "طلبك جاهز ويقترب من عنوانك" : "Your order is fresh and on its way to you"}
-                </div>
-              </div>
-            </div>
-          )}
-          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
+        {!id.trim() && <p style={{ color: "#fff", opacity: 0.75, marginTop: 14, fontSize: 14 }}>{t("track_enter_id")}</p>}
+        {id.trim() && !order && <p style={{ color: "#fff", opacity: 0.85, marginTop: 14, fontSize: 14 }}>{t("track_not_found")}</p>}
+
+        {justDelivered && (
+          <div style={{ background: BRAND.green, color: "#fff", borderRadius: 12, padding: "14px 18px", marginTop: 16, fontWeight: 700, textAlign: "center", boxShadow: "0 16px 40px rgba(0,0,0,0.35)" }}>
+            🎉 {lang === "ar" ? "تم توصيل طلبك للتو! بالهناء والشفاء." : "Your order has just arrived! Enjoy."}
+          </div>
+        )}
+
+        {order && (
+          <div style={{ marginTop: 26, background: "#fff", borderRadius: 16, padding: 24, boxShadow: "0 16px 40px rgba(0,0,0,0.35)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
             <div>
               <div style={{ fontSize: 12, opacity: 0.6 }}>{t("order_label")}</div>
               <div style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 700 }}>{order.id}</div>
@@ -6989,6 +7333,7 @@ function TrackView({ orders, initialId }) {
           {order.status === "delivered" && <ReviewForm order={order} />}
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -7510,6 +7855,64 @@ function InvoiceView({ orderId, orders }) {
   );
 }
 
+function OrderLabelView({ orderId, orders, products }) {
+  const [order, setOrder] = useState(() => orders.find((o) => o.id === orderId) || null);
+
+  useEffect(() => {
+    if (!orderId) return;
+    const unsub = subscribeToOrder(orderId, setOrder);
+    return unsub;
+  }, [orderId]);
+
+  if (!orderId) {
+    return <div style={{ paddingTop: 60, textAlign: "center", opacity: 0.6 }}>Invalid label link.</div>;
+  }
+  if (!order) {
+    return <div style={{ paddingTop: 60, textAlign: "center", opacity: 0.6 }}>Loading label…</div>;
+  }
+
+  const c = order.customer;
+  // The QR encodes a deep link straight back into Backstage's Packing Center for
+  // this order — scanning it with any phone camera opens the packing checklist
+  // directly (after the usual Backstage login), no separate scanner app needed.
+  const packUrl = `${SITE_URL}/?packorder=${order.id}`;
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(packUrl)}`;
+  const sections = { Fresh: false, Gourmet: false, Frozen: false };
+  (order.items || []).forEach((it) => {
+    if (it.kind === "box") { sections.Fresh = true; return; }
+    const p = (products || []).find((pr) => pr.name === it.name);
+    sections[packingSection(p ? p.category : "")] = true;
+  });
+
+  return (
+    <div style={{ paddingTop: 22, maxWidth: 380, margin: "0 auto" }}>
+      <div className="no-print" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+        <div style={{ fontSize: 13, opacity: 0.6 }}>Print-ready order label.</div>
+        <PrimaryButton onClick={() => window.print()}>🖨 Print Label</PrimaryButton>
+      </div>
+
+      <div style={{ background: "#fff", border: `2px solid ${BRAND.ink}`, borderRadius: 12, padding: 24, textAlign: "center" }}>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 16, letterSpacing: "0.05em" }}>DAROUSHA FRESH</div>
+        <div style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 800, fontSize: 26, marginTop: 10 }}>{order.id}</div>
+        <div style={{ fontWeight: 700, fontSize: 18, marginTop: 6 }}>{c?.name}</div>
+        <div style={{ fontSize: 13, opacity: 0.7, marginTop: 4 }}>DELIVERY: {c?.date} · {c?.slot}</div>
+        {order.crateNumber && (
+          <div style={{ fontSize: 15, fontWeight: 800, marginTop: 10, background: BRAND.creamDeep, borderRadius: 8, padding: "6px 0" }}>
+            CRATE: {order.crateNumber}
+          </div>
+        )}
+        <div style={{ display: "flex", justifyContent: "center", gap: 14, marginTop: 12, fontSize: 12.5, fontWeight: 700 }}>
+          {sections.Fresh && <span>🥬 FRESH ✓</span>}
+          {sections.Gourmet && <span>🫒 GOURMET ✓</span>}
+          {sections.Frozen && <span>❄️ FROZEN ✓</span>}
+        </div>
+        <img src={qrSrc} alt="Order QR code" width={160} height={160} style={{ margin: "18px auto 4px", display: "block" }} />
+        <div style={{ fontSize: 10.5, opacity: 0.5 }}>Scan to open this order's packing checklist</div>
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------------ Privacy (branded) ------------------------------------ */
 
 function TermsView({ setView }) {
@@ -7759,6 +8162,7 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
   const { lang } = useLang();
   const [openId, setOpenId] = useState(null);
   const [highlightId, setHighlightId] = useState(deepLinkRecipeId || null);
+  const [servingsMap, setServingsMap] = useState({});
   const isAr = lang === "ar";
 
   useEffect(() => {
@@ -7776,18 +8180,39 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
     return products.find((p) => p.name === name);
   }
 
+  // Recipes list a servings *range* like "2–4" — use the midpoint as the baseline
+  // that 1x quantity of each ingredient is calibrated for.
+  function baseServings(r) {
+    const meta = RECIPE_META[r.id];
+    const nums = meta ? String(meta.servings).match(/\d+/g)?.map(Number) : null;
+    if (!nums || !nums.length) return 4;
+    return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length) || 4;
+  }
+
+  function getServings(r) {
+    return servingsMap[r.id] || baseServings(r);
+  }
+
+  // Scales a base (1x) quantity to the currently selected serving size, rounding
+  // up to whole units and never going below 1.
+  function scaledQty(r) {
+    const base = baseServings(r);
+    const s = getServings(r);
+    return Math.max(1, Math.round(s / base));
+  }
+
   function addAllToCart(recipe) {
+    const qty = scaledQty(recipe);
     recipe.produce.forEach((name) => {
       const p = findProduct(name);
       if (!p || !isOrderable(p)) return; // skip anything out of stock instead of adding it silently
-      addToCart({ id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: 1, kind: "item" });
+      addToCart({ id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty, kind: "item" });
     });
   }
 
   function isOrderable(p) {
-    if (!p.available) return false;
-    if (typeof p.stock === "number" && p.stock <= 0) return false;
-    return true;
+    if (!p.available) return false; // manual "out of stock" toggle — still respected
+    return true; // stock quantity no longer limits ordering
   }
 
   return (
@@ -7815,6 +8240,12 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
                 boxShadow: highlightId === r.id ? `0 0 0 3px ${BRAND.gold}55` : "none",
                 transition: "box-shadow 0.6s ease, border-color 0.6s ease",
                 scrollMarginTop: 90,
+                // Grid rows stretch every card to match the tallest one in that row —
+                // without this, shorter recipes (fewer ingredients/steps) left a big
+                // empty gap between the content and the QR footer. Flex-column here,
+                // with the content area set to flex:1 below, pins the footer to the
+                // bottom instead so every card looks consistent regardless of length.
+                display: "flex", flexDirection: "column",
               }}
               className="dsf-recipe-card"
             >
@@ -7828,11 +8259,27 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
                 <div style={{ display: "flex", gap: 16, marginTop: 14, fontSize: 11, fontWeight: 700, opacity: 0.92 }}>
                   <span>⏱ {meta.time} {isAr ? "دقيقة" : "min"}</span>
                   <span>📊 {isAr ? meta.levelAr : meta.level}</span>
-                  <span>👥 {meta.servings} {isAr ? "أشخاص" : "servings"}</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12 }}>
+                  <span style={{ fontSize: 11, opacity: 0.8 }}>👥 {isAr ? "الكمية لعدد" : "Serves"}:</span>
+                  {[2, 4, 6].map((n) => (
+                    <button
+                      key={n}
+                      onClick={() => setServingsMap((prev) => ({ ...prev, [r.id]: n }))}
+                      style={{
+                        minWidth: 30, height: 26, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer",
+                        border: getServings(r) === n ? `1.5px solid ${BRAND.gold}` : "1.5px solid rgba(255,255,255,0.3)",
+                        background: getServings(r) === n ? BRAND.gold : "rgba(255,255,255,0.1)",
+                        color: getServings(r) === n ? BRAND.ink : "#fff",
+                      }}
+                    >
+                      {n}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <div style={{ padding: 20 }}>
+              <div style={{ padding: 20, flex: 1, display: "flex", flexDirection: "column" }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.05em", color: BRAND.orangeDeep, textTransform: "uppercase", marginBottom: 10 }}>
                   {isAr ? "المكوّنات" : "Ingredients"}
                 </div>
@@ -7840,9 +8287,17 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
                   {r.produce.map((name) => {
                     const p = findProduct(name);
                     const orderable = p ? isOrderable(p) : true;
+                    const q = scaledQty(r);
                     return (
                       <div key={name} style={{ textAlign: "center", opacity: orderable ? 1 : 0.45 }}>
-                        <IngredientThumb product={p} size={58} />
+                        <div style={{ position: "relative" }}>
+                          <IngredientThumb product={p} size={58} />
+                          {q > 1 && (
+                            <span style={{ position: "absolute", top: -6, right: -6, background: BRAND.orange, color: "#fff", fontSize: 10, fontWeight: 800, borderRadius: 999, minWidth: 18, height: 18, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px", border: "2px solid #fff" }}>
+                              {q}×
+                            </span>
+                          )}
+                        </div>
                         <div style={{ fontSize: 10, fontWeight: 700, marginTop: 5, lineHeight: 1.25 }}>{p ? prodName(p.name, lang) : name}</div>
                         {p && orderable && (
                           <div style={{ fontSize: 9, opacity: 0.55 }}>
@@ -7873,9 +8328,9 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
                   {(isAr ? r.stepsAr : r.steps).map((s, i) => <li key={i} style={{ marginBottom: 4 }}>{s}</li>)}
                 </ol>
 
-                <div className="no-print" style={{ marginTop: 16 }}>
+                <div className="no-print" style={{ marginTop: "auto", paddingTop: 16 }}>
                   <PrimaryButton onClick={() => addAllToCart(r)} full>
-                    {isAr ? "أضف كل المكونات للسلة" : "Add all ingredients"}
+                    {isAr ? `أضف كل المكونات للسلة (لعدد ${getServings(r)})` : `Add all ingredients (for ${getServings(r)})`}
                   </PrimaryButton>
                   {r.produce.some((name) => { const p = findProduct(name); return p && !isOrderable(p); }) && (
                     <div style={{ fontSize: 11, color: BRAND.tomato, marginTop: 6, textAlign: "center" }}>
@@ -7919,6 +8374,174 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
       <div className="no-print" style={{ textAlign: "center", marginTop: 28 }}>
         <GhostButton onClick={() => setView("boxes")}><ArrowLeft size={15} /> {isAr ? "العودة للصناديق" : "Back to boxes"}</GhostButton>
       </div>
+    </div>
+  );
+}
+
+
+function AiRecipeBuilderView({ setView, products, addToCart }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [result, setResult] = useState(null); // { recipe_name, servings, ingredients: [{name, quantity, unit}] }
+  const [qtyOverride, setQtyOverride] = useState({}); // ingredient name -> qty override
+  const [removed, setRemoved] = useState({}); // ingredient name -> true if customer removed it
+
+  async function submit() {
+    if (!query.trim() || loading) return;
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setQtyOverride({});
+    setRemoved({});
+    try {
+      const res = await fetch("/api/ai-recipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: query.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        setError(data.error || (isAr ? "لم نتمكن من إنشاء هذه الوصفة." : "Sorry, we couldn't build that recipe."));
+        return;
+      }
+      setResult(data);
+    } catch {
+      setError(isAr ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Every ingredient run through real product matching + conversion — this is
+  // recomputed from `result` + live `products`, never trusting anything the
+  // AI said beyond plain ingredient name/quantity/unit.
+  const matched = result
+    ? result.ingredients.map((ing) => {
+        const product = matchIngredientToProduct(ing.name, products);
+        const conv = product ? convertIngredientToProductQty(ing, product) : null;
+        return { ingredient: ing, product, conv };
+      })
+    : [];
+  const available = matched.filter((m) => m.product && !removed[m.ingredient.name]);
+  const unavailable = matched.filter((m) => !m.product);
+
+  function getQty(m) {
+    return qtyOverride[m.ingredient.name] ?? (m.conv ? m.conv.qty : 1);
+  }
+
+  function addAllAvailable() {
+    available.forEach((m) => {
+      const p = m.product;
+      addToCart({
+        id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: getQty(m), kind: "item",
+        source: "ai_recipe", recipeName: result.recipe_name, recipeServings: result.servings,
+      });
+    });
+    setView("cart");
+  }
+
+  return (
+    <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto" }}>
+      <SectionTitle
+        eyebrow={isAr ? "ماذا تريد أن تطبخ؟" : "What do you want to cook?"}
+        title={isAr ? "أخبرنا، وسنجهّز المكونات" : "Tell us, we'll build your ingredient list"}
+      />
+      <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
+        {isAr
+          ? "مثال: \"شاورما دجاج لـ 4 أشخاص\" أو \"فتوش لـ 6\". سنعرض فقط المنتجات المتوفرة فعليًا لدى Darousha."
+          : "Try \"chicken shawarma for 4\" or \"fattoush for 6\". We'll only show ingredients Darousha actually sells."}
+      </p>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && submit()}
+          placeholder={isAr ? "أخبرنا بما تريد طبخه..." : "Tell us what you want to make..."}
+          style={{ ...inputStyle, flex: 1 }}
+        />
+        <PrimaryButton onClick={submit} disabled={loading}>
+          {loading ? (isAr ? "جارٍ التحضير…" : "Building…") : (isAr ? "جهّز مكوناتي" : "Build My Ingredients")}
+        </PrimaryButton>
+      </div>
+
+      {error && (
+        <div style={{ background: "#FDEDED", border: `1px solid ${BRAND.tomato}`, borderRadius: 12, padding: 14, marginTop: 18, fontSize: 13.5, color: BRAND.tomato }}>
+          {error}
+        </div>
+      )}
+
+      {result && (
+        <div style={{ marginTop: 26 }}>
+          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>{result.recipe_name}</div>
+          <div style={{ fontSize: 13, opacity: 0.65, marginTop: 2 }}>
+            {isAr ? `لعدد ${result.servings} أشخاص` : `Serves ${result.servings}`} · {isAr ? "وجدنا المكونات التي تحتاجها" : "We found the ingredients you need"}
+          </div>
+
+          {available.length > 0 && (
+            <div style={{ marginTop: 20 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", color: BRAND.green, marginBottom: 10 }}>
+                ✓ {isAr ? "متوفر لدى Darousha" : "Available on Darousha"}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {available.map((m) => {
+                  const p = m.product;
+                  const qty = getQty(m);
+                  return (
+                    <div key={m.ingredient.name} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 12 }}>
+                      <IngredientThumb product={p} size={44} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 13.5, fontWeight: 700 }}>{prodName(p.name, lang)}</div>
+                        <div style={{ fontSize: 11.5, opacity: 0.6 }}>
+                          {money(effectivePrice(p))} / {unitName(p.unit, lang)}
+                          {m.conv && m.conv.estimated && <span style={{ color: BRAND.orangeDeep, fontWeight: 700 }}> · {isAr ? "تقديري" : "estimated"}</span>}
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <button onClick={() => setQtyOverride((prev) => ({ ...prev, [m.ingredient.name]: Math.max(0, qty - (p.unit === "kg" ? 0.5 : 1)) }))} style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>−</button>
+                        <span style={{ minWidth: 34, textAlign: "center", fontWeight: 700, fontSize: 13 }}>{qty}</span>
+                        <button onClick={() => setQtyOverride((prev) => ({ ...prev, [m.ingredient.name]: qty + (p.unit === "kg" ? 0.5 : 1) }))} style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>+</button>
+                      </div>
+                      <button onClick={() => setRemoved((prev) => ({ ...prev, [m.ingredient.name]: true }))} style={{ background: "none", border: "none", cursor: "pointer", opacity: 0.4, padding: 4 }}>
+                        <X size={16} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {unavailable.length > 0 && (
+            <div style={{ marginTop: 20 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", opacity: 0.5, marginBottom: 10 }}>
+                {isAr ? "غير متوفر حاليًا" : "Not currently available"}
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {unavailable.map((m) => (
+                  <span key={m.ingredient.name} style={{ fontSize: 12.5, opacity: 0.6, background: BRAND.creamDeep, borderRadius: 999, padding: "6px 12px" }}>
+                    {m.ingredient.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {available.length > 0 && (
+            <PrimaryButton onClick={addAllAvailable} full style={{ marginTop: 22 }}>
+              {isAr ? `أضف ${available.length} مكونات متوفرة للسلة` : `Add ${available.length} Available Ingredient${available.length === 1 ? "" : "s"} to Cart`}
+            </PrimaryButton>
+          )}
+          {available.length === 0 && (
+            <div style={{ marginTop: 20, fontSize: 13.5, opacity: 0.7 }}>
+              {isAr ? "لا تتوفر لدينا حاليًا مكونات هذه الوجبة." : "We don't currently have the ingredients for this meal."}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -8199,40 +8822,10 @@ function AccountView({ user, profile, authLoading, orders, setView, onProfileSav
   }
 
   const myOrders = orders.filter((o) => o.customer && o.customer.uid === user.uid);
-  const activeOrder = myOrders.find((o) => o.status !== "delivered");
-  const points = profile?.loyaltyPoints || 0;
-  const tier = points >= 500 ? (lang === "ar" ? "خبير" : "Connoisseur") : points >= 150 ? (lang === "ar" ? "منتظم" : "Regular") : (lang === "ar" ? "جديد" : "New Member");
 
   return (
     <div style={{ paddingTop: 30, maxWidth: 520, margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
-        <SectionTitle eyebrow={t("account_eyebrow")} title={profile?.name ? `${lang === "ar" ? "مرحبًا" : "Hi"}, ${profile.name}` : t("account_eyebrow")} />
-        <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 10, padding: "8px 14px", textAlign: "center" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, opacity: 0.55, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            {lang === "ar" ? "حالة العضوية" : "Member Status"}
-          </div>
-          <div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: 15, color: BRAND.orangeDeep }}>{tier}</div>
-        </div>
-      </div>
-
-      {activeOrder && (
-        <div style={{ marginTop: 16, background: BRAND.green, borderRadius: 14, padding: 16, color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <div style={{ fontSize: 11, opacity: 0.75, textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 700 }}>
-              {lang === "ar" ? "طلب نشط" : "Active Order"} · {activeOrder.id}
-            </div>
-            <div style={{ fontWeight: 700, fontSize: 14.5, marginTop: 2 }}>
-              {t(statusKeyMap[activeOrder.status])}
-            </div>
-          </div>
-          <button
-            onClick={() => onTrackOrder && onTrackOrder(activeOrder.id)}
-            style={{ background: BRAND.orange, color: BRAND.ink, border: "none", borderRadius: 8, padding: "8px 14px", fontWeight: 700, fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
-          >
-            <Truck size={14} /> {lang === "ar" ? "تتبّع" : "Track"}
-          </button>
-        </div>
-      )}
+      <SectionTitle eyebrow={t("account_eyebrow")} title={profile?.name ? `${lang === "ar" ? "مرحبًا" : "Hi"}, ${profile.name}` : t("account_eyebrow")} />
 
       <div style={{ background: BRAND.greenSoft, borderRadius: 14, padding: 18, marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
@@ -8514,6 +9107,65 @@ function AdminLogin({ onSuccess }) {
   );
 }
 
+function DriverLogin({ onSuccess }) {
+  const [pw, setPw] = useState("");
+  const [error, setError] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  async function attempt() {
+    if (!pw || busy) return;
+    setBusy(true);
+    setError(false);
+    try {
+      await signInWithEmailAndPassword(auth, DRIVER_EMAIL, pw);
+      onSuccess();
+    } catch (e) {
+      setError(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div style={{ paddingTop: 70, maxWidth: 340, margin: "0 auto", textAlign: "center" }}>
+      <Truck size={30} color={BRAND.green} style={{ marginBottom: 10 }} />
+      <h2 style={{ fontFamily: "Fraunces, serif" }}>Driver access</h2>
+      <p style={{ fontSize: 13, opacity: 0.65, marginBottom: 16 }}>Enter the driver password to see today's buy list and deliveries.</p>
+      <input
+        type="password"
+        value={pw}
+        onChange={(e) => { setPw(e.target.value); setError(false); }}
+        placeholder="Password"
+        style={inputStyle}
+        onKeyDown={(e) => e.key === "Enter" && attempt()}
+      />
+      {error && <div style={{ color: BRAND.tomato, fontSize: 12.5, marginTop: 8 }}>Incorrect password.</div>}
+      <PrimaryButton full style={{ marginTop: 12, opacity: busy ? 0.6 : 1 }} onClick={attempt}>
+        {busy ? "Checking…" : "Enter"}
+      </PrimaryButton>
+    </div>
+  );
+}
+
+// The driver's whole world — nothing else from Backstage is reachable from here.
+// Reuses the exact same PackingCenterPanel / DriverOrdersPanel components the
+// main admin uses, so there's only ever one packing/delivery implementation
+// to maintain — this view just restricts which pieces of it are shown.
+function DriverPortalView({ orders, products, boxes, updatePackingStatus, updateOrderStatus }) {
+  const [tab, setTab] = useState("packing");
+  return (
+    <div style={{ paddingTop: 22 }}>
+      <SectionTitle eyebrow="Driver" title="Buy list & deliveries" />
+      <div style={{ display: "flex", gap: 10, margin: "16px 0" }}>
+        <Pill active={tab === "packing"} onClick={() => setTab("packing")}>📦 Packing & Buy List</Pill>
+        <Pill active={tab === "driver"} onClick={() => setTab("driver")}>🚚 Deliveries</Pill>
+      </div>
+      {tab === "packing" && <PackingCenterPanel orders={orders} products={products} boxes={boxes} updatePackingStatus={updatePackingStatus} />}
+      {tab === "driver" && <DriverOrdersPanel orders={orders} updatePackingStatus={updatePackingStatus} updateOrderStatus={updateOrderStatus} />}
+    </div>
+  );
+}
+
 function CallMeBotTestButton() {
   const [status, setStatus] = useState(null); // null | "sending" | "sent"
 
@@ -8671,8 +9323,8 @@ function useWakeLock(active) {
   }, [active]);
 }
 
-function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOrderStatus, acknowledgeOrder, leads, promoCodesDb, savePromoCode, deletePromoCode, reviews, approveReview, deleteReview, customProducts, addCustomProduct, updateCustomProduct, deleteCustomProduct, suppliers, addSupplier, deleteSupplier, itemRequests, updateItemRequestStatus }) {
-  const [tab, setTab] = useState("catalog");
+function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOrderStatus, updatePackingStatus, acknowledgeOrder, leads, promoCodesDb, savePromoCode, deletePromoCode, reviews, approveReview, deleteReview, customProducts, addCustomProduct, updateCustomProduct, deleteCustomProduct, suppliers, addSupplier, deleteSupplier, itemRequests, updateItemRequestStatus, packOrderId }) {
+  const [tab, setTab] = useState(() => (packOrderId ? "packing" : "catalog"));
   const [cat, setCat] = useState(CATALOG[0].cat);
   const [quotingLead, setQuotingLead] = useState(null); // the Office Box lead currently open in the quotation view, or null
   const { unacknowledged, notifPermission, requestNotifPermission, testRing } = useNewOrderAlert(orders);
@@ -8726,7 +9378,12 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
         <Pill active={tab === "customers"} onClick={() => setTab("customers")}>📧 Customers</Pill>
         <Pill active={tab === "subscriptions"} onClick={() => setTab("subscriptions")}>🔁 Subscriptions</Pill>
         <Pill active={tab === "itemrequests"} onClick={() => setTab("itemrequests")}>🙋 Item Requests ({(itemRequests || []).filter((r) => r.status === "pending").length} new)</Pill>
+        <Pill active={tab === "packing"} onClick={() => setTab("packing")}>📦 Packing Center</Pill>
+        <Pill active={tab === "driver"} onClick={() => setTab("driver")}>🚚 Driver View</Pill>
       </div>
+
+      {tab === "packing" && <PackingCenterPanel orders={orders} products={products} boxes={boxes} updatePackingStatus={updatePackingStatus} initialOpenOrderId={packOrderId} />}
+      {tab === "driver" && <DriverOrdersPanel orders={orders} updatePackingStatus={updatePackingStatus} updateOrderStatus={updateOrderStatus} />}
 
       {tab === "pricing" && <PricingCalculator products={products} boxes={boxes} updateProduct={updateProduct} updateBox={updateBox} />}
       {tab === "reviews" && <ReviewModeration reviews={reviews || []} approveReview={approveReview} deleteReview={deleteReview} />}
@@ -9184,6 +9841,9 @@ function OrderRow({ order: o, updateOrderStatus, acknowledgeOrder }) {
           {o.customer.leaveAtDoor && (
             <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 2 }}>📍 Leave at door — no need to knock</div>
           )}
+          {o.customer.washItems && (
+            <div style={{ fontSize: 12.5, color: "#1C7293", fontWeight: 700, marginTop: 2 }}>💧 Wash items before delivery</div>
+          )}
           {o.customer.isGift && (
             <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 4, background: "#FBF0D9", borderRadius: 8, padding: "6px 10px" }}>
               🎁 GIFT ORDER
@@ -9587,6 +10247,691 @@ function ReviewModeration({ reviews, approveReview, deleteReview }) {
 const ITEM_REQUEST_STATUSES = ["pending", "sourcing", "added", "declined"];
 const ITEM_REQUEST_STATUS_LABEL = { pending: "New", sourcing: "Sourcing", added: "Added ✓", declined: "Declined" };
 const ITEM_REQUEST_STATUS_COLOR = { pending: "#C6A24C", sourcing: "#2F6DB3", added: "#2E7D32", declined: "#B23B3B" };
+
+// Which shelf/section a product belongs to for packing purposes. Frozen Foods and
+// Gourmet & Gifts get their own section; everything else (Vegetables, Fruits, and
+// any future fresh category) is grouped under "Fresh".
+function packingSection(category) {
+  if (category === "Frozen Foods") return "Frozen";
+  if (category === "Gourmet & Gifts") return "Gourmet";
+  return "Fresh";
+}
+
+const PACKING_STATUS_LABELS = {
+  waiting: "Waiting", picking: "Picking", packing: "Packing", packed: "Packed",
+  ready: "Ready", picked_up: "Picked up", out_for_delivery: "Out for delivery",
+  delivered: "Delivered", failed_delivery: "Failed delivery",
+};
+const ITEM_ACTION_LABELS = {
+  replace: "🔁 Replace Item", remove: "🗑 Remove Item", unavailable: "🚫 Mark Unavailable", contact_customer: "📞 Contact Customer",
+};
+const PACKING_STATUS_ORDER = ["waiting", "picking", "packing", "packed", "ready", "out_for_delivery", "delivered"];
+
+function PackingCenterPanel({ orders, products, boxes, updatePackingStatus, initialOpenOrderId }) {
+  const [openOrderId, setOpenOrderId] = useState(initialOpenOrderId || null);
+  const [manualLookup, setManualLookup] = useState("");
+  const [pickingBatch, setPickingBatch] = useState({ picked: {}, qualityOk: {}, notes: {} });
+  const [noteDraftFor, setNoteDraftFor] = useState(null);
+  // Defaults to TOMORROW, not today — this matches how Darousha actually operates:
+  // orders placed today are shopped for and bought the day before they're delivered,
+  // so the question this screen answers each morning is "what do I need to buy for
+  // tomorrow's deliveries," not today's (which should already be bought by now).
+  const tomorrowStr = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return localDateISO(d);
+  }, []);
+  const todayActualStr = localDateISO();
+  const [selectedDate, setSelectedDate] = useState(tomorrowStr);
+  const todayStr = selectedDate; // kept as `todayStr` below so every existing calculation still reads naturally
+
+  useEffect(() => {
+    const unsub = subscribeToPickingBatch(todayStr, setPickingBatch);
+    return unsub;
+  }, [todayStr]);
+
+  async function adjustPicked(name, delta, currentQty) {
+    const next = Math.max(0, Math.round(((currentQty || 0) + delta) * 100) / 100);
+    await setPickedQtyDoc(todayStr, name, next);
+  }
+
+  async function toggleQuality(name, current) {
+    await setQualityCheckDoc(todayStr, name, !current);
+  }
+
+  async function saveNote(name, text) {
+    await setReceivingNoteDoc(todayStr, name, text);
+    setNoteDraftFor(null);
+  }
+
+  function findProduct(name) {
+    return products.find((p) => p.name === name);
+  }
+
+  // Orders for the selected delivery date that still need work — anything already
+  // out for delivery or delivered has left the packing workflow entirely.
+  const todaysOrders = orders.filter((o) => o.customer?.date === todayStr && o.status !== "delivered" && o.status !== "out_for_delivery");
+
+  const counts = { waiting: 0, picking: 0, packing: 0, packed: 0, ready: 0 };
+  todaysOrders.forEach((o) => {
+    const s = o.packingStatus || "waiting";
+    if (counts[s] !== undefined) counts[s]++;
+  });
+
+  // Combine every "item" line (skip whole boxes — their contents aren't itemized
+  // here yet, so they're picked as a single pre-made unit, not decomposed).
+  const notYetPacked = todaysOrders.filter((o) => !["packed", "ready"].includes(o.packingStatus || "waiting"));
+  const pickingList = {};
+  notYetPacked.forEach((o) => {
+    (o.items || []).forEach((it) => {
+      if (it.kind === "box") return;
+      const key = `${it.name}__${it.unit}`;
+      if (!pickingList[key]) pickingList[key] = { name: it.name, unit: it.unit, qty: 0 };
+      pickingList[key].qty += it.qty;
+    });
+  });
+  const pickingRows = Object.values(pickingList)
+    .map((r) => {
+      const p = findProduct(r.name);
+      const available = p && typeof p.stock === "number" ? p.stock : null;
+      const picked = pickingBatch.picked?.[r.name] || 0;
+      const qualityOk = !!pickingBatch.qualityOk?.[r.name];
+      const note = pickingBatch.notes?.[r.name] || "";
+      const buy = procurementBuySuggestion(p, r.qty);
+      return { ...r, available, picked, remaining: r.qty - picked, qualityOk, note, buy };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  // Traceability: for every product ordered today, show what was picked (from
+  // the shared picking batch above, i.e. what the driver actually brought back
+  // as "Purchased"), what's required across today's orders ("Used"), what's left
+  // in current stock ("Remaining"), and the gap between the two ("Wasted"/short).
+  // Inventory itself is already deducted at the moment an order is placed (see
+  // placeOrder), so this whole report is read-only — it never deducts a second time.
+  const [showTraceability, setShowTraceability] = useState(false);
+  const traceByProduct = {};
+  todaysOrders.forEach((o) => {
+    (o.items || []).forEach((it) => {
+      if (it.kind === "box") return;
+      if (!traceByProduct[it.name]) traceByProduct[it.name] = { name: it.name, unit: it.unit, total: 0, byOrder: [] };
+      traceByProduct[it.name].total += it.qty;
+      traceByProduct[it.name].byOrder.push({ orderId: o.id, qty: it.qty });
+    });
+  });
+  const traceRows = Object.values(traceByProduct)
+    .map((r) => {
+      const purchased = pickingBatch.picked?.[r.name] || 0;
+      const wasted = Math.max(0, Math.round((purchased - r.total) * 100) / 100);
+      return { ...r, purchased, wasted };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  // Look up by ID across ALL orders, not just today's filtered list — a scanned
+  // label should always open its order even if it's being handled a bit late.
+  const openOrder = openOrderId ? orders.find((o) => o.id === openOrderId) : null;
+
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
+        <span style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.7 }}>Preparing for delivery date:</span>
+        <button
+          onClick={() => setSelectedDate(todayActualStr)}
+          style={{ fontSize: 12.5, fontWeight: 700, padding: "7px 14px", borderRadius: 999, cursor: "pointer", border: `1.5px solid ${selectedDate === todayActualStr ? BRAND.green : BRAND.creamDeep}`, background: selectedDate === todayActualStr ? BRAND.greenSoft : "#fff", color: selectedDate === todayActualStr ? BRAND.green : "inherit" }}
+        >
+          Today
+        </button>
+        <button
+          onClick={() => setSelectedDate(tomorrowStr)}
+          style={{ fontSize: 12.5, fontWeight: 700, padding: "7px 14px", borderRadius: 999, cursor: "pointer", border: `1.5px solid ${selectedDate === tomorrowStr ? BRAND.green : BRAND.creamDeep}`, background: selectedDate === tomorrowStr ? BRAND.greenSoft : "#fff", color: selectedDate === tomorrowStr ? BRAND.green : "inherit" }}
+        >
+          Tomorrow
+        </button>
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+          style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 150 }}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        <input
+          value={manualLookup}
+          onChange={(e) => setManualLookup(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && manualLookup.trim()) setOpenOrderId(manualLookup.trim()); }}
+          placeholder="🔍 Find order by number (e.g. DF-1048)"
+          style={{ ...inputStyle, flex: 1, padding: "9px 12px", fontSize: 13 }}
+        />
+        <GhostButton onClick={() => manualLookup.trim() && setOpenOrderId(manualLookup.trim())} style={{ padding: "9px 16px", fontSize: 13 }}>
+          Open
+        </GhostButton>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px,1fr))", gap: 10, marginBottom: 20 }}>
+        {[
+          { label: "Orders", value: todaysOrders.length, color: BRAND.ink },
+          { label: "Waiting", value: counts.waiting, color: BRAND.tomato },
+          { label: "Picking", value: counts.picking, color: BRAND.orangeDeep },
+          { label: "Packing", value: counts.packing, color: BRAND.gold },
+          { label: "Packed", value: counts.packed, color: BRAND.green },
+          { label: "Ready", value: counts.ready, color: BRAND.greenDark },
+        ].map((c) => (
+          <div key={c.label} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 14, textAlign: "center" }}>
+            <div style={{ fontSize: 24, fontWeight: 800, color: c.color, fontFamily: "IBM Plex Mono, monospace" }}>{c.value}</div>
+            <div style={{ fontSize: 11, opacity: 0.65, fontWeight: 700, marginTop: 2 }}>{c.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Simple shopping list — this is literally what the driver takes to the supplier */}
+      <div style={{ background: BRAND.greenDark, borderRadius: 14, padding: 18, marginBottom: 20, color: "#fff" }}>
+        <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 4 }}>🛒 Buy today for {selectedDate === tomorrowStr ? "tomorrow's" : selectedDate === todayActualStr ? "today's" : selectedDate} deliveries</div>
+        <div style={{ fontSize: 12.5, opacity: 0.75, marginBottom: 14 }}>
+          Combined across all {todaysOrders.length} order{todaysOrders.length === 1 ? "" : "s"} for this date. Take this list to the supplier.
+        </div>
+        {pickingRows.length === 0 ? (
+          <div style={{ fontSize: 13, opacity: 0.75 }}>Nothing to buy — no orders on this date yet, or everything's already been received.</div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px,1fr))", gap: 10 }}>
+            {pickingRows.map((r) => (
+              <div key={r.name + r.unit + "-simple"} style={{ background: "rgba(255,255,255,0.1)", borderRadius: 10, padding: "10px 14px" }}>
+                <div style={{ fontSize: 14, fontWeight: 700 }}>{r.name}</div>
+                <div style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>
+                  {r.buy ? (r.buy.unit === "case" ? `${r.buy.buyQty} case${r.buy.buyQty !== 1 ? "s" : ""}` : `${r.buy.buyQty} kg`) : `${r.qty} ${r.unit}`}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Receiving, Quality Check & combined picking list */}
+      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginBottom: 20 }}>
+        <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 4 }}>📥 Receiving & Quality Check</div>
+        <div style={{ fontSize: 12.5, opacity: 0.65, marginBottom: 14 }}>
+          After the driver is back from the supplier: log what actually came in and confirm it passed a quality check before it's used for packing — everyone watching this screen sees it update live.
+        </div>
+        {pickingRows.length === 0 ? (
+          <div style={{ fontSize: 13, opacity: 0.6 }}>Nothing left to receive — every order on this date is packed or has no items yet.</div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {pickingRows.map((r) => {
+              const overStock = r.available !== null && r.picked > r.available;
+              const editingNote = noteDraftFor === r.name;
+              return (
+                <div key={r.name + r.unit} style={{ border: `1.5px solid ${r.qualityOk ? BRAND.green : BRAND.creamDeep}`, borderRadius: 10, padding: "10px 12px", display: "flex", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+                  <div style={{ flex: 1, minWidth: 120 }}>
+                    <div style={{ fontSize: 13.5, fontWeight: 700 }}>{r.name}</div>
+                    <div style={{ fontSize: 11.5, opacity: 0.65 }}>
+                      Required: {r.qty} {r.unit}{r.available !== null && ` · Reference note: ${r.available} ${r.unit}`}
+                    </div>
+                    {r.buy && (
+                      <div style={{ fontSize: 12, fontWeight: 800, color: BRAND.orangeDeep, marginTop: 3 }}>
+                        🛒 BUY: {r.buy.unit === "case" ? `${r.buy.buyQty} case${r.buy.buyQty !== 1 ? "s" : ""} (${r.buy.totalUnits} ${r.unit}s)` : `${r.buy.buyQty} kg`}
+                        {r.buy.isEstimatedWeight && <span style={{ fontWeight: 600, opacity: 0.65 }}> — estimated weight, confirm with ⚖️</span>}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 10.5, opacity: 0.55, marginRight: 2 }}>Received</span>
+                    <button onClick={() => adjustPicked(r.name, -1, r.picked)} style={{ width: 34, height: 34, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", fontSize: 16, fontWeight: 700, cursor: "pointer" }}>−</button>
+                    <span style={{ minWidth: 44, textAlign: "center", fontWeight: 800, fontSize: 14 }}>{r.picked}</span>
+                    <button onClick={() => adjustPicked(r.name, 1, r.picked)} style={{ width: 34, height: 34, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", fontSize: 16, fontWeight: 700, cursor: "pointer" }}>+</button>
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 700, minWidth: 80, textAlign: "right", color: r.remaining <= 0 ? BRAND.green : BRAND.orangeDeep }}>
+                    {r.remaining <= 0 ? "✓ Done" : `${r.remaining} ${r.unit} left`}
+                  </div>
+                  <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 11.5, fontWeight: 700, color: r.qualityOk ? BRAND.green : "inherit" }}>
+                    <input type="checkbox" checked={r.qualityOk} onChange={() => toggleQuality(r.name, r.qualityOk)} style={{ width: 20, height: 20 }} />
+                    Quality OK
+                  </label>
+                  <button
+                    onClick={() => setNoteDraftFor(editingNote ? null : r.name)}
+                    title={r.note || "Add a note"}
+                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: 15, padding: "6px 8px", minWidth: 36, minHeight: 36 }}
+                  >
+                    {r.note ? "📝" : "🗒"}
+                  </button>
+                  {overStock && (
+                    <div style={{ fontSize: 11, fontWeight: 700, color: BRAND.tomato, width: "100%" }}>
+                      ⚠ Received more than what's currently in stock ({r.available} {r.unit}) — double check before buying more
+                    </div>
+                  )}
+                  {r.note && !editingNote && (
+                    <div style={{ fontSize: 11.5, opacity: 0.7, width: "100%", fontStyle: "italic" }}>📝 {r.note}</div>
+                  )}
+                  {editingNote && (
+                    <div style={{ display: "flex", gap: 6, width: "100%" }}>
+                      <input
+                        defaultValue={r.note}
+                        autoFocus
+                        onKeyDown={(e) => { if (e.key === "Enter") saveNote(r.name, e.currentTarget.value); }}
+                        placeholder="e.g. bruised on one side, still usable"
+                        style={{ ...inputStyle, flex: 1, padding: "8px 10px", fontSize: 12.5 }}
+                        id={`note-input-${r.name}`}
+                      />
+                      <GhostButton onClick={() => saveNote(r.name, document.getElementById(`note-input-${r.name}`).value)} style={{ padding: "8px 14px", fontSize: 12 }}>Save</GhostButton>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Traceability report */}
+      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: 15 }}>📊 Traceability</div>
+            <div style={{ fontSize: 12.5, opacity: 0.65, marginTop: 2 }}>What each product was used for this date, and what's left in stock.</div>
+          </div>
+          <GhostButton onClick={() => setShowTraceability((s) => !s)} style={{ padding: "6px 14px", fontSize: 12.5 }}>
+            {showTraceability ? "Hide" : "Show"}
+          </GhostButton>
+        </div>
+        {showTraceability && (
+          <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+            {traceRows.length === 0 && <div style={{ fontSize: 13, opacity: 0.6 }}>No product usage recorded for this date yet.</div>}
+            {traceRows.map((r) => {
+              const p = findProduct(r.name);
+              const remaining = p && typeof p.stock === "number" ? p.stock : null;
+              return (
+                <div key={r.name} style={{ borderBottom: `1px solid ${BRAND.creamDeep}`, paddingBottom: 10 }}>
+                  <div style={{ fontWeight: 700, fontSize: 13.5, marginBottom: 4 }}>{r.name}</div>
+                  <div style={{ fontSize: 12, display: "flex", flexWrap: "wrap", gap: 12, opacity: 0.85 }}>
+                    <span>Purchased: <b>{r.purchased} {r.unit}</b></span>
+                    <span>Used: <b>{r.total} {r.unit}</b></span>
+                    {remaining !== null && <span>Reference note: <b>{remaining} {r.unit}</b></span>}
+                    {r.wasted > 0 && <span style={{ color: BRAND.tomato, fontWeight: 700 }}>Wasted: {r.wasted} {r.unit}</span>}
+                  </div>
+                  <div style={{ fontSize: 11.5, opacity: 0.55, marginTop: 4 }}>
+                    {r.byOrder.map((b) => `${b.orderId}: ${b.qty}`).join(" · ")}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Order-by-order list */}
+      <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 10 }}>Orders for this date</div>
+      {todaysOrders.length === 0 && <div style={{ fontSize: 13, opacity: 0.6 }}>No orders scheduled for this date yet.</div>}
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {todaysOrders.map((o) => {
+          const s = o.packingStatus || "waiting";
+          return (
+            <div key={o.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 14, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 700 }}>{o.id}</span>
+                  {o.crateNumber && <span style={{ fontSize: 11, fontWeight: 700, background: BRAND.creamDeep, borderRadius: 999, padding: "2px 9px" }}>Crate {o.crateNumber}</span>}
+                </div>
+                <div style={{ fontSize: 12.5, opacity: 0.65 }}>{o.customer?.name} · {o.customer?.slot} · {(o.items || []).length} items</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 11.5, fontWeight: 700, color: BRAND.ink, background: BRAND.creamDeep, borderRadius: 999, padding: "4px 10px" }}>
+                  {PACKING_STATUS_LABELS[s]}
+                </span>
+                <GhostButton onClick={() => setOpenOrderId(o.id)} style={{ padding: "6px 12px", fontSize: 12.5 }}>Open</GhostButton>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {openOrder && (
+        <PackingOrderModal
+          order={openOrder}
+          findProduct={findProduct}
+          updatePackingStatus={updatePackingStatus}
+          todaysOrders={todaysOrders}
+          onClose={() => setOpenOrderId(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+const WEIGH_TOLERANCE_PCT = 0.05; // ±5% — configurable here if the business wants a different band later
+
+function PackingOrderModal({ order, findProduct, updatePackingStatus, todaysOrders, onClose }) {
+  const [checked, setChecked] = useState(() => order.packedItems || {});
+  const [actualQty, setActualQty] = useState(() => order.actualQty || {});
+  const [crateNumber, setCrateNumber] = useState(order.crateNumber || "");
+  const [packedBy, setPackedBy] = useState(order.packedBy || "");
+  const [itemActions, setItemActions] = useState(() => order.itemActions || {});
+  const [actionMenuKey, setActionMenuKey] = useState(null);
+  const items = (order.items || []).filter((it) => it.kind !== "box");
+  const boxItems = (order.items || []).filter((it) => it.kind === "box");
+
+  const sections = { Fresh: [], Gourmet: [], Frozen: [] };
+  items.forEach((it, i) => {
+    const p = findProduct(it.name);
+    const section = packingSection(p ? p.category : "");
+    sections[section].push({ ...it, _key: `item-${i}` });
+  });
+
+  const totalCount = items.length + boxItems.length;
+  const checkedCount = Object.values(checked).filter(Boolean).length;
+  const allChecked = totalCount > 0 && checkedCount >= totalCount;
+
+  function toggle(key) {
+    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  // Only loose, weighed-by-kg produce needs actual-weight verification — fixed
+  // packs (bunch, piece, box, set, pre-weighed 250g punnets) are confirmed by
+  // count instead, per how they're actually sold.
+  function isWeighed(it) {
+    return it.unit === "kg";
+  }
+  function outsideTolerance(it) {
+    const actual = parseFloat(actualQty[it._key]);
+    if (!isWeighed(it) || isNaN(actual)) return false;
+    const diff = Math.abs(actual - it.qty) / it.qty;
+    return diff > WEIGH_TOLERANCE_PCT;
+  }
+
+  async function seal() {
+    await updatePackingStatus(order.id, "packed", {
+      packedItems: checked,
+      actualQty,
+      crateNumber,
+      packedBy,
+      itemActions,
+      packedAt: new Date().toISOString(),
+    });
+    onClose();
+  }
+
+  const outsideItems = items.filter((it, i) => outsideTolerance({ ...it, _key: `item-${i}` }));
+  const [overrideConfirmed, setOverrideConfirmed] = useState(false);
+
+  // Duplicate crate check — another still-active order today already using this
+  // crate number is very likely a mistake, so it's flagged (not silently allowed).
+  const crateConflict = crateNumber.trim()
+    ? (todaysOrders || []).find((o) => o.id !== order.id && (o.crateNumber || "").trim() === crateNumber.trim() && !["delivered", "failed_delivery"].includes(o.packingStatus))
+    : null;
+  const [crateOverrideConfirmed, setCrateOverrideConfirmed] = useState(false);
+
+  function setItemAction(key, action) {
+    setItemActions((prev) => ({ ...prev, [key]: { action, at: new Date().toISOString() } }));
+    setActionMenuKey(null);
+    if (action === "remove" || action === "unavailable") {
+      setChecked((prev) => ({ ...prev, [key]: true })); // counts as "resolved" so it doesn't block sealing
+    }
+  }
+
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 60, display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={onClose}>
+      <div
+        style={{ background: BRAND.cream, borderRadius: "20px 20px 0 0", maxWidth: 560, width: "100%", maxHeight: "88vh", overflowY: "auto", padding: 20 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+          <div>
+            <div style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 800, fontSize: 18 }}>{order.id}</div>
+            <div style={{ fontSize: 13, opacity: 0.7 }}>{order.customer?.name} · {order.customer?.slot}</div>
+          </div>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer" }}><X size={22} /></button>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "12px 0", flexWrap: "wrap" }}>
+          <span style={{ fontSize: 12.5, fontWeight: 700 }}>Crate #</span>
+          <input
+            value={crateNumber}
+            onChange={(e) => setCrateNumber(e.target.value)}
+            placeholder="e.g. 01"
+            style={{ ...inputStyle, width: 90, padding: "8px 10px", fontSize: 13, minHeight: 40 }}
+          />
+          <span style={{ fontSize: 12.5, fontWeight: 700 }}>Packed by</span>
+          <input
+            value={packedBy}
+            onChange={(e) => setPackedBy(e.target.value)}
+            placeholder="Your name"
+            style={{ ...inputStyle, width: 120, padding: "8px 10px", fontSize: 13, minHeight: 40 }}
+          />
+          <GhostButton onClick={() => window.open(`${SITE_URL}/?label=${order.id}`, "_blank")} style={{ padding: "8px 14px", fontSize: 12.5, marginLeft: "auto", minHeight: 40 }}>
+            🏷 Print Label
+          </GhostButton>
+        </div>
+        {crateConflict && (
+          <div style={{ background: "#FDEDED", border: `1.5px solid ${BRAND.tomato}`, borderRadius: 10, padding: 10, marginBottom: 10 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: BRAND.tomato }}>
+              ⚠ Crate {crateNumber} is already assigned to order {crateConflict.id}, still active
+            </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, marginTop: 6, cursor: "pointer" }}>
+              <input type="checkbox" checked={crateOverrideConfirmed} onChange={(e) => setCrateOverrideConfirmed(e.target.checked)} style={{ width: 16, height: 16 }} />
+              I checked — this is intentional
+            </label>
+          </div>
+        )}
+
+        <div style={{ background: "#fff", borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontWeight: 700, fontSize: 13.5, textAlign: "center" }}>
+          {checkedCount} / {totalCount} items packed
+        </div>
+
+        {["Fresh", "Gourmet", "Frozen"].map((section) =>
+          sections[section].length > 0 ? (
+            <div key={section} style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", opacity: 0.6, marginBottom: 8 }}>{section}</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {sections[section].map((it) => {
+                  const weighed = isWeighed(it);
+                  const outside = outsideTolerance(it);
+                  const flagged = itemActions[it._key];
+                  return (
+                    <div key={it._key} style={{ background: flagged ? "#FBF0D9" : "#fff", borderRadius: 10, padding: "10px 12px" }}>
+                      <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
+                        <input type="checkbox" checked={!!checked[it._key]} onChange={() => toggle(it._key)} style={{ width: 24, height: 24, flexShrink: 0 }} />
+                        <span style={{ flex: 1, fontSize: 14, textDecoration: checked[it._key] && !flagged ? "line-through" : "none", opacity: checked[it._key] && !flagged ? 0.5 : 1 }}>
+                          {it.name}
+                        </span>
+                        <span style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.7 }}>Required: {it.qty} {it.unit}</span>
+                        <button
+                          onClick={(e) => { e.preventDefault(); setActionMenuKey(actionMenuKey === it._key ? null : it._key); }}
+                          style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: "4px 6px", minWidth: 32, minHeight: 32 }}
+                        >
+                          ⚠️
+                        </button>
+                      </label>
+                      {flagged && (
+                        <div style={{ fontSize: 11.5, fontWeight: 700, color: BRAND.orangeDeep, marginTop: 4, paddingLeft: 34 }}>
+                          {ITEM_ACTION_LABELS[flagged.action] || flagged.action}
+                        </div>
+                      )}
+                      {actionMenuKey === it._key && (
+                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 8, paddingLeft: 34 }}>
+                          {["replace", "remove", "unavailable", "contact_customer"].map((a) => (
+                            <button
+                              key={a}
+                              onClick={() => setItemAction(it._key, a)}
+                              style={{ fontSize: 11.5, fontWeight: 700, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", borderRadius: 8, padding: "8px 10px", cursor: "pointer", minHeight: 36 }}
+                            >
+                              {ITEM_ACTION_LABELS[a]}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      {weighed && (
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, paddingLeft: 34 }}>
+                          <span style={{ fontSize: 12, opacity: 0.6 }}>Actual:</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={actualQty[it._key] ?? ""}
+                            onChange={(e) => setActualQty((prev) => ({ ...prev, [it._key]: e.target.value }))}
+                            placeholder={String(it.qty)}
+                            style={{ ...inputStyle, width: 80, padding: "8px 8px", fontSize: 12.5, minHeight: 38, border: outside ? `1.5px solid ${BRAND.tomato}` : inputStyle.border }}
+                          />
+                          <span style={{ fontSize: 12, opacity: 0.6 }}>{it.unit}</span>
+                          {outside && (
+                            <span style={{ fontSize: 11.5, fontWeight: 700, color: BRAND.tomato }}>
+                              ⚠ Outside ±{WEIGH_TOLERANCE_PCT * 100}% tolerance
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null
+        )}
+
+        {boxItems.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", opacity: 0.6, marginBottom: 8 }}>Boxes (pre-made)</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {boxItems.map((it, i) => {
+                const key = `box-${i}`;
+                return (
+                  <label key={key} style={{ display: "flex", alignItems: "center", gap: 10, background: "#fff", borderRadius: 10, padding: "10px 12px", cursor: "pointer" }}>
+                    <input type="checkbox" checked={!!checked[key]} onChange={() => toggle(key)} style={{ width: 18, height: 18 }} />
+                    <span style={{ flex: 1, fontSize: 13.5, textDecoration: checked[key] ? "line-through" : "none", opacity: checked[key] ? 0.5 : 1 }}>
+                      {it.name}
+                    </span>
+                    <span style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.7 }}>×{it.qty}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {outsideItems.length > 0 && (
+          <div style={{ background: "#FDEDED", border: `1.5px solid ${BRAND.tomato}`, borderRadius: 12, padding: 12, marginBottom: 12 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 700, color: BRAND.tomato, marginBottom: 6 }}>
+              ⚠ {outsideItems.length} item(s) weighed outside the ±{WEIGH_TOLERANCE_PCT * 100}% tolerance
+            </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, cursor: "pointer" }}>
+              <input type="checkbox" checked={overrideConfirmed} onChange={(e) => setOverrideConfirmed(e.target.checked)} style={{ width: 16, height: 16 }} />
+              I've checked these and confirm it's OK to pack as weighed
+            </label>
+          </div>
+        )}
+
+        <PrimaryButton
+          onClick={seal}
+          full
+          disabled={!allChecked || (outsideItems.length > 0 && !overrideConfirmed) || (crateConflict && !crateOverrideConfirmed)}
+          style={{ minHeight: 50 }}
+        >
+          {!allChecked
+            ? `${totalCount - checkedCount} item(s) left to check off`
+            : outsideItems.length > 0 && !overrideConfirmed
+            ? "Confirm weight warning above to seal"
+            : crateConflict && !crateOverrideConfirmed
+            ? "Confirm crate conflict above to seal"
+            : "✓ Seal Order — Packed"}
+        </PrimaryButton>
+      </div>
+    </div>
+  );
+}
+
+function DriverOrdersPanel({ orders, updatePackingStatus, updateOrderStatus }) {
+  const todayStr = localDateISO();
+
+  // Only orders that have finished packing and aren't fully wrapped up yet.
+  const driverOrders = orders
+    .filter((o) => o.customer?.date === todayStr)
+    .filter((o) => ["packed", "ready", "picked_up", "out_for_delivery"].includes(o.packingStatus))
+    .sort((a, b) => (a.customer?.slot || "").localeCompare(b.customer?.slot || ""));
+
+  async function markPickedUp(o) {
+    await updatePackingStatus(o.id, "picked_up");
+  }
+  async function markOutForDelivery(o) {
+    await updatePackingStatus(o.id, "out_for_delivery");
+    await updateOrderStatus(o.id, "out_for_delivery"); // also flips the customer-facing tracking status + live map
+  }
+  async function markDelivered(o) {
+    await updatePackingStatus(o.id, "delivered");
+    await updateOrderStatus(o.id, "delivered"); // triggers the customer's delivered notification + review prompt
+  }
+  async function markFailed(o) {
+    await updatePackingStatus(o.id, "failed_delivery", { failedAt: new Date().toISOString() });
+  }
+
+  return (
+    <div>
+      <div style={{ fontSize: 12.5, opacity: 0.65, marginBottom: 16, maxWidth: 560 }}>
+        Today's packed orders, ready to go out. No prices or supplier costs shown here — just what a driver needs: where to go, when, and how many packages.
+      </div>
+      {driverOrders.length === 0 && <div style={{ fontSize: 13, opacity: 0.6 }}>No packed orders ready for delivery yet today.</div>}
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {driverOrders.map((o) => (
+          <div key={o.id} style={{ background: "#fff", border: `1.5px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 18 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 800, fontSize: 16 }}>{o.id}</span>
+                  {o.crateNumber && <span style={{ fontSize: 11.5, fontWeight: 700, background: BRAND.creamDeep, borderRadius: 999, padding: "2px 10px" }}>Crate {o.crateNumber}</span>}
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{o.customer?.name}</div>
+                {o.customer?.phone && (
+                  <div style={{ fontSize: 13, fontWeight: 700, color: BRAND.green, marginTop: 2 }}>{formatPhoneDisplay(o.customer.phone)}</div>
+                )}
+                <div style={{ fontSize: 13, opacity: 0.7 }}>{o.customer?.address}, {o.customer?.area}</div>
+                <div style={{ fontSize: 13, opacity: 0.7 }}>🕐 {o.customer?.slot} · 📦 {(o.items || []).length} package(s)</div>
+                {o.customer?.leaveAtDoor && <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 4 }}>📍 Leave at door</div>}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 6 }}>
+                  <a href={buildDirectionsLink(o)} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: BRAND.green, fontWeight: 700, display: "inline-block" }}>
+                    🧭 Directions
+                  </a>
+                  {o.customer?.phone && (
+                    <>
+                      <a href={`tel:${o.customer.phone}`} style={{ fontSize: 12.5, color: BRAND.green, fontWeight: 700, display: "inline-block" }}>
+                        📞 Call
+                      </a>
+                      <a
+                        href={`https://wa.me/${phoneDigitsForWhatsApp(o.customer.phone)}`}
+                        target="_blank" rel="noopener noreferrer"
+                        style={{ fontSize: 12.5, color: "#25D366", fontWeight: 700, display: "inline-block" }}
+                      >
+                        💬 WhatsApp
+                      </a>
+                    </>
+                  )}
+                  {o.packingStatus === "out_for_delivery" && (
+                    <button
+                      onClick={() => window.open(`${SITE_URL}/?drive=${o.id}`, "_blank")}
+                      style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                    >
+                      📍 Share live location
+                    </button>
+                  )}
+                </div>
+              </div>
+              <span style={{ fontSize: 11.5, fontWeight: 800, color: "#fff", background: BRAND.green, borderRadius: 999, padding: "5px 12px", whiteSpace: "nowrap" }}>
+                {PACKING_STATUS_LABELS[o.packingStatus] || o.packingStatus}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", gap: 10, marginTop: 14, flexWrap: "wrap" }}>
+              {(o.packingStatus === "packed" || o.packingStatus === "ready") && (
+                <PrimaryButton onClick={() => markPickedUp(o)} style={{ fontSize: 16, padding: "16px 22px", flex: 1, minWidth: 160 }}>📦 Picked Up</PrimaryButton>
+              )}
+              {o.packingStatus === "picked_up" && (
+                <PrimaryButton onClick={() => markOutForDelivery(o)} style={{ fontSize: 16, padding: "16px 22px", flex: 1, minWidth: 160 }}>🚚 Out for Delivery</PrimaryButton>
+              )}
+              {o.packingStatus === "out_for_delivery" && (
+                <>
+                  <PrimaryButton onClick={() => markDelivered(o)} style={{ fontSize: 16, padding: "16px 22px", flex: 1, minWidth: 140 }}>✅ Delivered</PrimaryButton>
+                  <GhostButton onClick={() => markFailed(o)} style={{ borderColor: BRAND.tomato, color: BRAND.tomato, fontSize: 15, padding: "16px 20px", flex: 1, minWidth: 140 }}>❌ Failed Delivery</GhostButton>
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function ItemRequestsPanel({ itemRequests, updateItemRequestStatus }) {
   // Group by normalized item name so repeat asks for the same thing are
@@ -10261,6 +11606,11 @@ function CatalogRow({ product, updateProduct }) {
   const [uploadPct, setUploadPct] = useState(null);
   const [uploadError, setUploadError] = useState("");
   const [justSaved, setJustSaved] = useState(null); // null | "price" | "stock"
+  const [procurementOpen, setProcurementOpen] = useState(false);
+  const [avgWeightG, setAvgWeightG] = useState(product.avgWeightG ?? "");
+  const [caseSize, setCaseSize] = useState(product.caseSize ?? "");
+  const [bufferPct, setBufferPct] = useState(product.bufferPct ?? "");
+  const [packSizeG, setPackSizeG] = useState(product.packSizeG ?? "");
   const fileInputRef = useRef(null);
   const unitOptions = ["piece", "kg", "250g", "500g", "bunch", "box", "set"];
   const hasCustomPhoto = !!product.photoUrl;
@@ -10269,6 +11619,11 @@ function CatalogRow({ product, updateProduct }) {
   const hasShipping = !!product.shippingMethod;
   const showsTierPieces = product.unit === "piece" || product.unit === "bunch";
   const hasCustomTiers = !!product.tierPieces;
+  // Only piece/box/bottle/set items ever need a customer-unit → supplier-unit
+  // conversion for procurement — kg items are already bought in the same unit
+  // they're sold in, so there's nothing to convert.
+  const needsConversion = ["piece", "box", "bunch", "set"].includes(product.unit);
+  const hasProcurement = product.avgWeightG != null || product.caseSize != null || product.bufferPct != null || product.packSizeG != null;
 
   async function commitOrigin() {
     const ok = await updateProduct(product.id, { origin: origin.trim() || null });
@@ -10282,6 +11637,18 @@ function CatalogRow({ product, updateProduct }) {
     const next = product.shippingMethod === method ? null : method;
     const ok = await updateProduct(product.id, { shippingMethod: next });
     setJustSaved(ok ? "shipping" : "shipping-failed");
+    setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
+  }
+
+  async function commitProcurement() {
+    const patch = {
+      avgWeightG: avgWeightG === "" ? null : Math.max(0, Number(avgWeightG) || 0),
+      caseSize: caseSize === "" ? null : Math.max(1, Math.round(Number(caseSize) || 1)),
+      bufferPct: bufferPct === "" ? null : Math.max(0, Number(bufferPct) || 0),
+      packSizeG: packSizeG === "" ? null : Math.max(0, Number(packSizeG) || 0),
+    };
+    const ok = await updateProduct(product.id, patch);
+    setJustSaved(ok ? "procurement" : "procurement-failed");
     setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
   }
 
@@ -10413,6 +11780,7 @@ function CatalogRow({ product, updateProduct }) {
           )}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontSize: 10.5, opacity: 0.55 }}>Note:</span>
           <input
             type="number"
             min="0"
@@ -10420,8 +11788,8 @@ function CatalogRow({ product, updateProduct }) {
             onChange={(e) => setStock(e.target.value)}
             onBlur={commitStock}
             onKeyDown={(e) => e.key === "Enter" && commitStock(e)}
-            placeholder="∞"
-            title="Leave blank for unlimited stock"
+            placeholder="—"
+            title="Optional reference number only — Darousha buys fresh daily to match orders, so this no longer limits how much customers can order."
             style={{ ...inputStyle, padding: "6px 8px", width: 60 }}
           />
           {justSaved === "stock" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700 }}>✓</span>}
@@ -10469,6 +11837,18 @@ function CatalogRow({ product, updateProduct }) {
         >
           {product.shippingMethod === "Air Freight" ? "✈️" : product.shippingMethod === "Road Freight" ? "🚚" : "✈️"}
         </button>
+        {needsConversion && (
+          <button
+            onClick={() => setProcurementOpen((o) => !o)}
+            title={hasProcurement ? "Procurement conversion set" : "Set procurement conversion (weight/case size)"}
+            style={{
+              border: `1px solid ${hasProcurement ? BRAND.green : BRAND.creamDeep}`, borderRadius: 8, padding: "6px 9px", cursor: "pointer",
+              background: hasProcurement ? BRAND.greenSoft : "#fff", color: hasProcurement ? BRAND.green : BRAND.ink, fontSize: 12,
+            }}
+          >
+            ⚖️
+          </button>
+        )}
       </div>
       {originOpen && (
         <div style={{ padding: "0 16px 14px 58px", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
@@ -10516,6 +11896,73 @@ function CatalogRow({ product, updateProduct }) {
           {justSaved === "shipping-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700 }}>⚠ Failed to save — try again</span>}
           <div style={{ fontSize: 10.5, opacity: 0.5, width: "100%" }}>
             Optional — a freshness/marketing signal, not a compliance requirement. Tap the selected option again to clear it. Leave unset for items where it doesn't add value.
+          </div>
+        </div>
+      )}
+      {procurementOpen && (
+        <div style={{ padding: "0 16px 14px 58px", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ fontSize: 11.5, opacity: 0.6 }}>
+            How this converts to what you actually buy from the supplier:
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            {product.unit === "piece" && (
+              <>
+                <span style={{ fontSize: 12 }}>Average weight per piece:</span>
+                <input
+                  type="number"
+                  value={avgWeightG}
+                  onChange={(e) => setAvgWeightG(e.target.value)}
+                  placeholder="e.g. 170"
+                  style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 90 }}
+                />
+                <span style={{ fontSize: 12, opacity: 0.6 }}>grams</span>
+              </>
+            )}
+            {(product.unit === "box" || product.unit === "bunch" || product.unit === "set") && (
+              <>
+                <span style={{ fontSize: 12 }}>Supplier case size:</span>
+                <input
+                  type="number"
+                  value={caseSize}
+                  onChange={(e) => setCaseSize(e.target.value)}
+                  placeholder="e.g. 12"
+                  style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 80 }}
+                />
+                <span style={{ fontSize: 12, opacity: 0.6 }}>{product.unit}s per case</span>
+              </>
+            )}
+          </div>
+          {(product.unit === "box" || product.unit === "set") && (
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 12 }}>Weight inside one {product.unit}:</span>
+              <input
+                type="number"
+                value={packSizeG}
+                onChange={(e) => setPackSizeG(e.target.value)}
+                placeholder="e.g. 250"
+                style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 90 }}
+              />
+              <span style={{ fontSize: 12, opacity: 0.6 }}>grams (e.g. a 250g tahini bottle, a 125g blueberry box)</span>
+            </div>
+          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 12 }}>Safety buffer:</span>
+            <input
+              type="number"
+              value={bufferPct}
+              onChange={(e) => setBufferPct(e.target.value)}
+              placeholder={`default ${DEFAULT_PROCUREMENT_BUFFER_PCT}`}
+              style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 70 }}
+            />
+            <span style={{ fontSize: 12, opacity: 0.6 }}>%</span>
+            <GhostButton style={{ padding: "7px 12px", fontSize: 12.5 }} onClick={commitProcurement}>
+              Save
+            </GhostButton>
+            {justSaved === "procurement" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700 }}>✓ Saved</span>}
+            {justSaved === "procurement-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700 }}>⚠ Failed to save — try again</span>}
+          </div>
+          <div style={{ fontSize: 10.5, opacity: 0.5, width: "100%" }}>
+            This is what turns "{product.unit === "piece" ? "12 pieces sold" : `X ${product.unit}s sold`}" into the exact amount to actually buy — leave blank to use the site-wide default buffer, or if this item is bought in the same unit it's sold in (no conversion needed).
           </div>
         </div>
       )}
@@ -10668,7 +12115,9 @@ function Footer({ setView }) {
           <button onClick={() => setView("privacy")} style={footerLinkStyle}>{t("footer_privacy")}</button>
           <button onClick={() => setView("terms")} style={footerLinkStyle}>{t("footer_terms")}</button>
           <button onClick={() => setView("track")} style={footerLinkStyle}>{t("footer_track")}</button>
-          <button onClick={() => setView("admin")} style={footerLinkStyle}>{t("footer_backstage")}</button>
+          {/* Backstage and Driver links deliberately removed from the public
+              footer — reachable only via a direct bookmarked link now:
+              ?backstage=1 and ?driver=1 */}
         </div>
       </div>
     </footer>
