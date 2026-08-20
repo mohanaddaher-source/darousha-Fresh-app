@@ -337,11 +337,11 @@ const PRODUCT_NAME_AR = {
   "Tomato": "طماطم", "Cherry Tomato": "طماطم كرزية", "Cucumber": "خيار",
   "Bell Pepper (Red)": "فلفل حلو أحمر", "Bell Pepper (Green)": "فلفل حلو أخضر", "Bell Pepper (Yellow)": "فلفل حلو أصفر",
   "Potato": "بطاطا", "Carrot": "جزر", "Eggplant": "باذنجان", "Zucchini": "كوسا",
-  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية",
+  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية", "Egg (Sharjah)": "بيض الشارقة", "Ginger": "زنجبيل",
   "Yellow Onion": "بصل أصفر", "Red Onion": "بصل أحمر", "White Onion": "بصل أبيض",
-  "Shallots": "بصل شالوت", "Garlic": "ثوم", "Fresh Garlic": "ثوم أخضر طازج",
+  "Shallots": "بصل شالوت", "Garlic": "ثوم", "Fresh Garlic": "ثوم أخضر طازج", "Spring Onion": "بصل أخضر",
   "Lettuce (Iceberg)": "خس أيسبرغ", "Romaine Lettuce": "خس روماني", "Green Leaf Lettuce": "خس أوراق خضراء",
-  "Red Leaf Lettuce": "خس أوراق حمراء", "Spinach": "سبانخ", "Kale": "كرنب أجعد",
+  "Red Leaf Lettuce": "خس أوراق حمراء", "Spinach": "سبانخ", "Kale": "كرنب أجعد", "Lollo Bionde": "لولو الاشقر", "Lollo Rosso": "لولو روسو",
   "Swiss Chard": "سلق", "Rocket (Arugula)": "جرجير", "Watercress": "جرجير الماء",
   "Parsley": "بقدونس", "Coriander (Cilantro)": "كزبرة", "Mint": "نعناع",
   "Dill": "شبت", "Celery": "كرفس", "Basil": "ريحان",
@@ -357,12 +357,12 @@ const PRODUCT_NAME_AR = {
   "Corn": "ذرة", "Baby Corn": "ذرة صغيرة",
   "Molokhia": "ملوخية", "Vine Leaves": "ورق عنب", "Purslane": "بقلة",
   "Green Fava Beans": "فول أخضر بالقشرة", "Fresh Broad Beans": "فول طازج",
-  "Kousa (Light Green Zucchini)": "كوسا", "Green Almonds (Seasonal)": "لوز أخضر (موسمي)",
+  "Kousa (Light Green Zucchini)": "كوسا", "Green Almonds (Seasonal)": "لوز أخضر (موسمي)", "Dates (Kimia)": "تمر كيمياء", "Majdool Date": "تمر مجدول",
   "Apple": "تفاح", "Banana": "موز", "Orange": "برتقال", "Grapes (Red)": "عنب أحمر", "Grapes (Green)": "عنب أخضر",
   "Strawberry": "فراولة", "Mango": "مانجو", "Kiwi": "كيوي", "Pineapple": "أناناس",
-  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Kibbeh": "كبة", "Meat Sambousek": "سمبوسة لحمة", "Cheese Sambousek": "سمبوسة جبنة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
+  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Avocado (Hass)": "أفوكادو هاس", "Banana Green": "موز أخضر", "Lime": "ليم", "Mango Green": "مانجو أخضر", "Passion Fruit": "فاكهة العاطفة", "Sweet Melon": "شمام", "Watermelon": "بطيخ", "Kibbeh": "كبة", "Meat Sambousek": "سمبوسة لحمة", "Cheese Sambousek": "سمبوسة جبنة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
 };
-const UNIT_AR = { kg: "كغم", bunch: "حزمة", piece: "قطعة", "250g": "٢٥٠ غم", box: "صندوق", set: "طقم" };
+const UNIT_AR = { kg: "كغم", bunch: "حزمة", piece: "قطعة", "250g": "٢٥٠ غم", box: "صندوق", set: "طقم", tray: "طبق" };
 const BOX_NAME_AR = {
   "🌿 Daily Box": "🌿 الصندوق اليومي",
   "🏡 Family Box": "🏡 صندوق العائلة",
@@ -626,16 +626,17 @@ const CATALOG = [
     ["Potato","kg",3],["Carrot","kg",4],["Eggplant","kg",5],["Zucchini","kg",6],
     ["Lemon","kg",6],["Chili Pepper","kg",10],["Green Chili","kg",9],["Jalapeno","kg",11],["Sweet Potato","kg",6],["Beetroot","kg",5],
     ["Baby Eggplant","kg",7],["Baby Potato","kg",5],["Mini Cucumber","kg",6],["Yellow Squash","kg",7],
-    ["Red Radish","bunch",4],["White Radish","kg",5],
+    ["Red Radish","bunch",4],["White Radish","kg",5],["Egg (Sharjah)","tray",15],
   ]},
   { cat: "Bulbs", items: [
     ["Yellow Onion","kg",3],["Red Onion","kg",4],["White Onion","kg",4],
-    ["Shallots","kg",12],["Garlic","kg",14],["Fresh Garlic","bunch",6],
+    ["Shallots","kg",12],["Garlic","kg",14],["Fresh Garlic","bunch",6],["Spring Onion","bunch",4],
   ]},
   { cat: "Leafy Greens", items: [
     ["Lettuce (Iceberg)","piece",4],["Romaine Lettuce","piece",5],["Green Leaf Lettuce","piece",5],
     ["Red Leaf Lettuce","piece",6],["Spinach","bunch",4],["Kale","bunch",7],
     ["Swiss Chard","bunch",6],["Rocket (Arugula)","bunch",5],["Watercress","bunch",6],
+    ["Lollo Bionde","piece",6],["Lollo Rosso","piece",6],
   ]},
   { cat: "Fresh Herbs", items: [
     ["Parsley","bunch",2],["Coriander (Cilantro)","bunch",2],["Mint","bunch",3],
@@ -657,12 +658,13 @@ const CATALOG = [
   { cat: "Specialty Vegetables", items: [
     ["Asparagus","bunch",16],["Artichoke","piece",6],["Leek","kg",7],
     ["Fennel","kg",8],["Celeriac","kg",7],["Rhubarb (Seasonal)","kg",12],
-    ["Corn","piece",3],["Baby Corn","kg",14],["Pumpkin","kg",6],["Turnip","kg",5],["Parsnip","kg",8],
+    ["Corn","piece",3],["Baby Corn","kg",14],["Pumpkin","kg",6],["Turnip","kg",5],["Parsnip","kg",8],["Ginger","kg",12],
   ]},
   { cat: "Middle Eastern Favorites", items: [
     ["Molokhia","bunch",5],["Vine Leaves","250g",10],["Purslane","bunch",4],
     ["Green Fava Beans","kg",9],["Fresh Broad Beans","kg",9],["Okra","kg",9],
     ["Kousa (Light Green Zucchini)","kg",7],["Green Almonds (Seasonal)","kg",15],
+    ["Dates (Kimia)","kg",20],["Majdool Date","kg",35],
   ]},
   { cat: "Fruits", items: [
     ["Apple","piece",3],["Banana","piece",2],["Orange","piece",3],
@@ -673,6 +675,8 @@ const CATALOG = [
     ["Mandarin","piece",3],["Blueberries","box",15],["3 Colour Apples","set",8],
     ["Cherry","box",18],["Flat Peach","piece",6],["Blackberry","box",16],
     ["Raspberry","box",16],["Apricot","piece",5],
+    ["Avocado (Hass)","piece",5],["Banana Green","piece",2],["Lime","kg",8],
+    ["Mango Green","piece",5],["Passion Fruit","piece",6],["Sweet Melon","kg",6],["Watermelon","piece",20],
   ]},
   { cat: "Gourmet & Gifts", items: [
     ["Artisanal Spice Collection","piece",145],["Sidr Honey & Fig Preserves Set","piece",110],
@@ -1885,11 +1889,11 @@ const AR_NAME = {
   "Tomato": "طماطم", "Cherry Tomato": "طماطم كرزية", "Cucumber": "خيار",
   "Bell Pepper (Red)": "فلفل رومي أحمر", "Bell Pepper (Green)": "فلفل رومي أخضر", "Bell Pepper (Yellow)": "فلفل رومي أصفر",
   "Potato": "بطاطا", "Carrot": "جزر", "Eggplant": "باذنجان", "Zucchini": "كوسا",
-  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية",
+  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية", "Egg (Sharjah)": "بيض الشارقة", "Ginger": "زنجبيل",
   "Yellow Onion": "بصل أصفر", "Red Onion": "بصل أحمر", "White Onion": "بصل أبيض",
-  "Shallots": "بصل شالوت", "Garlic": "ثوم", "Fresh Garlic": "ثوم طازج",
+  "Shallots": "بصل شالوت", "Garlic": "ثوم", "Fresh Garlic": "ثوم طازج", "Spring Onion": "بصل أخضر",
   "Lettuce (Iceberg)": "خس أيسبرغ", "Romaine Lettuce": "خس روماني", "Green Leaf Lettuce": "خس أخضر",
-  "Red Leaf Lettuce": "خس أحمر", "Spinach": "سبانخ", "Kale": "كيل",
+  "Red Leaf Lettuce": "خس أحمر", "Spinach": "سبانخ", "Kale": "كيل", "Lollo Bionde": "لولو الاشقر", "Lollo Rosso": "لولو روسو",
   "Swiss Chard": "سلق", "Rocket (Arugula)": "جرجير", "Watercress": "جرجير الماء",
   "Parsley": "بقدونس", "Coriander (Cilantro)": "كزبرة", "Mint": "نعناع",
   "Dill": "شبت", "Celery": "كرفس", "Basil": "ريحان",
@@ -1905,12 +1909,12 @@ const AR_NAME = {
   "Corn": "ذرة", "Baby Corn": "ذرة صغيرة",
   "Molokhia": "ملوخية", "Vine Leaves": "ورق عنب", "Purslane": "بقلة",
   "Green Fava Beans": "فول أخضر", "Fresh Broad Beans": "فول طازج",
-  "Kousa (Light Green Zucchini)": "كوسا فاتح", "Green Almonds (Seasonal)": "لوز أخضر (موسمي)",
+  "Kousa (Light Green Zucchini)": "كوسا فاتح", "Green Almonds (Seasonal)": "لوز أخضر (موسمي)", "Dates (Kimia)": "تمر كيمياء", "Majdool Date": "تمر مجدول",
   "Apple": "تفاح", "Banana": "موز", "Orange": "برتقال", "Grapes (Red)": "عنب أحمر", "Grapes (Green)": "عنب أخضر",
   "Strawberry": "فراولة", "Mango": "مانجو", "Kiwi": "كيوي", "Pineapple": "أناناس",
-  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Kibbeh": "كبة", "Meat Sambousek": "سمبوسة لحمة", "Cheese Sambousek": "سمبوسة جبنة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
+  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Avocado (Hass)": "أفوكادو هاس", "Banana Green": "موز أخضر", "Lime": "ليم", "Mango Green": "مانجو أخضر", "Passion Fruit": "فاكهة العاطفة", "Sweet Melon": "شمام", "Watermelon": "بطيخ", "Kibbeh": "كبة", "Meat Sambousek": "سمبوسة لحمة", "Cheese Sambousek": "سمبوسة جبنة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
 };
-const AR_UNIT = { kg: "كجم", bunch: "حزمة", piece: "قطعة", "250g": "250غ", box: "صندوق", set: "طقم" };
+const AR_UNIT = { kg: "كجم", bunch: "حزمة", piece: "قطعة", "250g": "250غ", box: "صندوق", set: "طقم", tray: "طبق" };
 function localName(name, lang) {
   return lang === "ar" ? AR_NAME[name] || name : name;
 }
@@ -2527,7 +2531,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260818211739"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820152033"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
