@@ -74,7 +74,7 @@ export default async function handler(req, res) {
   try {
     const groqUrl = "https://api.groq.com/openai/v1/chat/completions";
     const groqBody = JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: safeQuery },
