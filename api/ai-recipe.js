@@ -68,18 +68,29 @@ export default async function handler(req, res) {
   }
 
   try {
-    const aiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-      {
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`;
+    const geminiBody = JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents: [{ role: "user", parts: [{ text: safeQuery }] }],
+      generationConfig: { responseMimeType: "application/json", maxOutputTokens: 1000 },
+    });
+
+    // Gemini's servers occasionally return a transient 503 ("model is
+    // currently overloaded") — worth one quick retry before giving up,
+    // since a second attempt a moment later very often succeeds.
+    async function callGemini() {
+      return fetch(geminiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [{ role: "user", parts: [{ text: safeQuery }] }],
-          generationConfig: { responseMimeType: "application/json", maxOutputTokens: 1000 },
-        }),
-      }
-    );
+        body: geminiBody,
+      });
+    }
+
+    let aiRes = await callGemini();
+    if (aiRes.status === 503) {
+      await new Promise((r) => setTimeout(r, 800));
+      aiRes = await callGemini();
+    }
 
     if (!aiRes.ok) {
       const errText = await aiRes.text();
