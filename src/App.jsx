@@ -3298,7 +3298,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820203427"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820204343"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -3743,6 +3743,36 @@ function estimateRecipeIngredientQty(product, servings) {
     return { qty: Math.max(1, Math.ceil(servings / 2)), estimated: true };
   }
   return { qty: 1, estimated: true };
+}
+
+// ---- "Fridge Scan" — matches freeform ingredient names detected from a
+// photo against each RECIPES entry's produce list, using the same fuzzy
+// logic already proven for ingredient-to-product matching. Two different
+// freeform strings (what the camera saw vs. what a recipe calls for) rarely
+// match exactly, so this checks exact, substring, then shared-word overlap.
+function fuzzyIngredientTextMatch(detected, recipeIngredientName) {
+  const d = normalizeForMatch(detected);
+  const c = normalizeForMatch(recipeIngredientName);
+  if (!d || !c) return false;
+  if (d === c) return true;
+  if (d.includes(c) || c.includes(d)) return true;
+  const dWords = d.split(" ").filter(Boolean);
+  const cWords = c.split(" ").filter(Boolean);
+  return dWords.some((w) => w.length > 2 && cWords.includes(w));
+}
+// For every recipe, works out how many of its produce items were detected in
+// the photo, then ranks by completeness. A minimum overlap threshold keeps
+// "you can make N meals" honest — a recipe missing most of its ingredients
+// shouldn't count as makeable.
+function matchRecipesFromDetectedIngredients(detectedIngredients, minOverlapPct = 0.6) {
+  return RECIPES.map((r) => {
+    const have = r.produce.filter((ing) => detectedIngredients.some((d) => fuzzyIngredientTextMatch(d, ing)));
+    const missing = r.produce.filter((ing) => !have.includes(ing));
+    const pct = r.produce.length > 0 ? have.length / r.produce.length : 0;
+    return { recipe: r, have, missing, pct };
+  })
+    .filter((m) => m.pct >= minOverlapPct)
+    .sort((a, b) => b.pct - a.pct);
 }
 
 // Converts what the AI said is needed (e.g. "300 gram") into how many of the
@@ -4368,6 +4398,29 @@ async function markAiRecipeRequestConvertedDoc(id, itemsAddedCount) {
     return true;
   } catch (e) {
     console.error("Firestore AI recipe request conversion update failed:", e);
+    return false;
+  }
+}
+
+/* Fridge Scan requests — one document per scan, same demand-tracking pattern
+   as aiRecipeRequests. Records what got detected and which recipes actually
+   converted to a cart add, so Backstage can see whether this feature is
+   worth its keep. */
+async function saveFridgeScanDoc(request) {
+  try {
+    await setDoc(doc(db, "fridgeScans", request.id), request);
+    return true;
+  } catch (e) {
+    console.error("Firestore fridge scan save failed:", e);
+    return false;
+  }
+}
+async function markFridgeScanConvertedDoc(id, recipeName, itemsAddedCount) {
+  try {
+    await setDoc(doc(db, "fridgeScans", id), { id, cartAdded: true, convertedRecipe: recipeName, itemsAddedCount }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore fridge scan conversion update failed:", e);
     return false;
   }
 }
@@ -5208,6 +5261,21 @@ function AppShell() {
     await markAiRecipeRequestConvertedDoc(requestId, itemsAddedCount);
   }
 
+  async function logFridgeScan({ detectedIngredients, matchedRecipeCount, shownRecipeNames }) {
+    const entry = {
+      id: "FS" + Date.now().toString(36).toUpperCase(),
+      createdAt: new Date().toISOString(),
+      detectedIngredients, matchedRecipeCount, shownRecipeNames,
+      cartAdded: false, convertedRecipe: null, itemsAddedCount: 0,
+    };
+    await saveFridgeScanDoc(entry);
+    return entry.id;
+  }
+  async function markFridgeScanConverted(scanId, recipeName, itemsAddedCount) {
+    if (!scanId) return;
+    await markFridgeScanConvertedDoc(scanId, recipeName, itemsAddedCount);
+  }
+
   async function updateProduct(id, patch) {
     const next = products.map((p) => (p.id === id ? { ...p, ...patch } : p));
     setProducts(next);
@@ -5402,6 +5470,7 @@ function AppShell() {
         {view === "about" && <AboutView setView={setView} />}
         {view === "recipes" && <RecipesView setView={setView} products={customerProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
         {view === "aicook" && <AiRecipeBuilderView setView={setView} products={customerProducts} addToCart={addToCart} logAiRecipeRequest={logAiRecipeRequest} markAiRecipeRequestConverted={markAiRecipeRequestConverted} />}
+        {view === "fridgescan" && <FridgeScanView setView={setView} products={customerProducts} addToCart={addToCart} logFridgeScan={logFridgeScan} markFridgeScanConverted={markFridgeScanConverted} />}
         {view === "blog" && <BlogView setView={setView} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
@@ -9529,6 +9598,15 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
         </div>
       )}
 
+      {!result && !error && !loading && (
+        <button
+          onClick={() => setView("fridgescan")}
+          style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 999, padding: "10px 16px", cursor: "pointer", marginTop: 16, fontSize: 13, fontWeight: 700, color: BRAND.green }}
+        >
+          📸 {isAr ? "أو امسح صورة ثلاجتك بدلًا من ذلك" : "Or scan a photo of your fridge instead"}
+        </button>
+      )}
+
       {error && (
         <div style={{ background: "#FDEDED", border: `1px solid ${BRAND.tomato}`, borderRadius: 12, padding: 14, marginTop: 18, fontSize: 13.5, color: BRAND.tomato }}>
           {error}
@@ -9634,6 +9712,277 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
     </div>
   );
 }
+function FridgeScanView({ setView, products, addToCart, logFridgeScan, markFridgeScanConverted }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+  const fileInputRef = useRef(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [showTextFallback, setShowTextFallback] = useState(false);
+  const [textInput, setTextInput] = useState("");
+  const [matches, setMatches] = useState(null); // array from matchRecipesFromDetectedIngredients
+  const [scanId, setScanId] = useState(null);
+  const [expandedId, setExpandedId] = useState(null);
+  const [addedIds, setAddedIds] = useState({}); // recipe.id -> true once added
+
+  // Resize/compress in the browser before upload — keeps payloads small and
+  // fast regardless of the original photo's resolution.
+  function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = reject;
+        img.onload = () => {
+          const maxDim = 1024;
+          let { width, height } = img;
+          if (width > height && width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL("image/jpeg", 0.7));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleFileSelected(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    setError(null);
+    setMatches(null);
+    setShowTextFallback(false);
+    setLoading(true);
+    try {
+      const compressed = await compressImage(file);
+      setPreviewUrl(compressed);
+      const res = await fetch("/api/fridge-scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageBase64: compressed }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        setError(data.error || (isAr ? "لم نتمكن من قراءة الصورة." : "Sorry, we couldn't read that photo."));
+        setShowTextFallback(true);
+        setLoading(false);
+        return;
+      }
+      await runMatching(data.ingredients);
+    } catch {
+      setError(isAr ? "حدث خطأ أثناء رفع الصورة. حاول مرة أخرى." : "Something went wrong uploading that photo. Please try again.");
+      setShowTextFallback(true);
+      setLoading(false);
+    }
+  }
+
+  async function runMatching(ingredients) {
+    const results = matchRecipesFromDetectedIngredients(ingredients);
+    setMatches(results);
+    const id = await logFridgeScan({
+      detectedIngredients: ingredients,
+      matchedRecipeCount: results.length,
+      shownRecipeNames: results.map((m) => m.recipe.name),
+    });
+    setScanId(id);
+    setLoading(false);
+  }
+
+  async function submitTextFallback() {
+    const list = textInput.split(",").map((s) => s.trim()).filter(Boolean);
+    if (list.length === 0) return;
+    setError(null);
+    setLoading(true);
+    await runMatching(list);
+  }
+
+  function addMissingToCart(match) {
+    const productMatches = match.missing.map((name) => matchIngredientToProduct(name, products)).filter(Boolean);
+    productMatches.forEach((p) => {
+      const est = estimateRecipeIngredientQty(p, 4);
+      addToCart({ id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: est.qty, kind: "item", source: "fridge_scan", recipeName: match.recipe.name });
+    });
+    if (markFridgeScanConverted) markFridgeScanConverted(scanId, match.recipe.name, productMatches.length);
+    setAddedIds((prev) => ({ ...prev, [match.recipe.id]: true }));
+  }
+
+  function reset() {
+    setPreviewUrl(null);
+    setMatches(null);
+    setError(null);
+    setShowTextFallback(false);
+    setTextInput("");
+    setScanId(null);
+    setExpandedId(null);
+    setAddedIds({});
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  return (
+    <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto" }}>
+      <SectionTitle
+        eyebrow={isAr ? "امسح ثلاجتك" : "Fridge Scan"}
+        title={isAr ? "📸 ماذا لديك في ثلاجتك؟" : "📸 What's in your fridge?"}
+      />
+      <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
+        {isAr
+          ? "التقط صورة لثلاجتك أو خزانة مطبخك، وسنخبرك بالوجبات التي يمكنك تحضيرها الآن — ونكمل الناقص."
+          : "Snap a photo of your fridge or pantry shelf, and we'll tell you what you can cook right now — and add whatever's missing."}
+      </p>
+
+      {!previewUrl && !showTextFallback && (
+        <div style={{ marginTop: 20 }}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleFileSelected}
+            style={{ display: "none" }}
+          />
+          <PrimaryButton onClick={() => fileInputRef.current && fileInputRef.current.click()} full>
+            📸 {isAr ? "التقط صورة" : "Take or Upload a Photo"}
+          </PrimaryButton>
+          <button
+            onClick={() => setShowTextFallback(true)}
+            style={{ background: "none", border: "none", color: BRAND.green, fontWeight: 700, fontSize: 12.5, cursor: "pointer", padding: 0, marginTop: 12 }}
+          >
+            {isAr ? "أو أخبرنا كتابةً بما لديك" : "Or type what you have instead"}
+          </button>
+        </div>
+      )}
+
+      {previewUrl && (
+        <div style={{ marginTop: 18 }}>
+          <img src={previewUrl} alt="" style={{ width: "100%", maxHeight: 220, objectFit: "cover", borderRadius: 12, display: "block" }} />
+        </div>
+      )}
+
+      {loading && (
+        <div style={{ marginTop: 18, fontSize: 13.5, opacity: 0.7 }}>
+          {isAr ? "نتفحص ما لديك…" : "Looking at what you've got…"}
+        </div>
+      )}
+
+      {error && (
+        <div style={{ background: "#FDEDED", border: `1px solid ${BRAND.tomato}`, borderRadius: 12, padding: 14, marginTop: 18, fontSize: 13.5, color: BRAND.tomato }}>
+          {error}
+        </div>
+      )}
+
+      {showTextFallback && !matches && (
+        <div style={{ marginTop: 18 }}>
+          <p style={{ fontSize: 12.5, opacity: 0.6, marginBottom: 8 }}>
+            {isAr ? "اكتب ما لديك، مفصولًا بفواصل (مثال: طماطم، خيار، جبنة)" : "List what you have, separated by commas (e.g. tomato, cucumber, cheese)"}
+          </p>
+          <textarea
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            rows={3}
+            style={{ ...inputStyle, width: "100%", resize: "vertical" }}
+            placeholder={isAr ? "طماطم، خيار، جبنة..." : "tomato, cucumber, cheese..."}
+          />
+          <PrimaryButton onClick={submitTextFallback} disabled={loading} style={{ marginTop: 10 }}>
+            {isAr ? "أظهر الوصفات" : "Show Recipes"}
+          </PrimaryButton>
+        </div>
+      )}
+
+      {matches && (
+        <div style={{ marginTop: 26 }}>
+          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>
+            {isAr
+              ? `يمكنك تحضير ${matches.length} ${matches.length === 1 ? "وجبة" : "وجبات"} بما لديك`
+              : `You can make ${matches.length} meal${matches.length === 1 ? "" : "s"} with what you already have`}
+          </div>
+
+          {matches.length === 0 && (
+            <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 12 }}>
+              {isAr ? "لم نجد وصفات تطابق ما لديك بشكل كافٍ. جرّب صورة أوضح أو أضف المزيد من التفاصيل." : "We couldn't find recipes that closely match what you have. Try a clearer photo or add more detail."}
+            </p>
+          )}
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 18 }}>
+            {matches.map((m) => {
+              const open = expandedId === m.recipe.id;
+              const complete = m.missing.length === 0;
+              const added = addedIds[m.recipe.id];
+              return (
+                <div key={m.recipe.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, overflow: "hidden" }}>
+                  <button
+                    onClick={() => setExpandedId(open ? null : m.recipe.id)}
+                    style={{ width: "100%", textAlign: isAr ? "right" : "left", background: "none", border: "none", cursor: "pointer", padding: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 14.5, display: "flex", alignItems: "center", gap: 6 }}>
+                        <span>{CUISINE_FLAGS[m.recipe.cuisine] || CUISINE_FLAGS.international}</span>
+                        <span>{isAr ? m.recipe.nameAr : m.recipe.name}</span>
+                      </div>
+                      <div style={{ fontSize: 12, marginTop: 4, color: complete ? BRAND.green : BRAND.orangeDeep, fontWeight: 700 }}>
+                        {complete
+                          ? (isAr ? "✓ لديك كل شيء" : "✓ You have everything")
+                          : (isAr ? `تنقصك ${m.missing.length} مكونات` : `Missing ${m.missing.length} ingredient${m.missing.length === 1 ? "" : "s"}`)}
+                      </div>
+                    </div>
+                    <ChevronRight size={16} style={{ transform: open ? "rotate(90deg)" : "none", flexShrink: 0 }} />
+                  </button>
+                  {open && (
+                    <div style={{ padding: "0 16px 16px" }}>
+                      <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", opacity: 0.5, marginBottom: 8 }}>
+                        {isAr ? "المكوّنات" : "Ingredients"}
+                      </div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: complete ? 0 : 14 }}>
+                        {m.recipe.produce.map((ing) => {
+                          const have = m.have.includes(ing);
+                          return (
+                            <span key={ing} style={{ fontSize: 12, padding: "5px 10px", borderRadius: 999, background: have ? "#E8F3EA" : BRAND.creamDeep, color: have ? BRAND.green : "inherit", fontWeight: have ? 700 : 400 }}>
+                              {have ? "✓ " : ""}{ing}
+                            </span>
+                          );
+                        })}
+                      </div>
+                      {!complete && (
+                        added ? (
+                          <div style={{ fontSize: 12.5, color: BRAND.green, fontWeight: 700 }}>
+                            {isAr ? "✓ أُضيف إلى السلة" : "✓ Added to cart"}
+                          </div>
+                        ) : (
+                          <PrimaryButton onClick={() => addMissingToCart(m)} full>
+                            {isAr ? "أضف المكونات الناقصة" : "Add Missing Ingredients"}
+                          </PrimaryButton>
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={reset}
+            style={{ background: "none", border: "none", color: BRAND.green, fontWeight: 700, fontSize: 12.5, cursor: "pointer", padding: 0, marginTop: 20 }}
+          >
+            {isAr ? "امسح صورة أخرى" : "Scan another photo"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function BlogView({ setView }) {
   const { lang } = useLang();
   const [openId, setOpenId] = useState(null);
