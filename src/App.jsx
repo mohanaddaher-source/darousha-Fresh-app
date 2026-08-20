@@ -3298,7 +3298,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820204343"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820205623"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -9773,7 +9773,20 @@ function FridgeScanView({ setView, products, addToCart, logFridgeScan, markFridg
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageBase64: compressed }),
       });
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        // The response wasn't valid JSON — most likely a platform-level
+        // timeout or error page rather than anything our API code returned.
+        setError(
+          (isAr ? "خطأ غير متوقع" : "Unexpected error") + ` (HTTP ${res.status}) — ` +
+          (isAr ? "قد تكون المعالجة استغرقت وقتًا طويلاً. جرّب صورة أصغر أو أخبرنا كتابةً." : "processing may have taken too long. Try a smaller photo or type what you have instead.")
+        );
+        setShowTextFallback(true);
+        setLoading(false);
+        return;
+      }
       if (!res.ok || data.error) {
         setError(data.error || (isAr ? "لم نتمكن من قراءة الصورة." : "Sorry, we couldn't read that photo."));
         setShowTextFallback(true);
@@ -9781,8 +9794,8 @@ function FridgeScanView({ setView, products, addToCart, logFridgeScan, markFridg
         return;
       }
       await runMatching(data.ingredients);
-    } catch {
-      setError(isAr ? "حدث خطأ أثناء رفع الصورة. حاول مرة أخرى." : "Something went wrong uploading that photo. Please try again.");
+    } catch (err) {
+      setError((isAr ? "خطأ في الشبكة: " : "Network error: ") + (err && err.message ? err.message : (isAr ? "غير معروف" : "unknown")));
       setShowTextFallback(true);
       setLoading(false);
     }
