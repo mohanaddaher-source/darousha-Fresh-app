@@ -360,7 +360,7 @@ const PRODUCT_NAME_AR = {
   "Kousa (Light Green Zucchini)": "كوسا", "Green Almonds (Seasonal)": "لوز أخضر (موسمي)", "Dates (Kimia)": "تمر كيمياء", "Majdool Date": "تمر مجدول",
   "Apple": "تفاح", "Banana": "موز", "Orange": "برتقال", "Grapes (Red)": "عنب أحمر", "Grapes (Green)": "عنب أخضر",
   "Strawberry": "فراولة", "Mango": "مانجو", "Kiwi": "كيوي", "Pineapple": "أناناس",
-  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Avocado (Hass)": "أفوكادو هاس", "Banana Green": "موز أخضر", "Lime": "ليم", "Mango Green": "مانجو أخضر", "Passion Fruit": "فاكهة العاطفة", "Sweet Melon": "شمام", "Watermelon": "بطيخ", "Kibbeh": "كبة", "Meat Sambousek": "سمبوسة لحمة", "Cheese Sambousek": "سمبوسة جبنة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
+  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Avocado (Hass)": "أفوكادو هاس", "Banana Green": "موز أخضر", "Lime": "ليم", "Mango Green": "مانجو أخضر", "Passion Fruit": "فاكهة العاطفة", "Sweet Melon": "شمام", "Watermelon": "بطيخ", "Kibbeh": "كبة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
 };
 const UNIT_AR = { kg: "كغم", bunch: "حزمة", piece: "قطعة", "250g": "٢٥٠ غم", box: "صندوق", set: "طقم", tray: "طبق" };
 const BOX_NAME_AR = {
@@ -684,7 +684,7 @@ const CATALOG = [
     ["Premium Extra Virgin Olive Oil","piece",55],
   ]},
   { cat: "Frozen Foods", items: [
-    ["Kibbeh","piece",4],["Meat Sambousek","piece",3],["Cheese Sambousek","piece",3],
+    ["Kibbeh","piece",4],
   ]},
 ];
 
@@ -1512,26 +1512,6 @@ const RECIPES = [
     ],
   },
   {
-    id: "sambousek-party-platter",
-    name: "Sambousek Party Platter", nameAr: "طبق السمبوسك للضيافة",
-    tagline: "Meat and cheese sambousek, fried and ready to share", taglineAr: "سمبوسك لحمة وجبنة، مقلي وجاهز للمشاركة",
-    produce: ["Mint", "Lemon"],
-    pantry: ["Meat Sambousek", "Cheese Sambousek", "Frying oil", "Zaatar Trio Box (for dusting)"],
-    pantryAr: ["سمبوسة لحمة", "سمبوسة جبنة", "زيت للقلي", "علبة الزعتر الثلاثية (للتزيين)"],
-    steps: [
-      "Fry the meat and cheese sambousek separately, directly from frozen, until golden and crisp.",
-      "Drain on paper towels and arrange together on a large platter.",
-      "Dust lightly with za'atar from the Trio Box for extra flavor and color.",
-      "Garnish with fresh mint and lemon wedges, and serve warm.",
-    ],
-    stepsAr: [
-      "حمّري سمبوسك اللحمة والجبنة كلًا على حدة، مباشرة من التجميد، حتى تصبح ذهبية ومقرمشة.",
-      "صفّيها على ورق مطبخ ورتّبيها معًا في طبق تقديم كبير.",
-      "رشّي قليلًا من الزعتر من العلبة الثلاثية لإضافة نكهة ولون.",
-      "زيّنيها بالنعناع الطازج وقطع الليمون وقدّميها دافئة.",
-    ],
-  },
-  {
     id: "cherry-blackberry-lemonade",
     name: "Cherry & Blackberry Lemonade", nameAr: "ليموناضة الكرز والتوت الأسود",
     tagline: "A deep-red, fruity twist on classic lemonade", taglineAr: "ليموناضة بلمسة فاكهية حمراء غامقة",
@@ -1912,7 +1892,7 @@ const AR_NAME = {
   "Kousa (Light Green Zucchini)": "كوسا فاتح", "Green Almonds (Seasonal)": "لوز أخضر (موسمي)", "Dates (Kimia)": "تمر كيمياء", "Majdool Date": "تمر مجدول",
   "Apple": "تفاح", "Banana": "موز", "Orange": "برتقال", "Grapes (Red)": "عنب أحمر", "Grapes (Green)": "عنب أخضر",
   "Strawberry": "فراولة", "Mango": "مانجو", "Kiwi": "كيوي", "Pineapple": "أناناس",
-  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Avocado (Hass)": "أفوكادو هاس", "Banana Green": "موز أخضر", "Lime": "ليم", "Mango Green": "مانجو أخضر", "Passion Fruit": "فاكهة العاطفة", "Sweet Melon": "شمام", "Watermelon": "بطيخ", "Kibbeh": "كبة", "Meat Sambousek": "سمبوسة لحمة", "Cheese Sambousek": "سمبوسة جبنة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
+  "Pomegranate": "رمان", "Pear": "كمثرى", "Honey Peach": "خوخ عسلي", "Dragon Fruit": "فاكهة التنين", "Mandarin": "يوسفي", "Blueberries": "توت أزرق", "3 Colour Apples": "تفاح ثلاثي الألوان", "Cherry": "كرز", "Flat Peach": "خوخ مفلطح", "Blackberry": "توت أسود", "Raspberry": "توت العليق", "Apricot": "مشمش", "Avocado (Hass)": "أفوكادو هاس", "Banana Green": "موز أخضر", "Lime": "ليم", "Mango Green": "مانجو أخضر", "Passion Fruit": "فاكهة العاطفة", "Sweet Melon": "شمام", "Watermelon": "بطيخ", "Kibbeh": "كبة", "Artisanal Spice Collection": "مجموعة توابل حرفية", "Sidr Honey & Fig Preserves Set": "طقم عسل السدر ومربى التين", "Honey Jar": "برطمان عسل", "Zaatar Trio Box": "علبة زعتر ثلاثية", "Premium Mixed Nuts Gift Box": "علبة هدايا مكسرات فاخرة", "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز فاخر",
 };
 const AR_UNIT = { kg: "كجم", bunch: "حزمة", piece: "قطعة", "250g": "250غ", box: "صندوق", set: "طقم", tray: "طبق" };
 function localName(name, lang) {
@@ -1942,8 +1922,6 @@ const PRODUCT_DESCRIPTION = {
   "Premium Mixed Nuts Gift Box": "A generous assortment of pistachios, almonds, cashews, and a fruit-and-nut mix, presented in an elegant keepsake box. A crowd-pleasing gift for any occasion.",
   "Premium Extra Virgin Olive Oil": "First cold-pressed, single-origin extra virgin olive oil. Rich, smooth, and full of flavor — for everyday cooking or gifting.",
   "Kibbeh": "Hand-shaped frozen fried kibbeh, ready to reheat. Presented in a luxury sliding drawer box finished in matte emerald green with blind-embossed botanical patterns and a gold-trimmed display window.",
-  "Meat Sambousek": "Delicate, uncooked frozen pastries filled with seasoned meat. Presented in a geometric hexagon box with a gold-foil-trimmed display window and matte forest-green finish.",
-  "Cheese Sambousek": "Delicate, uncooked frozen pastries filled with frosted cheese. Presented in a gatefold heritage chest box in deep dark-green leatherette, opening to reveal gold-lined trays.",
 };
 const PRODUCT_DESCRIPTION_AR = {
   "Artisanal Spice Collection": "مجموعة مختارة من أربعة توابل أصيلة — سماق حامض، وتوابلنا المشكّلة الفاخرة، ودبس رمان غني، وفلفل حلبي خشن — معروضة على حامل خشبي أنيق. مثالية لإضافة نكهة شرق أوسطية غنية لطبخك اليومي، أو كهدية لمن يحب النكهات القوية.",
@@ -1953,8 +1931,6 @@ const PRODUCT_DESCRIPTION_AR = {
   "Premium Mixed Nuts Gift Box": "تشكيلة سخية من الفستق واللوز والكاجو ومزيج الفواكه والمكسرات، معروضة في علبة أنيقة. هدية تسعد الجميع في أي مناسبة.",
   "Premium Extra Virgin Olive Oil": "زيت زيتون بكر ممتاز، معصور على البارد من منشأ واحد. غني ونقي ومليء بالنكهة، للطبخ اليومي أو كهدية مميزة.",
   "Kibbeh": "كبة مقلية مفرزة مشكّلة يدويًا، جاهزة لإعادة التسخين. معروضة في علبة درج انزلاقية فاخرة بلمسة نهائية خضراء زمردية مطفية مع نقوش نباتية بارزة ونافذة عرض بحواف ذهبية.",
-  "Meat Sambousek": "معجنات لحمة نيئة مفرزة برائحة التوابل الشهية. معروضة في علبة سداسية هندسية بنافذة عرض بحواف ذهبية ولمسة نهائية خضراء غابية مطفية.",
-  "Cheese Sambousek": "معجنات جبنة نيئة مفرزة رقيقة. معروضة في علبة صندوق تراثي بفتحة مزدوجة من الجلد الأخضر الداكن الفاخر، تُفتح لتكشف عن صواني مذهّبة قابلة للإزالة.",
 };
 const PRODUCT_STORAGE_TIP = {
   "Tomato": "Store at room temperature, away from direct sun — refrigeration dulls the flavor. Best within 5–7 days.",
@@ -2246,36 +2222,6 @@ const BOXES = [
     includes: ["Kibbeh"],
   },
   {
-    id: "box-meat-sambousek",
-    category: "Frozen Foods",
-    available: true,
-    name: "🥩 Meat Sambousek Box",
-    size: "Signature",
-    weight: "10 pieces",
-    pieceCount: 10,
-    customizable: false,
-    tag: "Uncooked, frozen, ready to fry",
-    price: 35,
-    blurb: "10 pieces of frozen meat-filled sambousek, in a geometric hexagon box with a gold-foil-trimmed display window and matte forest-green finish.",
-    features: ["Hexagon lift-off box", "Gold geometric lattice", "Matte forest-green", "Full display window"],
-    includes: ["Meat Sambousek"],
-  },
-  {
-    id: "box-cheese-sambousek",
-    category: "Frozen Foods",
-    available: true,
-    name: "🧀 Cheese Sambousek Box",
-    size: "Signature",
-    weight: "10 pieces",
-    pieceCount: 10,
-    customizable: false,
-    tag: "Delicate frosted cheese pastries",
-    price: 35,
-    blurb: "10 pieces of frozen cheese-filled sambousek, in a gatefold heritage chest box in deep dark-green leatherette with gold-lined trays inside.",
-    features: ["Gatefold chest box", "Magnetic closure", "Leatherette finish", "Gold-lined trays"],
-    includes: ["Cheese Sambousek"],
-  },
-  {
     id: "box-frozen-mix",
     category: "Frozen Foods",
     available: true,
@@ -2286,7 +2232,7 @@ const BOXES = [
     customizable: true,
     tag: "Mix any combination — you choose the pieces",
     price: 69,
-    blurb: "Pick any 20 pieces across kibbeh, meat sambousek, and cheese sambousek — your own mix, one box.",
+    blurb: "Pick any 20 pieces of frozen kibbeh — your own mix, one box.",
     features: ["Mixed selection", "Ready to fry or bake", "Frozen for freshness", "Great for entertaining"],
     includes: [],
   },
@@ -2557,7 +2503,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820184716"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820185217"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
