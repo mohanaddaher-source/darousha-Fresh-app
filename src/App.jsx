@@ -2531,7 +2531,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820175734"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820181954"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -8592,7 +8592,7 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
   }
 
   function buildMatches(list, group) {
-    return (list || []).map((ing) => {
+    const raw = (list || []).map((ing) => {
       const product = matchIngredientToProduct(ing.name, products);
       let conv = null;
       if (product) {
@@ -8602,6 +8602,32 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
       }
       return { ingredient: ing, product, conv, key: `${group}:${ing.name}`, group };
     });
+
+    // The AI sometimes describes the same real product two different ways
+    // (e.g. "bell pepper" and "red pepper" both matching Bell Pepper (Red)) —
+    // merge those into a single row with combined quantity rather than
+    // showing the same product twice.
+    const merged = [];
+    const seenByProductId = new Map();
+    raw.forEach((m) => {
+      if (!m.product) {
+        merged.push(m);
+        return;
+      }
+      const existing = seenByProductId.get(m.product.id);
+      if (existing) {
+        const addQty = m.conv ? m.conv.qty : 1;
+        existing.conv = {
+          qty: (existing.conv ? existing.conv.qty : 0) + addQty,
+          estimated: (existing.conv && existing.conv.estimated) || (m.conv && m.conv.estimated) || false,
+        };
+      } else {
+        const copy = { ...m };
+        seenByProductId.set(m.product.id, copy);
+        merged.push(copy);
+      }
+    });
+    return merged;
   }
 
   const requiredMatched = result ? buildMatches(result.required, "required") : [];
