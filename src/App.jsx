@@ -2305,6 +2305,19 @@ const FRUITBOX_SMALL_IMG = "/images/fruitbox-small.jpg";
 const FRUITBOX_MEDIUM_IMG = "/images/fruitbox-medium.jpg";
 const FRUITBOX_LARGE_IMG = "/images/fruitbox-large.jpg";
 const PRODUCT_ONION_IMG = "/images/product-onion.jpg";
+const PRODUCT_SPRING_ONION_IMG = "/images/product-spring-onion.jpg";
+const PRODUCT_SWEET_MELON_IMG = "/images/product-sweet-melon.jpg";
+const PRODUCT_WATERMELON_IMG = "/images/product-watermelon.jpg";
+const PRODUCT_PASSION_FRUIT_IMG = "/images/product-passion-fruit.jpg";
+const PRODUCT_MANGO_GREEN_IMG = "/images/product-mango-green.jpg";
+const PRODUCT_LIME_IMG = "/images/product-lime.jpg";
+const PRODUCT_LOLLO_BIONDE_IMG = "/images/product-lollo-bionde.jpg";
+const PRODUCT_LOLLO_ROSSO_IMG = "/images/product-lollo-rosso.jpg";
+const PRODUCT_GINGER_IMG = "/images/product-ginger.jpg";
+const PRODUCT_BANANA_GREEN_IMG = "/images/product-banana-green.jpg";
+const PRODUCT_AVOCADO_HASS_IMG = "/images/product-avocado-hass.jpg";
+const PRODUCT_DATES_KIMIA_IMG = "/images/product-dates-kimia.jpg";
+const PRODUCT_MAJDOOL_DATE_IMG = "/images/product-majdool-date.jpg";
 
 const PRODUCT_BELLPEPPER_GREEN_IMG = "/images/product-bellpepper-green.jpg";
 const PRODUCT_BELLPEPPER_RED_IMG = "/images/product-bellpepper-red.jpg";
@@ -2332,6 +2345,19 @@ const PRODUCT_REDLEAFLETTUCE_IMG = "/images/product-redleaflettuce.jpg";
 
 Object.assign(REAL_PHOTOS, {
   "red-onion": PRODUCT_ONION_IMG,
+  "spring-onion": PRODUCT_SPRING_ONION_IMG,
+  "sweet-melon": PRODUCT_SWEET_MELON_IMG,
+  "watermelon": PRODUCT_WATERMELON_IMG,
+  "passion-fruit": PRODUCT_PASSION_FRUIT_IMG,
+  "mango-green": PRODUCT_MANGO_GREEN_IMG,
+  "lime": PRODUCT_LIME_IMG,
+  "lollo-bionde": PRODUCT_LOLLO_BIONDE_IMG,
+  "lollo-rosso": PRODUCT_LOLLO_ROSSO_IMG,
+  "ginger": PRODUCT_GINGER_IMG,
+  "banana-green": PRODUCT_BANANA_GREEN_IMG,
+  "avocado-hass": PRODUCT_AVOCADO_HASS_IMG,
+  "dates-kimia": PRODUCT_DATES_KIMIA_IMG,
+  "majdool-date": PRODUCT_MAJDOOL_DATE_IMG,
   "bell-pepper-green": PRODUCT_BELLPEPPER_GREEN_IMG,
   "bell-pepper-red": PRODUCT_BELLPEPPER_RED_IMG,
   "cucumber": PRODUCT_CUCUMBER_IMG,
@@ -2531,7 +2557,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820182321"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820184411"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
