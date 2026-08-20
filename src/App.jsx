@@ -2531,7 +2531,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820181954"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820182321"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -4007,7 +4007,12 @@ function AppShell() {
   // price/stock editing for the built-in catalog stays completely
   // unchanged, while custom products get their own simple add/edit/delete.
   const allProducts = useMemo(() => [...products, ...customProducts], [products, customProducts]);
+  // Frozen Foods is paused on the customer-facing storefront for now (kept
+  // fully intact in Backstage so it can be switched back on later — nothing
+  // deleted, just hidden from Home, Shop, Boxes, and the recipe assistant).
+  const customerProducts = useMemo(() => allProducts.filter((p) => p.category !== "Frozen Foods"), [allProducts]);
   const [boxes, setBoxes] = useState(BOXES);
+  const customerBoxes = useMemo(() => boxes.filter((b) => b.category !== "Frozen Foods"), [boxes]);
   const [promoCodesDb, setPromoCodesDb] = useState(PROMO_CODES);
   const [suppliers, setSuppliers] = useState([]); // [{ id, name, phone }] — registered suppliers to send reorder lists to
   const [cart, setCart] = useState(() => {
@@ -4567,10 +4572,10 @@ function AppShell() {
       )}
       <Header view={view} setView={setView} cartCount={cartCount} user={user} profile={profile} setActiveCategory={setActiveCategory} activeCategory={activeCategory} />
       <main style={{ maxWidth: 1080, margin: "0 auto", padding: "0 18px 64px" }}>
-        {view === "home" && <HomeView setView={setView} setActiveCategory={setActiveCategory} lang={lang} boxes={boxes} products={allProducts} reviews={reviews} />}
+        {view === "home" && <HomeView setView={setView} setActiveCategory={setActiveCategory} lang={lang} boxes={customerBoxes} products={customerProducts} reviews={reviews} />}
         {view === "shop" && (
           <ShopView
-            products={allProducts}
+            products={customerProducts}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
             addToCart={addToCart}
@@ -4579,8 +4584,8 @@ function AppShell() {
             onSubmitItemRequest={submitItemRequest}
           />
         )}
-        {view === "boxes" && <BoxesView addToCart={addToCart} cart={cart} lang={lang} boxes={boxes} products={allProducts} />}
-        {view === "freshboxes" && <FreshBoxesView products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} activeCategory={activeCategory} setActiveCategory={setActiveCategory} onSubmitItemRequest={submitItemRequest} />}
+        {view === "boxes" && <BoxesView addToCart={addToCart} cart={cart} lang={lang} boxes={customerBoxes} products={customerProducts} />}
+        {view === "freshboxes" && <FreshBoxesView products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} activeCategory={activeCategory} setActiveCategory={setActiveCategory} onSubmitItemRequest={submitItemRequest} />}
         {view === "commercial" && <CommercialView onSubmitLead={submitLead} />}
         {view === "cart" && (
           <CartView
@@ -4628,11 +4633,11 @@ function AppShell() {
         {view === "terms" && <TermsView setView={setView} />}
         {view === "location" && <LocationView setView={setView} />}
         {view === "about" && <AboutView setView={setView} />}
-        {view === "recipes" && <RecipesView setView={setView} products={allProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
-        {view === "aicook" && <AiRecipeBuilderView setView={setView} products={allProducts} addToCart={addToCart} logAiRecipeRequest={logAiRecipeRequest} markAiRecipeRequestConverted={markAiRecipeRequestConverted} />}
+        {view === "recipes" && <RecipesView setView={setView} products={customerProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
+        {view === "aicook" && <AiRecipeBuilderView setView={setView} products={customerProducts} addToCart={addToCart} logAiRecipeRequest={logAiRecipeRequest} markAiRecipeRequestConverted={markAiRecipeRequestConverted} />}
         {view === "blog" && <BlogView setView={setView} />}
-        {view === "fruitbuilder" && <FruitBoxBuilder products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
-        {view === "vegetablebuilder" && <VegetableBoxBuilder products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
+        {view === "fruitbuilder" && <FruitBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
+        {view === "vegetablebuilder" && <VegetableBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "account" && (
           <AccountView
             user={user}
