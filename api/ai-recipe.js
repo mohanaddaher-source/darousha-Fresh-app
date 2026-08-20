@@ -1,10 +1,11 @@
 / "What do you want to cook?" — turns a free-text request like "chicken shawarma
-// for 4" into a structured ingredient list. This function NEVER returns product
-// IDs, prices, or anything purchasable directly — only { name, quantity, unit }
-// per ingredient. The actual matching against Darousha's real, active product
-// catalog happens entirely client-side in App.jsx, using data that's already
-// public (the storefront itself). This keeps the non-negotiable rule enforced:
-// the AI can never invent or price a purchasable product — only the existing
+// for 4" into a structured ingredient list, split into required vs optional
+// ingredients. This function NEVER returns product IDs, prices, or anything
+// purchasable directly — only { name, quantity, unit } per ingredient. The
+// actual matching against Darousha's real, active product catalog happens
+// entirely client-side in App.jsx, using data that's already public (the
+// storefront itself). This keeps the non-negotiable rule enforced: the AI
+// can never invent or price a purchasable product — only the existing
 // catalog can.
 //
 // Uses Google's Gemini API, which has a genuinely free tier (no credit card
@@ -22,11 +23,18 @@ const VALID_UNITS = ["gram", "piece", "ml", "bunch"];
 
 const SYSTEM_PROMPT = `You are a recipe assistant for a grocery delivery service. A customer describes a meal they want to cook. Your only job is to figure out the ingredients and realistic quantities needed for the stated number of servings — you do NOT know what the store actually sells, so never mention prices, brands, or specific products/brands.
 
+Split ingredients into two groups:
+- "required": the ingredients that are essential to the dish — without these it isn't the dish.
+- "optional": ingredients that genuinely improve or garnish the dish but aren't essential (e.g. extra olive oil for drizzling, nuts as a topping, a sauce on the side). Keep this list short and only include items that a reasonable cook would consider a real enhancement — do not pad it.
+
 Respond with ONLY valid JSON, no markdown, no code fences, no commentary. Use exactly this shape:
 {
   "recipe_name": string,
   "servings": number,
-  "ingredients": [
+  "required": [
+    { "name": string, "quantity": number, "unit": "gram" | "piece" | "ml" | "bunch" }
+  ],
+  "optional": [
     { "name": string, "quantity": number, "unit": "gram" | "piece" | "ml" | "bunch" }
   ]
 }
@@ -36,7 +44,8 @@ Rules:
 - Use "gram" for solids naturally measured by weight, "ml" for liquids, "piece" for whole countable items (lemons, onions, cucumbers), "bunch" for herbs typically sold in bunches (parsley, mint, cilantro, dill).
 - Do not include salt, pepper, or water as ingredients.
 - If servings aren't specified, assume 4.
-- List at most 15 ingredients.
+- List at most 15 ingredients total across both groups, with "optional" capped at 4.
+- "optional" can be an empty array if nothing genuinely optional applies.
 - If the request doesn't describe an actual meal or dish, respond with exactly: {"error": "unclear"}`;
 
 export default async function handler(req, res) {
@@ -62,8 +71,7 @@ export default async function handler(req, res) {
     const aiRes = await fetch(
       https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey},
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST",headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents: [{ role: "user", parts: [{ text: safeQuery }] }],
@@ -105,23 +113,29 @@ export default async function handler(req, res) {
       !parsed ||
       typeof parsed.recipe_name !== "string" ||
       typeof parsed.servings !== "number" ||
-      !Array.isArray(parsed.ingredients) ||
-      parsed.ingredients.length === 0
+      !Array.isArray(parsed.required) ||
+      parsed.required.length === 0 ||
+      (parsed.optional !== undefined && !Array.isArray(parsed.optional))
     ) {
       res.status(502).json({ error: "Sorry, we couldn't build that recipe. Try something like 'Fattoush for 4'." });
       return;
     }
 
-    const cleanIngredients = parsed.ingredients
-      .filter((ing) => ing && typeof ing.name === "string" && typeof ing.quantity === "number" && VALID_UNITS.includes(ing.unit))
-      .slice(0, 20)
-      .map((ing) => ({
-        name: ing.name.trim().toLowerCase().slice(0, 60),
-        quantity: Math.max(0, Math.min(ing.quantity, 100000)),
-        unit: ing.unit,
-      }));
+    function cleanList(list) {
+      return (list || [])
+        .filter((ing) => ing && typeof ing.name === "string" && typeof ing.quantity === "number" && VALID_UNITS.includes(ing.unit))
+        .slice(0, 20)
+        .map((ing) => ({
+          name: ing.name.trim().toLowerCase().slice(0, 60),
+          quantity: Math.max(0, Math.min(ing.quantity, 100000)),
+          unit: ing.unit,
+        }));
+    }
 
-    if (cleanIngredients.length === 0) {
+    const cleanRequired = cleanList(parsed.required);
+    const cleanOptional = cleanList(parsed.optional).slice(0, 4);
+
+    if (cleanRequired.length === 0) {
       res.status(502).json({ error: "Sorry, we couldn't build that recipe. Try something like 'Fattoush for 4'." });
       return;
     }
@@ -129,11 +143,11 @@ export default async function handler(req, res) {
     res.status(200).json({
       recipe_name: parsed.recipe_name.trim().slice(0, 80),
       servings: Math.max(1, Math.min(Math.round(parsed.servings), 50)),
-      ingredients: cleanIngredients,
+      required: cleanRequired,
+      optional: cleanOptional,
     });
   } catch (e) {
     console.error("AI recipe handler error:", e);
     res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 }
--
