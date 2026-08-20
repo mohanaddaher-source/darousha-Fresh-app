@@ -2531,7 +2531,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820174525"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820175734"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -8497,88 +8497,157 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
   const { lang } = useLang();
   const isAr = lang === "ar";
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [recipe, setRecipe] = useState(null); // matched entry from RECIPES
-  const [servings, setServings] = useState(4);
+  // Unified shape regardless of source:
+  // { source: "ai" | "local", recipeName, recipeNameAr, tagline, taglineAr,
+  //   baseServings, required: [{name, quantity, unit}], optional: [...],
+  //   pantry, pantryAr }
+  const [result, setResult] = useState(null);
+  const [servings, setServings] = useState(null);
   const [qtyOverride, setQtyOverride] = useState({});
   const [removed, setRemoved] = useState({});
   const [requestId, setRequestId] = useState(null);
 
-  // A handful of real dish names, shown as tappable examples so people know
-  // what's actually in the library rather than guessing blind.
   const EXAMPLE_DISHES = ["Fattoush Salad", "Molokhia", "Shakshuka", "Tabbouleh", "Ratatouille", "Mjadara (Lentils & Rice)"];
 
-  function submit(text) {
+  async function submit(text) {
     const q = (text ?? query).trim();
-    if (!q) return;
+    if (!q || loading) return;
+    if (text !== undefined) setQuery(text);
+    setLoading(true);
     setError(null);
-    setRecipe(null);
+    setResult(null);
     setQtyOverride({});
     setRemoved({});
     setRequestId(null);
 
+    // Try the AI first — handles genuinely arbitrary free text.
+    try {
+      const res = await fetch("/api/ai-recipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: q }),
+      });
+      const data = await res.json();
+      if (res.ok && !data.error && data.recipe_name && Array.isArray(data.required) && data.required.length > 0) {
+        setResult({
+          source: "ai",
+          recipeName: data.recipe_name,
+          recipeNameAr: null,
+          tagline: null,
+          taglineAr: null,
+          baseServings: data.servings,
+          required: data.required,
+          optional: data.optional || [],
+          pantry: null,
+          pantryAr: null,
+        });
+        setServings(data.servings);
+        setLoading(false);
+        return;
+      }
+      if (res.ok && data.error && data.error !== undefined && !data.recipe_name) {
+        // AI reached fine but said "tell us more" — that's a real answer, not
+        // a failure, so don't fall back silently; show it directly.
+        setError(data.error);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      // network/API failure — fall through to local matching below
+    }
+
+    // Fallback: match against the local, always-available recipe library.
     const match = matchRecipeFromQuery(q);
     if (!match) {
       setError(
         isAr
-          ? "لم نجد هذا الطبق. جرّب أحد أطباقنا مثل \"فتوش\" أو \"ملوخية\" أو \"شكشوكة\"."
-          : "We couldn't find that dish. Try one of our recipes like \"Fattoush\", \"Molokhia\", or \"Shakshuka\"."
+          ? "لم نتمكن من إنشاء هذه الوصفة. جرّب أحد أطباقنا مثل \"فتوش\" أو \"ملوخية\" أو \"شكشوكة\"."
+          : "Sorry, we couldn't build that recipe. Try one of our dishes like \"Fattoush\", \"Molokhia\", or \"Shakshuka\"."
       );
+      setLoading(false);
       return;
     }
     const s = parseServingsFromQuery(q);
-    setRecipe(match);
+    setResult({
+      source: "local",
+      recipeName: match.name,
+      recipeNameAr: match.nameAr,
+      tagline: match.tagline,
+      taglineAr: match.taglineAr,
+      baseServings: s,
+      required: match.produce.map((name) => ({ name, quantity: null, unit: null })),
+      optional: [],
+      pantry: match.pantry,
+      pantryAr: match.pantryAr,
+    });
     setServings(s);
-    if (text !== undefined) setQuery(text);
+    setLoading(false);
   }
 
-  // Every produce ingredient run through real product matching — recomputed
-  // live from `recipe` + `products` + `servings`.
-  const matched = recipe
-    ? recipe.produce.map((name) => {
-        const product = matchIngredientToProduct(name, products);
-        const est = product ? estimateRecipeIngredientQty(product, servings) : null;
-        return { name, product, est, key: `req:${name}` };
-      })
-    : [];
-  const available = matched.filter((m) => m.product && !removed[m.key]);
-  const unavailable = matched.filter((m) => !m.product);
+  function scaledQuantity(ing) {
+    if (result.source !== "ai" || !servings || !result.baseServings) return ing.quantity;
+    return ing.quantity * (servings / result.baseServings);
+  }
+
+  function buildMatches(list, group) {
+    return (list || []).map((ing) => {
+      const product = matchIngredientToProduct(ing.name, products);
+      let conv = null;
+      if (product) {
+        conv = result.source === "ai"
+          ? convertIngredientToProductQty({ ...ing, quantity: scaledQuantity(ing) }, product)
+          : estimateRecipeIngredientQty(product, servings);
+      }
+      return { ingredient: ing, product, conv, key: `${group}:${ing.name}`, group };
+    });
+  }
+
+  const requiredMatched = result ? buildMatches(result.required, "required") : [];
+  const optionalMatched = result ? buildMatches(result.optional, "optional") : [];
+  const allMatched = [...requiredMatched, ...optionalMatched];
+
+  const requiredAvailable = requiredMatched.filter((m) => m.product && !removed[m.key]);
+  const optionalAvailable = optionalMatched.filter((m) => m.product && !removed[m.key]);
+  const unavailable = allMatched.filter((m) => !m.product);
+  const allAvailable = [...requiredAvailable, ...optionalAvailable];
 
   function getQty(m) {
-    return qtyOverride[m.key] ?? (m.est ? m.est.qty : 1);
+    return qtyOverride[m.key] ?? (m.conv ? m.conv.qty : 1);
   }
   function lineTotal(m) {
     if (!m.product) return 0;
     return getQty(m) * effectivePrice(m.product);
   }
-  const orderTotal = available.reduce((sum, m) => sum + lineTotal(m), 0);
+  const orderTotal = allAvailable.reduce((sum, m) => sum + lineTotal(m), 0);
 
   useEffect(() => {
-    if (!recipe || !logAiRecipeRequest) return;
+    if (!result || !logAiRecipeRequest) return;
     let cancelled = false;
     (async () => {
       const id = await logAiRecipeRequest({
-        recipeName: recipe.name,
-        servings,
-        requiredNames: recipe.produce,
-        optionalNames: [],
-        unavailableNames: unavailable.map((m) => m.name),
+        recipeName: result.recipeName,
+        servings: result.baseServings,
+        requiredNames: (result.required || []).map((i) => i.name),
+        optionalNames: (result.optional || []).map((i) => i.name),
+        unavailableNames: unavailable.map((m) => m.ingredient.name),
       });
       if (!cancelled) setRequestId(id);
     })();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recipe]);
+  }, [result]);
 
   function addAllAvailable() {
-    available.forEach((m) => {
+    allAvailable.forEach((m) => {
       const p = m.product;
       addToCart({
         id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: getQty(m), kind: "item",
-        source: "recipe_builder", recipeName: recipe.name, recipeServings: servings,
+        source: "ai_recipe", recipeName: result.recipeName, recipeServings: servings,
       });
     });
-    if (markAiRecipeRequestConverted) markAiRecipeRequestConverted(requestId, available.length);
+    if (markAiRecipeRequestConverted) markAiRecipeRequestConverted(requestId, allAvailable.length);
     setView("cart");
   }
 
@@ -8593,7 +8662,7 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
           <div style={{ fontSize: 13.5, fontWeight: 700 }}>{prodName(p.name, lang)}</div>
           <div style={{ fontSize: 11.5, opacity: 0.6 }}>
             {money(effectivePrice(p))} / {unitName(p.unit, lang)}
-            <span style={{ color: BRAND.orangeDeep, fontWeight: 700 }}> · {isAr ? "تقديري" : "estimated"}</span>
+            {m.conv && m.conv.estimated && <span style={{ color: BRAND.orangeDeep, fontWeight: 700 }}> · {isAr ? "تقديري" : "estimated"}</span>}
           </div>
         </div>
         <div style={{ textAlign: "right", marginRight: 4 }}>
@@ -8614,13 +8683,13 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
   return (
     <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto" }}>
       <SectionTitle
-        eyebrow={isAr ? "مساعد الطبخ الذكي" : "Smart Cooking Assistant"}
+        eyebrow={isAr ? "مساعد الطبخ الذكي بالذكاء الاصطناعي" : "Smart AI Cooking Assistant"}
         title={isAr ? "ماذا تريد أن تطبخ؟" : "What do you want to cook?"}
       />
       <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
         {isAr
-          ? "اكتب اسم طبق من وصفاتنا مثل \"فتوش لـ 4\" أو \"ملوخية لـ 6\"، وسنبني قائمة تسوقك من منتجات Darousha الفعلية."
-          : "Type a dish from our recipe collection, like \"Fattoush for 4\" or \"Molokhia for 6\", and we'll build your shopping list from real Darousha products."}
+          ? "أخبرنا بما تشتهيه. سيقوم الذكاء الاصطناعي ببناء قائمة تسوق باستخدام المنتجات المتوفرة لدى Darousha."
+          : "Tell us what you're craving. Our AI will build your shopping list using products available on Darousha."}
       </p>
 
       <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
@@ -8631,12 +8700,12 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
           placeholder={isAr ? "مثال: فتوش لـ 4 أشخاص" : "e.g. Fattoush for 4"}
           style={{ ...inputStyle, flex: 1 }}
         />
-        <PrimaryButton onClick={() => submit()}>
-          {isAr ? "جهّز مكوناتي" : "Build My Ingredients"}
+        <PrimaryButton onClick={() => submit()} disabled={loading}>
+          {loading ? (isAr ? "جارٍ التحضير…" : "Building…") : (isAr ? "جهّز مكوناتي" : "Build My Ingredients")}
         </PrimaryButton>
       </div>
 
-      {!recipe && !error && (
+      {!result && !error && !loading && (
         <div style={{ marginTop: 16, display: "flex", flexWrap: "wrap", gap: 8 }}>
           {EXAMPLE_DISHES.map((d) => (
             <button
@@ -8656,12 +8725,18 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
         </div>
       )}
 
-      {recipe && (
+      {result && (
         <div style={{ marginTop: 26 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
             <div>
-              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>{isAr ? recipe.nameAr : recipe.name}</div>
-              <div style={{ fontSize: 13, opacity: 0.65, marginTop: 2 }}>{isAr ? recipe.taglineAr : recipe.tagline}</div>
+              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>
+                {result.source === "local" && isAr ? result.recipeNameAr : result.recipeName}
+              </div>
+              <div style={{ fontSize: 13, opacity: 0.65, marginTop: 2 }}>
+                {result.source === "local"
+                  ? (isAr ? result.taglineAr : result.tagline)
+                  : (isAr ? "وجدنا المكونات التي تحتاجها" : "We found the ingredients you need")}
+              </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 999, padding: "6px 8px 6px 14px" }}>
               <span style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.7 }}>{isAr ? "لعدد الأشخاص" : "Serves"}</span>
@@ -8671,13 +8746,24 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
             </div>
           </div>
 
-          {available.length > 0 && (
+          {requiredAvailable.length > 0 && (
             <div style={{ marginTop: 20 }}>
               <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", color: BRAND.green, marginBottom: 10 }}>
-                ✓ {isAr ? "متوفر لدى Darousha" : "Available on Darousha"}
+                ✓ {isAr ? "المكونات الأساسية" : "Required Ingredients"}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {available.map(renderIngredientRow)}
+                {requiredAvailable.map(renderIngredientRow)}
+              </div>
+            </div>
+          )}
+
+          {optionalAvailable.length > 0 && (
+            <div style={{ marginTop: 20 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", color: BRAND.orangeDeep, marginBottom: 10 }}>
+                ✨ {isAr ? "اختياري / موصى به" : "Optional / Recommended"}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {optionalAvailable.map(renderIngredientRow)}
               </div>
             </div>
           )}
@@ -8690,20 +8776,20 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {unavailable.map((m) => (
                   <span key={m.key} style={{ fontSize: 12.5, opacity: 0.6, background: BRAND.creamDeep, borderRadius: 999, padding: "6px 12px" }}>
-                    {m.name}
+                    {m.ingredient.name}
                   </span>
                 ))}
               </div>
             </div>
           )}
 
-          {recipe.pantry && recipe.pantry.length > 0 && (
+          {result.source === "local" && result.pantry && result.pantry.length > 0 && (
             <div style={{ marginTop: 20 }}>
               <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", opacity: 0.5, marginBottom: 10 }}>
                 {isAr ? "من مطبخك أيضًا (غير مُباع لدينا)" : "You'll Also Need (not sold here)"}
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {(isAr ? recipe.pantryAr : recipe.pantry).map((item, i) => (
+                {(isAr ? result.pantryAr : result.pantry).map((item, i) => (
                   <span key={i} style={{ fontSize: 12.5, opacity: 0.6, background: BRAND.creamDeep, borderRadius: 999, padding: "6px 12px" }}>
                     {item}
                   </span>
@@ -8712,7 +8798,7 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
             </div>
           )}
 
-          {available.length > 0 && (
+          {allAvailable.length > 0 && (
             <div style={{ marginTop: 24, borderTop: `1px solid ${BRAND.creamDeep}`, paddingTop: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                 <span style={{ fontSize: 13, fontWeight: 700, opacity: 0.7 }}>{isAr ? "الإجمالي" : "Total"}</span>
@@ -8720,15 +8806,15 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
               </div>
               <p style={{ fontSize: 11, opacity: 0.5, marginBottom: 14 }}>
                 {isAr
-                  ? "الكميات تقديرية بناءً على عدد الأشخاص. تُباع المنتجات الطازجة بالوزن وقد يختلف السعر النهائي قليلاً."
-                  : "Quantities are estimated based on servings. Fresh produce is sold by weight, so the final price may vary slightly."}
+                  ? "تُباع المنتجات الطازجة بالوزن. قد يختلف السعر النهائي قليلاً حسب الوزن الفعلي عند التعبئة."
+                  : "Fresh produce is sold by weight. Final price may vary slightly based on actual packed weight."}
               </p>
               <PrimaryButton onClick={addAllAvailable} full>
-                {isAr ? `أضف ${available.length} مكونات متوفرة للسلة` : `Add ${available.length} Available Ingredient${available.length === 1 ? "" : "s"} to Cart`}
+                {isAr ? `أضف ${allAvailable.length} مكونات متوفرة للسلة` : `Add ${allAvailable.length} Available Ingredient${allAvailable.length === 1 ? "" : "s"} to Cart`}
               </PrimaryButton>
             </div>
           )}
-          {available.length === 0 && (
+          {allAvailable.length === 0 && (
             <div style={{ marginTop: 20, fontSize: 13.5, opacity: 0.7 }}>
               {isAr ? "لا تتوفر لدينا حاليًا مكونات هذه الوجبة." : "We don't currently have the ingredients for this meal."}
             </div>
