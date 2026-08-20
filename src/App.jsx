@@ -694,6 +694,7 @@ const CATALOG = [
 const RECIPES = [
   {
     id: "fattoush",
+    cuisine: "arabic",
     name: "Fattoush Salad", nameAr: "سلطة فتوش",
     tagline: "Crisp, tangy Levantine bread salad", taglineAr: "سلطة خبز شامية منعشة وحامضة",
     produce: ["Romaine Lettuce", "Tomato", "Cucumber", "Bell Pepper (Green)", "Purslane", "Parsley", "Mint", "Shallots", "Garlic", "Lemon"],
@@ -714,6 +715,7 @@ const RECIPES = [
   },
   {
     id: "tabbouleh",
+    cuisine: "arabic",
     name: "Tabbouleh", nameAr: "تبولة",
     tagline: "Herb-forward parsley & tomato salad", taglineAr: "سلطة بقدونس وطماطم غنية بالأعشاب",
     produce: ["Parsley", "Mint", "Tomato", "Shallots", "Lemon"],
@@ -734,6 +736,7 @@ const RECIPES = [
   },
   {
     id: "molokhia",
+    cuisine: "arabic",
     name: "Molokhia", nameAr: "ملوخية",
     tagline: "Classic Middle Eastern green stew", taglineAr: "طبخة خضراء شرق أوسطية كلاسيكية",
     produce: ["Molokhia", "Garlic", "Coriander (Cilantro)", "Lemon"],
@@ -754,6 +757,7 @@ const RECIPES = [
   },
   {
     id: "warak-enab",
+    cuisine: "arabic",
     name: "Stuffed Vine Leaves", nameAr: "ورق عنب محشي",
     tagline: "Rice-stuffed grape leaves, warak enab", taglineAr: "ورق عنب محشو بالأرز",
     produce: ["Vine Leaves", "Tomato", "Garlic", "Mint", "Lemon"],
@@ -774,6 +778,7 @@ const RECIPES = [
   },
   {
     id: "roasted-veg",
+    cuisine: "international",
     name: "Roasted Mediterranean Vegetables", nameAr: "خضروات متوسطية مشوية",
     tagline: "Simple oven-roasted vegetable medley", taglineAr: "تشكيلة خضروات مشوية بالفرن بسهولة",
     produce: ["Zucchini", "Eggplant", "Bell Pepper (Red)", "Bell Pepper (Yellow)", "Red Onion", "Garlic", "Rosemary", "Thyme"],
@@ -794,6 +799,7 @@ const RECIPES = [
   },
   {
     id: "greek-salad",
+    cuisine: "international",
     name: "Classic Greek Salad", nameAr: "سلطة يونانية كلاسيكية",
     tagline: "Fresh tomato, cucumber & onion salad", taglineAr: "سلطة طماطم وخيار وبصل منعشة",
     produce: ["Tomato", "Cucumber", "Bell Pepper (Green)", "Red Onion"],
@@ -814,6 +820,7 @@ const RECIPES = [
   },
   {
     id: "baba-ghanoush",
+    cuisine: "arabic",
     name: "Baba Ghanoush", nameAr: "بابا غنوج",
     tagline: "Smoky roasted eggplant dip", taglineAr: "متبّل باذنجان مشوي بنكهة مدخنة",
     produce: ["Eggplant", "Garlic", "Lemon", "Parsley"],
@@ -834,6 +841,7 @@ const RECIPES = [
   },
   {
     id: "shakshuka",
+    cuisine: "arabic",
     name: "Shakshuka", nameAr: "شكشوكة",
     tagline: "Eggs poached in spiced tomato sauce", taglineAr: "بيض مطهو في صلصة طماطم متبّلة",
     produce: ["Tomato", "Bell Pepper (Red)", "Yellow Onion", "Garlic", "Coriander (Cilantro)"],
@@ -854,6 +862,7 @@ const RECIPES = [
   },
   {
     id: "cucumber-yogurt",
+    cuisine: "arabic",
     name: "Cucumber Mint Yogurt Salad", nameAr: "سلطة خيار بلبن ونعناع",
     tagline: "Cooling yogurt salad, khyar bi laban", taglineAr: "سلطة لبن منعشة، خيار بلبن",
     produce: ["Cucumber", "Mint", "Garlic"],
@@ -874,6 +883,7 @@ const RECIPES = [
   },
   {
     id: "roasted-cauliflower",
+    cuisine: "arabic",
     name: "Roasted Cauliflower with Tahini", nameAr: "قرنبيط مشوي بالطحينة",
     tagline: "Charred cauliflower, tahini drizzle", taglineAr: "قرنبيط محمّص مع صلصة الطحينة",
     produce: ["Cauliflower", "Garlic", "Parsley", "Lemon"],
@@ -894,6 +904,7 @@ const RECIPES = [
   },
   {
     id: "lentil-soup",
+    cuisine: "international",
     name: "Lentil Soup", nameAr: "شوربة عدس",
     tagline: "Warm, comforting shorbat adas", taglineAr: "شوربة عدس دافئة ومريحة",
     produce: ["Carrot", "Yellow Onion", "Garlic", "Lemon"],
@@ -914,6 +925,7 @@ const RECIPES = [
   },
   {
     id: "sauteed-spinach",
+    cuisine: "international",
     name: "Sautéed Spinach with Garlic", nameAr: "سبانخ سوتيه بالثوم",
     tagline: "Simple, quick garlicky spinach", taglineAr: "سبانخ سريعة بنكهة الثوم",
     produce: ["Spinach", "Garlic", "Lemon", "Yellow Onion"],
@@ -934,6 +946,7 @@ const RECIPES = [
   },
   {
     id: "loubieh",
+    cuisine: "arabic",
     name: "Green Beans in Olive Oil", nameAr: "لوبية بزيت الزيتون",
     tagline: "Classic Levantine green bean stew, loubieh bil zeit", taglineAr: "طبخة لوبية شامية كلاسيكية بزيت الزيتون",
     produce: ["Green Beans", "Tomato", "Yellow Onion", "Garlic"],
@@ -954,6 +967,7 @@ const RECIPES = [
   },
   {
     id: "roasted-beetroot",
+    cuisine: "international",
     name: "Roasted Beetroot & Garlic", nameAr: "شمندر مشوي بالثوم",
     tagline: "Sweet, earthy roasted beets", taglineAr: "شمندر مشوي حلو المذاق بنكهة ترابية",
     produce: ["Beetroot", "Garlic", "Lemon", "Parsley"],
@@ -974,6 +988,7 @@ const RECIPES = [
   },
   {
     id: "mushroom-saute",
+    cuisine: "international",
     name: "Garlic Mushroom Sauté", nameAr: "فطر سوتيه بالثوم",
     tagline: "Quick, savory mushrooms in garlic butter", taglineAr: "فطر سريع بنكهة الثوم والزبدة",
     produce: ["Brown Mushroom", "Garlic", "Parsley", "Lemon"],
@@ -994,6 +1009,7 @@ const RECIPES = [
   },
   {
     id: "sweet-potato-wedges",
+    cuisine: "international",
     name: "Roasted Sweet Potato Wedges", nameAr: "بطاطا حلوة مشوية",
     tagline: "Crispy-edged herb-roasted wedges", taglineAr: "أصابع بطاطا حلوة مقرمشة بالأعشاب",
     produce: ["Sweet Potato", "Garlic"],
@@ -1014,6 +1030,7 @@ const RECIPES = [
   },
   {
     id: "garlic-broccoli",
+    cuisine: "international",
     name: "Garlic Roasted Broccoli", nameAr: "بروكلي مشوي بالثوم",
     tagline: "Simple, fast, crispy-edged broccoli", taglineAr: "بروكلي سريع ومقرمش بنكهة الثوم",
     produce: ["Broccoli", "Garlic", "Lemon"],
@@ -1034,6 +1051,7 @@ const RECIPES = [
   },
   {
     id: "tropical-fruit-salad",
+    cuisine: "international",
     name: "Tropical Fruit Salad", nameAr: "سلطة فواكه استوائية",
     tagline: "Mango, pineapple, dragon fruit & pomegranate", taglineAr: "مانجو وأناناس وفاكهة التنين والرمان",
     produce: ["Mango", "Pineapple", "Dragon Fruit", "Pomegranate"],
@@ -1054,6 +1072,7 @@ const RECIPES = [
   },
   {
     id: "blueberry-banana-smoothie",
+    cuisine: "international",
     name: "Blueberry & Banana Smoothie", nameAr: "سموذي التوت الأزرق والموز",
     tagline: "Thick, cold, and packed with berries", taglineAr: "سموذي بارد وسميك مليء بالتوت",
     produce: ["Blueberries", "Banana", "Strawberry"],
@@ -1074,6 +1093,7 @@ const RECIPES = [
   },
   {
     id: "honey-peach-grape-platter",
+    cuisine: "international",
     name: "Honey Peach & Grape Platter", nameAr: "طبق خوخ عسلي وعنب",
     tagline: "An easy no-cook fruit board", taglineAr: "طبق فواكه سهل بلا طهي",
     produce: ["Honey Peach", "Grapes (Red)", "Grapes (Green)", "Apple"],
@@ -1094,6 +1114,7 @@ const RECIPES = [
   },
   {
     id: "pomegranate-mandarin-salad",
+    cuisine: "international",
     name: "Pomegranate & Mandarin Salad", nameAr: "سلطة رمان ويوسفي",
     tagline: "A bright, jewel-toned winter salad", taglineAr: "سلطة شتوية زاهية بألوان الجواهر",
     produce: ["Pomegranate", "Mandarin", "Mint"],
@@ -1114,6 +1135,7 @@ const RECIPES = [
   },
   {
     id: "strawberry-mint-lemonade",
+    cuisine: "international",
     name: "Strawberry Mint Lemonade", nameAr: "ليموناضة الفراولة والنعناع",
     tagline: "Cold, sweet-tart, and endlessly refreshing", taglineAr: "مشروب بارد ومنعش بطعم حلو حامض",
     produce: ["Strawberry", "Lemon", "Mint"],
@@ -1134,6 +1156,7 @@ const RECIPES = [
   },
   {
     id: "bamia-okra-stew",
+    cuisine: "arabic",
     name: "Bamia (Okra & Tomato Stew)", nameAr: "بامية باللحم أو نباتية",
     tagline: "Classic Middle Eastern okra stew", taglineAr: "طبخة البامية الشرق أوسطية الكلاسيكية",
     produce: ["Okra", "Tomato", "Garlic", "Yellow Onion", "Coriander (Cilantro)"],
@@ -1154,6 +1177,7 @@ const RECIPES = [
   },
   {
     id: "roasted-pumpkin-soup",
+    cuisine: "international",
     name: "Roasted Pumpkin Soup", nameAr: "شوربة اليقطين المشوي",
     tagline: "Warm, creamy, and naturally sweet", taglineAr: "شوربة دافئة وكريمية وحلوة بشكل طبيعي",
     produce: ["Pumpkin", "Yellow Onion", "Garlic", "Thyme"],
@@ -1174,6 +1198,7 @@ const RECIPES = [
   },
   {
     id: "roasted-baby-potatoes",
+    cuisine: "international",
     name: "Garlic Herb Baby Potatoes", nameAr: "بطاطا صغيرة بالثوم والأعشاب",
     tagline: "Crispy outside, soft in the middle", taglineAr: "مقرمشة من الخارج وطرية من الداخل",
     produce: ["Baby Potato", "Garlic", "Rosemary"],
@@ -1194,6 +1219,7 @@ const RECIPES = [
   },
   {
     id: "pickled-turnip",
+    cuisine: "arabic",
     name: "Pickled Turnip (Kabees el Lift)", nameAr: "كبيس اللفت",
     tagline: "The pink pickle on every mezze table", taglineAr: "المخلل الوردي الذي لا يغيب عن مائدة المقبلات",
     produce: ["Turnip", "Beetroot", "Garlic"],
@@ -1214,6 +1240,7 @@ const RECIPES = [
   },
   {
     id: "kousa-mahshi",
+    cuisine: "arabic",
     name: "Kousa Mahshi (Stuffed Zucchini)", nameAr: "كوسا محشية",
     tagline: "Rice-stuffed zucchini in tomato sauce", taglineAr: "كوسا محشوة بالأرز في صلصة الطماطم",
     produce: ["Kousa (Light Green Zucchini)", "Tomato", "Yellow Onion", "Garlic"],
@@ -1234,6 +1261,7 @@ const RECIPES = [
   },
   {
     id: "batata-harra",
+    cuisine: "arabic",
     name: "Batata Harra (Spicy Potatoes)", nameAr: "بطاطا حرة",
     tagline: "Crispy potatoes with garlic, chili & coriander", taglineAr: "بطاطا مقرمشة بالثوم والفلفل الحار والكزبرة",
     produce: ["Baby Potato", "Garlic", "Coriander (Cilantro)", "Green Chili"],
@@ -1254,6 +1282,7 @@ const RECIPES = [
   },
   {
     id: "zaatar-manouche",
+    cuisine: "arabic",
     name: "Za'atar Man'ouche", nameAr: "منقوشة زعتر",
     tagline: "The classic breakfast flatbread", taglineAr: "خبز الفطور الكلاسيكي",
     produce: ["Tomato", "Mint"],
@@ -1274,6 +1303,7 @@ const RECIPES = [
   },
   {
     id: "maqluba",
+    cuisine: "arabic",
     name: "Maqluba (Upside-Down Rice)", nameAr: "مقلوبة",
     tagline: "Layered rice, eggplant & cauliflower, flipped tableside", taglineAr: "أرز مطبق مع الباذنجان والقرنبيط، يُقلب على المائدة",
     produce: ["Eggplant", "Cauliflower", "Carrot", "Yellow Onion"],
@@ -1294,6 +1324,7 @@ const RECIPES = [
   },
   {
     id: "fattet-hummus",
+    cuisine: "arabic",
     name: "Fattet Hummus", nameAr: "فتة حمص",
     tagline: "Layered chickpeas, yogurt & crisp bread", taglineAr: "طبقات من الحمص واللبن والخبز المقرمش",
     produce: ["Garlic", "Mint"],
@@ -1314,6 +1345,7 @@ const RECIPES = [
   },
   {
     id: "honey-roasted-roots",
+    cuisine: "international",
     name: "Honey Roasted Root Vegetables", nameAr: "خضروات جذرية مشوية بالعسل",
     tagline: "Beetroot, turnip & parsnip, glazed and caramelized", taglineAr: "شمندر ولفت وجزر أبيض مغطاة بالعسل ومكرملة",
     produce: ["Beetroot", "Turnip", "Parsnip"],
@@ -1334,6 +1366,7 @@ const RECIPES = [
   },
   {
     id: "spiced-carrot-chickpea-bowl",
+    cuisine: "international",
     name: "Spiced Carrot & Chickpea Bowl", nameAr: "طبق الجزر والحمص المتبّل",
     tagline: "A warm, filling bowl with bold spice", taglineAr: "طبق دافئ ومُشبع بنكهة قوية",
     produce: ["Carrot", "Garlic", "Coriander (Cilantro)"],
@@ -1354,6 +1387,7 @@ const RECIPES = [
   },
   {
     id: "creamy-pumpkin-risotto",
+    cuisine: "italian",
     name: "Creamy Pumpkin Risotto", nameAr: "ريزوتو اليقطين الكريمي",
     tagline: "Comforting, golden, and slow-stirred", taglineAr: "طبق دافئ وذهبي يُحضّر بالتقليب البطيء",
     produce: ["Pumpkin", "Yellow Onion", "Garlic"],
@@ -1373,6 +1407,7 @@ const RECIPES = [
   },
   {
     id: "herb-oil-dip-board",
+    cuisine: "international",
     name: "Herb & Olive Oil Dip Board", nameAr: "طبق غموس الأعشاب وزيت الزيتون",
     tagline: "A simple, elegant starter for any table", taglineAr: "مقبّلات بسيطة وأنيقة لأي مائدة",
     produce: ["Fresh Garlic", "Chili Pepper"],
@@ -1393,6 +1428,7 @@ const RECIPES = [
   },
   {
     id: "freekeh-vegetable-pilaf",
+    cuisine: "arabic",
     name: "Freekeh & Vegetable Pilaf", nameAr: "فريكة بالخضار",
     tagline: "Smoky roasted green wheat with vegetables", taglineAr: "قمح أخضر مشوي مع الخضار",
     produce: ["Carrot", "Yellow Onion", "Green Almonds (Seasonal)"],
@@ -1413,6 +1449,7 @@ const RECIPES = [
   },
   {
     id: "cherry-almond-salad",
+    cuisine: "international",
     name: "Cherry & Almond Salad", nameAr: "سلطة الكرز واللوز",
     tagline: "Sweet, crisp, and a little bit fancy", taglineAr: "حلوة ومقرمشة وأنيقة قليلًا",
     produce: ["Cherry", "Rocket (Arugula)", "Lemon"],
@@ -1433,6 +1470,7 @@ const RECIPES = [
   },
   {
     id: "peach-berry-bowl",
+    cuisine: "international",
     name: "Flat Peach & Berry Bowl", nameAr: "طبق الخوخ المفلطح والتوت",
     tagline: "A bright summer breakfast or dessert", taglineAr: "فطور أو حلى صيفي منعش",
     produce: ["Flat Peach", "Blackberry", "Raspberry", "Mint"],
@@ -1453,6 +1491,7 @@ const RECIPES = [
   },
   {
     id: "apricot-honey-breakfast",
+    cuisine: "international",
     name: "Apricot & Honey Breakfast Bowl", nameAr: "طبق فطور المشمش والعسل",
     tagline: "A simple, golden way to start the day", taglineAr: "بداية ذهبية وبسيطة للنهار",
     produce: ["Apricot"],
@@ -1473,6 +1512,7 @@ const RECIPES = [
   },
   {
     id: "mixed-berry-compote",
+    cuisine: "international",
     name: "Mixed Berry Compote", nameAr: "كومبوت التوت المشكّل",
     tagline: "A warm sauce for pancakes, yogurt, or ice cream", taglineAr: "صوص دافئ للبان كيك أو اللبن أو الآيس كريم",
     produce: ["Blackberry", "Raspberry", "Lemon"],
@@ -1493,6 +1533,7 @@ const RECIPES = [
   },
   {
     id: "fried-kibbeh-platter",
+    cuisine: "arabic",
     name: "Fried Kibbeh Platter", nameAr: "طبق الكبة المقلية",
     tagline: "Ready-to-fry, served the classic way", taglineAr: "جاهزة للقلي، تُقدّم بالطريقة التقليدية",
     produce: ["Lemon", "Fresh Garlic"],
@@ -1513,6 +1554,7 @@ const RECIPES = [
   },
   {
     id: "cherry-blackberry-lemonade",
+    cuisine: "international",
     name: "Cherry & Blackberry Lemonade", nameAr: "ليموناضة الكرز والتوت الأسود",
     tagline: "A deep-red, fruity twist on classic lemonade", taglineAr: "ليموناضة بلمسة فاكهية حمراء غامقة",
     produce: ["Cherry", "Blackberry", "Lemon", "Mint"],
@@ -1533,6 +1575,7 @@ const RECIPES = [
   },
   {
     id: "kale-cabbage-slaw",
+    cuisine: "international",
     name: "Kale & White Cabbage Slaw", nameAr: "سلطة الكرنب واللفت الأبيض",
     tagline: "Crunchy, bright, and packed with greens", taglineAr: "مقرمشة ومنعشة وغنية بالخضار",
     produce: ["Kale", "White Cabbage", "Carrot", "Lemon"],
@@ -1553,6 +1596,7 @@ const RECIPES = [
   },
   {
     id: "braised-leeks-fennel",
+    cuisine: "international",
     name: "Braised Leeks & Fennel", nameAr: "كراث وشمر مطهو ببطء",
     tagline: "Gentle, savory, and elegant on the side", taglineAr: "طبق جانبي لطيف ومذاق راقٍ",
     produce: ["Leek", "Fennel", "Garlic"],
@@ -1573,6 +1617,7 @@ const RECIPES = [
   },
   {
     id: "roasted-brussels-sprouts",
+    cuisine: "international",
     name: "Roasted Brussels Sprouts with Garlic", nameAr: "كرنب بروكسل مشوي بالثوم",
     tagline: "Crispy edges, caramelized and savory", taglineAr: "حواف مقرمشة ونكهة مكرملة",
     produce: ["Brussels Sprouts", "Garlic", "Lemon"],
@@ -1593,6 +1638,7 @@ const RECIPES = [
   },
   {
     id: "snap-peas-sautee",
+    cuisine: "international",
     name: "Sautéed Snow Peas & Sugar Snap Peas", nameAr: "بازلاء الثلج والسكر المقلية",
     tagline: "Quick, crisp, and bright green", taglineAr: "سريعة ومقرمشة وخضراء نضرة",
     produce: ["Snow Peas", "Sugar Snap Peas", "Garlic", "Green Chili"],
@@ -1613,6 +1659,7 @@ const RECIPES = [
   },
   {
     id: "mushroom-medley",
+    cuisine: "international",
     name: "Garlic Butter Mushroom Medley", nameAr: "تشكيلة فطر بالثوم والزبدة",
     tagline: "Portobello, shiitake & oyster, all in one pan", taglineAr: "بورتوبيلو وشيتاكي ومحاري في مقلاة واحدة",
     produce: ["Portobello", "Shiitake", "Oyster Mushroom", "Garlic", "Rosemary"],
@@ -1633,6 +1680,7 @@ const RECIPES = [
   },
   {
     id: "grilled-asparagus-lemon",
+    cuisine: "international",
     name: "Grilled Asparagus with Lemon", nameAr: "هليون مشوي بالليمون",
     tagline: "Simple, elegant, and quick to make", taglineAr: "طبق أنيق وبسيط وسريع التحضير",
     produce: ["Asparagus", "Lemon", "Garlic"],
@@ -1653,6 +1701,7 @@ const RECIPES = [
   },
   {
     id: "watercress-basil-salad",
+    cuisine: "international",
     name: "Watercress & Basil Salad", nameAr: "سلطة جرجير الماء والريحان",
     tagline: "Peppery, fragrant, and refreshing", taglineAr: "منعشة وعطرية بلمسة حارة خفيفة",
     produce: ["Watercress", "Basil", "Lemon", "Cherry Tomato"],
@@ -1673,6 +1722,7 @@ const RECIPES = [
   },
   {
     id: "ratatouille",
+    cuisine: "international",
     name: "Ratatouille", nameAr: "راتاتوي",
     tagline: "French stewed summer vegetables", taglineAr: "طبخة خضار صيفية فرنسية",
     produce: ["Zucchini", "Eggplant", "Bell Pepper (Red)", "Tomato", "Garlic", "Yellow Onion"],
@@ -1693,6 +1743,7 @@ const RECIPES = [
   },
   {
     id: "borscht",
+    cuisine: "russian",
     name: "Borscht", nameAr: "بورش",
     tagline: "Russian beetroot & cabbage soup", taglineAr: "شوربة الشمندر والملفوف الروسية",
     produce: ["Beetroot", "White Cabbage", "Potato", "Carrot", "Yellow Onion", "Garlic", "Dill"],
@@ -1713,6 +1764,7 @@ const RECIPES = [
   },
   {
     id: "olivier-salad",
+    cuisine: "russian",
     name: "Olivier (Russian) Salad", nameAr: "سلطة أوليفيه الروسية",
     tagline: "Creamy diced vegetable & potato salad", taglineAr: "سلطة بطاطس وخضار مقطعة بصلصة كريمية",
     produce: ["Potato", "Carrot", "Green Peas", "Yellow Onion"],
@@ -1733,6 +1785,7 @@ const RECIPES = [
   },
   {
     id: "mjadara",
+    cuisine: "arabic",
     name: "Mjadara (Lentils & Rice)", nameAr: "مجدرة عدس بالأرز",
     tagline: "Lentils and rice topped with caramelized onions", taglineAr: "عدس وأرز مغطى بالبصل المكرمل",
     produce: ["Yellow Onion", "Garlic"],
@@ -1753,6 +1806,7 @@ const RECIPES = [
   },
   {
     id: "foul-medames",
+    cuisine: "arabic",
     name: "Foul Medames", nameAr: "فول مدمس",
     tagline: "Warm stewed fava beans, a Levantine breakfast staple", taglineAr: "فول مدمس دافئ، طبق فطور شامي أساسي",
     produce: ["Broad Beans (Fava)", "Garlic", "Lemon", "Tomato", "Parsley"],
@@ -1773,6 +1827,7 @@ const RECIPES = [
   },
   {
     id: "minestrone",
+    cuisine: "italian",
     name: "Minestrone Soup", nameAr: "شوربة مينستروني",
     tagline: "Hearty Italian vegetable & pasta soup", taglineAr: "شوربة إيطالية غنية بالخضار والمعكرونة",
     produce: ["Zucchini", "Carrot", "Celery", "Tomato", "White Cabbage", "Garlic", "Yellow Onion", "Basil"],
@@ -1793,6 +1848,7 @@ const RECIPES = [
   },
   {
     id: "coleslaw",
+    cuisine: "international",
     name: "Coleslaw", nameAr: "سلطة كول سلو",
     tagline: "Crunchy cabbage & carrot salad", taglineAr: "سلطة ملفوف وجزر مقرمشة",
     produce: ["White Cabbage", "Carrot", "Red Onion"],
@@ -1813,6 +1869,7 @@ const RECIPES = [
   },
   {
     id: "vinegret",
+    cuisine: "russian",
     name: "Vinegret (Russian Beet Salad)", nameAr: "فينيغريت (سلطة الشمندر الروسية)",
     tagline: "Diced beetroot, potato & pickle salad with oil dressing", taglineAr: "سلطة شمندر وبطاطس ومخلل بتتبيلة الزيت",
     produce: ["Beetroot", "Potato", "Carrot", "Yellow Onion"],
@@ -1833,6 +1890,7 @@ const RECIPES = [
   },
   {
     id: "draniki",
+    cuisine: "russian",
     name: "Draniki (Potato Pancakes)", nameAr: "درانيكي (فطائر البطاطس)",
     tagline: "Crispy pan-fried potato & onion pancakes", taglineAr: "فطائر بطاطس وبصل مقلية ومقرمشة",
     produce: ["Potato", "Yellow Onion"],
@@ -1853,6 +1911,7 @@ const RECIPES = [
   },
   {
     id: "bubble-and-squeak",
+    cuisine: "international",
     name: "Bubble and Squeak", nameAr: "بابل آند سكويك",
     tagline: "Classic English pan-fried potato & cabbage cake", taglineAr: "طبق إنجليزي كلاسيكي من البطاطس والملفوف المقلي",
     produce: ["Potato", "White Cabbage", "Carrot", "Yellow Onion"],
@@ -1873,6 +1932,7 @@ const RECIPES = [
   },
   {
     id: "minted-garden-peas",
+    cuisine: "international",
     name: "Minted Garden Peas", nameAr: "بازلاء بالنعناع",
     tagline: "A simple English side of peas and fresh mint", taglineAr: "طبق جانبي إنجليزي بسيط من البازلاء والنعناع الطازج",
     produce: ["Green Peas", "Mint", "Yellow Onion"],
@@ -1893,6 +1953,7 @@ const RECIPES = [
   },
   {
     id: "waldorf-salad",
+    cuisine: "international",
     name: "Waldorf Salad", nameAr: "سلطة والدورف",
     tagline: "Crisp apple, celery, and grape salad", taglineAr: "سلطة تفاح وكرفس وعنب مقرمشة",
     produce: ["Apple", "Celery", "Grapes (Red)"],
@@ -1913,6 +1974,7 @@ const RECIPES = [
   },
   {
     id: "eton-mess",
+    cuisine: "international",
     name: "Eton Mess", nameAr: "إيتون ميس",
     tagline: "Berries, cream, and meringue — English summer in a bowl", taglineAr: "توت وكريمة ومرينغ — الصيف الإنجليزي في طبق",
     produce: ["Strawberry", "Raspberry", "Blackberry"],
@@ -1933,6 +1995,7 @@ const RECIPES = [
   },
   {
     id: "roast-dinner-vegetables",
+    cuisine: "international",
     name: "Roast Dinner Vegetables", nameAr: "خضروات العشاء المشوي الإنجليزي",
     tagline: "Classic roasted potatoes, carrots, and Brussels sprouts", taglineAr: "بطاطس وجزر وكرنب بروكسل مشوية كلاسيكية",
     produce: ["Potato", "Carrot", "Parsnip", "Brussels Sprouts", "Garlic"],
@@ -1953,6 +2016,7 @@ const RECIPES = [
   },
   {
     id: "apple-crumble",
+    cuisine: "international",
     name: "Apple Crumble", nameAr: "كرامبل التفاح",
     tagline: "Warm baked apples under a buttery crumb topping", taglineAr: "تفاح مخبوز دافئ تحت طبقة مقرمشة بالزبدة",
     produce: ["Apple", "Lemon"],
@@ -1973,6 +2037,7 @@ const RECIPES = [
   },
   {
     id: "okroshka",
+    cuisine: "russian",
     name: "Okroshka (Cold Summer Soup)", nameAr: "أوكروشكا (شوربة صيفية باردة)",
     tagline: "A refreshing Russian cold soup of chopped vegetables", taglineAr: "شوربة روسية باردة ومنعشة من الخضروات المفرومة",
     produce: ["Cucumber", "Red Radish", "Spring Onion", "Dill"],
@@ -1993,6 +2058,7 @@ const RECIPES = [
   },
   {
     id: "shchi",
+    cuisine: "russian",
     name: "Shchi (Russian Cabbage Soup)", nameAr: "شّي (شوربة الملفوف الروسية)",
     tagline: "A hearty, traditional Russian cabbage and vegetable soup", taglineAr: "شوربة روسية تقليدية غنية بالملفوف والخضروات",
     produce: ["White Cabbage", "Carrot", "Yellow Onion", "Potato", "Parsley"],
@@ -2013,6 +2079,7 @@ const RECIPES = [
   },
   {
     id: "beet-garlic-salad",
+    cuisine: "russian",
     name: "Beet & Garlic Salad", nameAr: "سلطة الشمندر والثوم",
     tagline: "Simple Russian roasted beetroot with garlic", taglineAr: "سلطة روسية بسيطة من الشمندر المشوي والثوم",
     produce: ["Beetroot", "Garlic"],
@@ -2033,6 +2100,7 @@ const RECIPES = [
   },
   {
     id: "mushroom-julienne",
+    cuisine: "russian",
     name: "Mushroom Julienne", nameAr: "جوليان الفطر",
     tagline: "Creamy Russian baked mushrooms with onion", taglineAr: "فطر روسي مخبوز بالكريمة مع البصل",
     produce: ["White Mushroom", "Brown Mushroom", "Yellow Onion"],
@@ -2053,6 +2121,7 @@ const RECIPES = [
   },
   {
     id: "russian-pickled-vegetables",
+    cuisine: "russian",
     name: "Russian Pickled Vegetables", nameAr: "مخللات روسية",
     tagline: "Quick-pickled cucumber, cabbage, and carrot", taglineAr: "خيار وملفوف وجزر مخلل سريع التحضير",
     produce: ["Cucumber", "White Cabbage", "Carrot", "Garlic", "Dill"],
@@ -2073,6 +2142,7 @@ const RECIPES = [
   },
   {
     id: "berry-kompot",
+    cuisine: "russian",
     name: "Berry Kompot", nameAr: "كومبوت التوت",
     tagline: "A lightly sweetened Russian fruit drink", taglineAr: "مشروب فواكه روسي محلّى بخفة",
     produce: ["Cherry", "Blackberry", "Raspberry", "Apple"],
@@ -2093,6 +2163,7 @@ const RECIPES = [
   },
   {
     id: "aloo-gobi",
+    cuisine: "indian",
     name: "Aloo Gobi", nameAr: "آلو غوبي",
     tagline: "Indian spiced potato and cauliflower stir-fry", taglineAr: "بطاطس وقرنبيط مقلي بالتوابل الهندية",
     produce: ["Potato", "Cauliflower", "Tomato", "Yellow Onion", "Ginger", "Garlic", "Coriander (Cilantro)"],
@@ -2113,6 +2184,7 @@ const RECIPES = [
   },
   {
     id: "baingan-bharta",
+    cuisine: "indian",
     name: "Baingan Bharta", nameAr: "باينغان بارتا",
     tagline: "Smoky roasted eggplant mash, North Indian style", taglineAr: "هريس باذنجان مشوي بنكهة مدخّنة على الطريقة الهندية الشمالية",
     produce: ["Eggplant", "Tomato", "Yellow Onion", "Garlic", "Ginger", "Green Chili", "Coriander (Cilantro)"],
@@ -2133,6 +2205,7 @@ const RECIPES = [
   },
   {
     id: "bhindi-masala",
+    cuisine: "indian",
     name: "Bhindi Masala", nameAr: "بيندي ماسالا",
     tagline: "Spiced okra stir-fry with onion and tomato", taglineAr: "بامية مقلية بالتوابل مع البصل والطماطم",
     produce: ["Okra", "Tomato", "Yellow Onion", "Garlic", "Coriander (Cilantro)"],
@@ -2153,6 +2226,7 @@ const RECIPES = [
   },
   {
     id: "palak-paneer",
+    cuisine: "indian",
     name: "Palak Paneer", nameAr: "بالاك بانير",
     tagline: "Creamy spinach curry with soft paneer cheese", taglineAr: "كاري سبانخ كريمي مع جبنة البانير الطرية",
     produce: ["Spinach", "Tomato", "Yellow Onion", "Garlic", "Ginger", "Green Chili"],
@@ -2173,6 +2247,7 @@ const RECIPES = [
   },
   {
     id: "cucumber-raita",
+    cuisine: "indian",
     name: "Cucumber Raita", nameAr: "رايتا الخيار",
     tagline: "Cool, refreshing Indian yogurt and cucumber side", taglineAr: "طبق جانبي هندي منعش من اللبن والخيار",
     produce: ["Cucumber", "Mint", "Coriander (Cilantro)"],
@@ -2193,6 +2268,7 @@ const RECIPES = [
   },
   {
     id: "kachumber-salad",
+    cuisine: "indian",
     name: "Kachumber Salad", nameAr: "سلطة كاتشومبر",
     tagline: "Crunchy Indian chopped cucumber, tomato & onion salad", taglineAr: "سلطة هندية مقرمشة من الخيار والطماطم والبصل المفروم",
     produce: ["Cucumber", "Tomato", "Red Onion", "Lemon", "Coriander (Cilantro)", "Green Chili"],
@@ -2213,6 +2289,7 @@ const RECIPES = [
   },
   {
     id: "mango-lassi",
+    cuisine: "indian",
     name: "Mango Lassi", nameAr: "لاسي المانجو",
     tagline: "Sweet, creamy Indian mango yogurt drink", taglineAr: "مشروب هندي حلو وكريمي من المانجو واللبن",
     produce: ["Mango"],
@@ -2233,6 +2310,7 @@ const RECIPES = [
   },
   {
     id: "aam-panna",
+    cuisine: "indian",
     name: "Aam Panna (Raw Mango Cooler)", nameAr: "آم بانا (مشروب المانجو الأخضر)",
     tagline: "A tangy, cooling Indian drink made from green mango", taglineAr: "مشروب هندي حامض ومنعش من المانجو الأخضر",
     produce: ["Mango Green", "Mint"],
@@ -2253,6 +2331,7 @@ const RECIPES = [
   },
   {
     id: "green-protein-smoothie",
+    cuisine: "international",
     name: "Green Protein Smoothie", nameAr: "سموذي أخضر بروتيني",
     tagline: "A post-workout blend of spinach, banana, and kiwi", taglineAr: "مزيج ما بعد التمرين من السبانخ والموز والكيوي",
     produce: ["Spinach", "Banana", "Kiwi"],
@@ -2273,6 +2352,7 @@ const RECIPES = [
   },
   {
     id: "tropical-green-smoothie-bowl",
+    cuisine: "international",
     name: "Tropical Green Smoothie Bowl", nameAr: "طبق سموذي أخضر استوائي",
     tagline: "A thick, spoonable smoothie bowl loaded with fruit", taglineAr: "سموذي كثيف يؤكل بالملعقة ومليء بالفواكه",
     produce: ["Mango", "Banana", "Spinach", "Kiwi", "Blueberries"],
@@ -2293,6 +2373,7 @@ const RECIPES = [
   },
   {
     id: "overnight-oats-berries",
+    cuisine: "international",
     name: "Overnight Oats with Berries", nameAr: "شوفان الليل بالتوت",
     tagline: "A make-ahead high-fiber breakfast with fresh berries", taglineAr: "فطور غني بالألياف يُحضّر مسبقًا مع التوت الطازج",
     produce: ["Strawberry", "Blueberries", "Banana"],
@@ -2313,6 +2394,7 @@ const RECIPES = [
   },
   {
     id: "egg-white-spinach-scramble",
+    cuisine: "international",
     name: "Egg White & Spinach Scramble", nameAr: "بيض مخفوق ببياض البيض والسبانخ",
     tagline: "A light, high-protein breakfast scramble", taglineAr: "فطور خفيف وغني بالبروتين",
     produce: ["Spinach", "Tomato", "White Mushroom"],
@@ -2333,6 +2415,7 @@ const RECIPES = [
   },
   {
     id: "quinoa-veggie-power-bowl",
+    cuisine: "international",
     name: "Quinoa Veggie Power Bowl", nameAr: "طبق الكينوا والخضروات المقوّي",
     tagline: "A balanced, protein-rich bowl of quinoa and roasted vegetables", taglineAr: "طبق متوازن وغني بالبروتين من الكينوا والخضروات المشوية",
     produce: ["Broccoli", "Carrot", "Bell Pepper (Red)", "Avocado (Hass)"],
@@ -2353,6 +2436,7 @@ const RECIPES = [
   },
   {
     id: "high-protein-greek-salad",
+    cuisine: "international",
     name: "High-Protein Greek Salad", nameAr: "سلطة يونانية غنية بالبروتين",
     tagline: "A grilled chicken Greek salad for a filling, lean meal", taglineAr: "سلطة يونانية بالدجاج المشوي لوجبة شبعانة وقليلة الدهون",
     produce: ["Cucumber", "Cherry Tomato", "Bell Pepper (Green)", "Red Onion"],
@@ -2373,6 +2457,7 @@ const RECIPES = [
   },
   {
     id: "lean-turkey-lettuce-wraps",
+    cuisine: "international",
     name: "Lean Turkey Lettuce Wraps", nameAr: "لفائف الديك الرومي بالخس",
     tagline: "Light, low-carb wraps packed with lean protein and crunch", taglineAr: "لفائف خفيفة قليلة الكربوهيدرات مليئة بالبروتين والقرمشة",
     produce: ["Lettuce (Iceberg)", "Carrot", "Cucumber", "Spring Onion"],
@@ -2393,6 +2478,7 @@ const RECIPES = [
   },
   {
     id: "roasted-veggie-chickpea-tray-bake",
+    cuisine: "international",
     name: "Roasted Veggie & Chickpea Tray Bake", nameAr: "صينية خضروات وحمص مشوية",
     tagline: "One-tray roasted vegetables and chickpeas for easy meal prep", taglineAr: "خضروات وحمص مشوية في صينية واحدة لتحضير وجبات سهل",
     produce: ["Broccoli", "Cauliflower", "Sweet Potato", "Bell Pepper (Yellow)"],
@@ -2413,6 +2499,7 @@ const RECIPES = [
   },
   {
     id: "tuna-avocado-salad",
+    cuisine: "international",
     name: "Tuna & Avocado Salad", nameAr: "سلطة التونة والأفوكادو",
     tagline: "A fast, lean-protein salad with healthy fats", taglineAr: "سلطة سريعة بالبروتين قليل الدهون والدهون الصحية",
     produce: ["Avocado (Hass)", "Cucumber", "Cherry Tomato", "Romaine Lettuce"],
@@ -2433,6 +2520,7 @@ const RECIPES = [
   },
   {
     id: "steak-asparagus-plate",
+    cuisine: "international",
     name: "Steak & Asparagus Plate", nameAr: "طبق ستيك بالهليون",
     tagline: "A lean, high-protein plate for post-workout recovery", taglineAr: "طبق قليل الدهون وغني بالبروتين لاستعادة النشاط بعد التمرين",
     produce: ["Asparagus", "Cherry Tomato", "Garlic"],
@@ -2453,6 +2541,7 @@ const RECIPES = [
   },
   {
     id: "watermelon-feta-salad",
+    cuisine: "international",
     name: "Watermelon Feta Salad", nameAr: "سلطة البطيخ والفيتا",
     tagline: "A refreshing, hydrating salad for hot workout days", taglineAr: "سلطة منعشة ومرطبة ليوم تمرين حار",
     produce: ["Watermelon", "Mint"],
@@ -2473,6 +2562,7 @@ const RECIPES = [
   },
   {
     id: "detox-green-juice",
+    cuisine: "international",
     name: "Detox Green Juice", nameAr: "عصير أخضر منظّف",
     tagline: "A refreshing juice of cucumber, celery, and apple", taglineAr: "عصير منعش من الخيار والكرفس والتفاح",
     produce: ["Cucumber", "Celery", "Spinach", "Apple", "Lemon", "Ginger"],
@@ -2493,6 +2583,7 @@ const RECIPES = [
   },
   {
     id: "protein-power-salad-chickpeas",
+    cuisine: "international",
     name: "Protein Power Salad with Chickpeas", nameAr: "سلطة بروتينية مقوّية بالحمص",
     tagline: "A filling, fiber-rich salad built for muscle recovery", taglineAr: "سلطة شبعانة وغنية بالألياف لاستعادة العضلات",
     produce: ["Romaine Lettuce", "Cucumber", "Bell Pepper (Red)", "Cherry Tomato"],
@@ -2513,6 +2604,7 @@ const RECIPES = [
   },
   {
     id: "grilled-chicken-veggie-bowl",
+    cuisine: "international",
     name: "Grilled Chicken & Veggie Bowl", nameAr: "طبق الدجاج المشوي والخضروات",
     tagline: "A balanced, macro-friendly bowl for meal prep", taglineAr: "طبق متوازن مناسب لتحضير الوجبات الأسبوعي",
     produce: ["Broccoli", "Bell Pepper (Red)", "Zucchini", "Cherry Tomato"],
@@ -2533,6 +2625,7 @@ const RECIPES = [
   },
   {
     id: "berry-protein-bowl",
+    cuisine: "international",
     name: "Post-Workout Berry Protein Bowl", nameAr: "طبق التوت البروتيني بعد التمرين",
     tagline: "A quick-carb, high-protein bowl for muscle recovery", taglineAr: "طبق سريع الكربوهيدرات وغني بالبروتين لاستعادة العضلات",
     produce: ["Strawberry", "Blueberries", "Banana"],
@@ -3205,7 +3298,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820202328"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820203427"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -8910,6 +9003,14 @@ const BLOG_POSTS = [
   },
 ];
 
+const CUISINE_FLAGS = { arabic: "🇸🇾", indian: "🇮🇳", russian: "🇷🇺", italian: "🇮🇹", international: "🌎" };
+const CUISINE_LABEL = {
+  arabic: { en: "Arabic", ar: "عربي" },
+  indian: { en: "Indian", ar: "هندي" },
+  russian: { en: "Russian", ar: "روسي" },
+  italian: { en: "Italian", ar: "إيطالي" },
+  international: { en: "International", ar: "عالمي" },
+};
 const RECIPE_META = {
   "fattoush": { time: 15, level: "Easy", levelAr: "سهل", servings: "2–4" },
   "tabbouleh": { time: 20, level: "Easy", levelAr: "سهل", servings: "2–4" },
@@ -9043,7 +9144,11 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
               className="dsf-recipe-card"
             >
               {/* Branded header */}
-              <div style={{ background: `linear-gradient(160deg, ${BRAND.green}, ${BRAND.greenDark})`, color: "#fff", padding: 20 }}>
+              <div style={{ background: `linear-gradient(160deg, ${BRAND.green}, ${BRAND.greenDark})`, color: "#fff", padding: 20, position: "relative" }}>
+                <div style={{ position: "absolute", top: 14, [isAr ? "left" : "right"]: 14, background: "rgba(255,255,255,0.15)", borderRadius: 999, padding: "4px 10px", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                  <span style={{ fontSize: 13 }}>{CUISINE_FLAGS[r.cuisine] || CUISINE_FLAGS.international}</span>
+                  <span>{isAr ? CUISINE_LABEL[r.cuisine]?.ar : CUISINE_LABEL[r.cuisine]?.en}</span>
+                </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
                   <img src={REAL_LOGO_IMG} alt="Darousha Fresh" style={{ height: 22, borderRadius: 3 }} />
                 </div>
