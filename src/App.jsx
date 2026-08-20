@@ -337,7 +337,7 @@ const PRODUCT_NAME_AR = {
   "Tomato": "طماطم", "Cherry Tomato": "طماطم كرزية", "Cucumber": "خيار",
   "Bell Pepper (Red)": "فلفل حلو أحمر", "Bell Pepper (Green)": "فلفل حلو أخضر", "Bell Pepper (Yellow)": "فلفل حلو أصفر",
   "Potato": "بطاطا", "Carrot": "جزر", "Eggplant": "باذنجان", "Zucchini": "كوسا",
-  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية", "Egg (Sharjah)": "بيض الشارقة", "Ginger": "زنجبيل",
+  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية", "Ginger": "زنجبيل",
   "Yellow Onion": "بصل أصفر", "Red Onion": "بصل أحمر", "White Onion": "بصل أبيض",
   "Shallots": "بصل شالوت", "Garlic": "ثوم", "Fresh Garlic": "ثوم أخضر طازج", "Spring Onion": "بصل أخضر",
   "Lettuce (Iceberg)": "خس أيسبرغ", "Romaine Lettuce": "خس روماني", "Green Leaf Lettuce": "خس أوراق خضراء",
@@ -626,7 +626,7 @@ const CATALOG = [
     ["Potato","kg",3],["Carrot","kg",4],["Eggplant","kg",5],["Zucchini","kg",6],
     ["Lemon","kg",6],["Chili Pepper","kg",10],["Green Chili","kg",9],["Jalapeno","kg",11],["Sweet Potato","kg",6],["Beetroot","kg",5],
     ["Baby Eggplant","kg",7],["Baby Potato","kg",5],["Mini Cucumber","kg",6],["Yellow Squash","kg",7],
-    ["Red Radish","bunch",4],["White Radish","kg",5],["Egg (Sharjah)","tray",15],
+    ["Red Radish","bunch",4],["White Radish","kg",5],
   ]},
   { cat: "Bulbs", items: [
     ["Yellow Onion","kg",3],["Red Onion","kg",4],["White Onion","kg",4],
@@ -1889,7 +1889,7 @@ const AR_NAME = {
   "Tomato": "طماطم", "Cherry Tomato": "طماطم كرزية", "Cucumber": "خيار",
   "Bell Pepper (Red)": "فلفل رومي أحمر", "Bell Pepper (Green)": "فلفل رومي أخضر", "Bell Pepper (Yellow)": "فلفل رومي أصفر",
   "Potato": "بطاطا", "Carrot": "جزر", "Eggplant": "باذنجان", "Zucchini": "كوسا",
-  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية", "Egg (Sharjah)": "بيض الشارقة", "Ginger": "زنجبيل",
+  "Lemon": "ليمون", "Chili Pepper": "فلفل حار", "Green Chili": "فلفل أخضر حار", "Jalapeno": "هالبينو", "Sweet Potato": "بطاطا حلوة", "Beetroot": "شمندر", "Bell Pepper (Orange)": "فلفل حلو برتقالي", "Baby Eggplant": "باذنجان صغير", "Baby Potato": "بطاطا صغيرة", "Mini Cucumber": "خيار صغير", "Yellow Squash": "كوسا صفراء", "Red Radish": "فجل أحمر", "White Radish": "فجل أبيض", "Pumpkin": "يقطين", "Turnip": "لفت", "Parsnip": "جزر أبيض", "Okra": "بامية", "Ginger": "زنجبيل",
   "Yellow Onion": "بصل أصفر", "Red Onion": "بصل أحمر", "White Onion": "بصل أبيض",
   "Shallots": "بصل شالوت", "Garlic": "ثوم", "Fresh Garlic": "ثوم طازج", "Spring Onion": "بصل أخضر",
   "Lettuce (Iceberg)": "خس أيسبرغ", "Romaine Lettuce": "خس روماني", "Green Leaf Lettuce": "خس أخضر",
@@ -2557,7 +2557,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820184411"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820184716"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
