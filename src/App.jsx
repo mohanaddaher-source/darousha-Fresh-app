@@ -2531,7 +2531,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820152033"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260820160120"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -3511,6 +3511,39 @@ async function updateItemRequestStatusDoc(id, status) {
     return false;
   }
 }
+
+/* AI Recipe Builder requests — one document per search, so Backstage can see
+   demand: which recipes get asked for, which ingredients we don't sell yet,
+   and how often a search actually converts into a cart. Same fire-and-forget,
+   one-doc-per-event pattern as itemRequests. Never blocks the customer flow
+   if the write fails. */
+async function fetchAllAiRecipeRequests() {
+  try {
+    const snap = await getDocs(collection(db, "aiRecipeRequests"));
+    return snap.docs.map((d) => d.data());
+  } catch (e) {
+    console.error("Firestore AI recipe requests fetch failed:", e);
+    return [];
+  }
+}
+async function saveAiRecipeRequestDoc(request) {
+  try {
+    await setDoc(doc(db, "aiRecipeRequests", request.id), request);
+    return true;
+  } catch (e) {
+    console.error("Firestore AI recipe request save failed:", e);
+    return false;
+  }
+}
+async function markAiRecipeRequestConvertedDoc(id, itemsAddedCount) {
+  try {
+    await setDoc(doc(db, "aiRecipeRequests", id), { id, cartAdded: true, itemsAddedCount }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore AI recipe request conversion update failed:", e);
+    return false;
+  }
+}
 function sendItemRequestAlertWhatsApp(request) {
   if (!CALLMEBOT_READY) return; // not configured yet — skip quietly
   const text = encodeURIComponent(
@@ -4326,6 +4359,23 @@ function AppShell() {
     await updateItemRequestStatusDoc(id, status);
   }
 
+  // Logs one AI recipe search for Backstage demand analytics. Fire-and-forget —
+  // never blocks or errors out the customer's actual search if the write fails.
+  async function logAiRecipeRequest({ recipeName, servings, requiredNames, optionalNames, unavailableNames }) {
+    const entry = {
+      id: "AIR" + Date.now().toString(36).toUpperCase(),
+      createdAt: new Date().toISOString(),
+      recipeName, servings, requiredNames, optionalNames, unavailableNames,
+      cartAdded: false, itemsAddedCount: 0,
+    };
+    await saveAiRecipeRequestDoc(entry);
+    return entry.id;
+  }
+  async function markAiRecipeRequestConverted(requestId, itemsAddedCount) {
+    if (!requestId) return;
+    await markAiRecipeRequestConvertedDoc(requestId, itemsAddedCount);
+  }
+
   async function updateProduct(id, patch) {
     const next = products.map((p) => (p.id === id ? { ...p, ...patch } : p));
     setProducts(next);
@@ -4519,7 +4569,7 @@ function AppShell() {
         {view === "location" && <LocationView setView={setView} />}
         {view === "about" && <AboutView setView={setView} />}
         {view === "recipes" && <RecipesView setView={setView} products={allProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
-        {view === "aicook" && <AiRecipeBuilderView setView={setView} products={allProducts} addToCart={addToCart} />}
+        {view === "aicook" && <AiRecipeBuilderView setView={setView} products={allProducts} addToCart={addToCart} logAiRecipeRequest={logAiRecipeRequest} markAiRecipeRequestConverted={markAiRecipeRequestConverted} />}
         {view === "blog" && <BlogView setView={setView} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={allProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
@@ -8383,15 +8433,17 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
 }
 
 
-function AiRecipeBuilderView({ setView, products, addToCart }) {
+function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest, markAiRecipeRequestConverted }) {
   const { lang } = useLang();
   const isAr = lang === "ar";
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [result, setResult] = useState(null); // { recipe_name, servings, ingredients: [{name, quantity, unit}] }
-  const [qtyOverride, setQtyOverride] = useState({}); // ingredient name -> qty override
-  const [removed, setRemoved] = useState({}); // ingredient name -> true if customer removed it
+  const [result, setResult] = useState(null); // { recipe_name, servings, required: [...], optional: [...] }
+  const [servings, setServings] = useState(null); // live serving count, starts at result.servings
+  const [qtyOverride, setQtyOverride] = useState({}); // "group:name" -> qty override
+  const [removed, setRemoved] = useState({}); // "group:name" -> true if customer removed it
+  const [requestId, setRequestId] = useState(null); // Firestore doc id for this search, for conversion tracking
 
   async function submit() {
     if (!query.trim() || loading) return;
@@ -8400,6 +8452,7 @@ function AiRecipeBuilderView({ setView, products, addToCart }) {
     setResult(null);
     setQtyOverride({});
     setRemoved({});
+    setRequestId(null);
     try {
       const res = await fetch("/api/ai-recipe", {
         method: "POST",
@@ -8412,6 +8465,7 @@ function AiRecipeBuilderView({ setView, products, addToCart }) {
         return;
       }
       setResult(data);
+      setServings(data.servings);
     } catch {
       setError(isAr ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Please try again.");
     } finally {
@@ -8419,44 +8473,114 @@ function AiRecipeBuilderView({ setView, products, addToCart }) {
     }
   }
 
-  // Every ingredient run through real product matching + conversion — this is
-  // recomputed from `result` + live `products`, never trusting anything the
-  // AI said beyond plain ingredient name/quantity/unit.
-  const matched = result
-    ? result.ingredients.map((ing) => {
-        const product = matchIngredientToProduct(ing.name, products);
-        const conv = product ? convertIngredientToProductQty(ing, product) : null;
-        return { ingredient: ing, product, conv };
-      })
-    : [];
-  const available = matched.filter((m) => m.product && !removed[m.ingredient.name]);
-  const unavailable = matched.filter((m) => !m.product);
-
-  function getQty(m) {
-    return qtyOverride[m.ingredient.name] ?? (m.conv ? m.conv.qty : 1);
+  // Scales a base-servings ingredient quantity to the live `servings` value.
+  function scaledQuantity(ing) {
+    if (!result || !servings || !result.servings) return ing.quantity;
+    return ing.quantity * (servings / result.servings);
   }
 
+  // Every ingredient run through real product matching + conversion — this is
+  // recomputed from `result` + live `products` + live `servings`, never
+  // trusting anything the AI said beyond plain ingredient name/quantity/unit.
+  function buildMatches(list, group) {
+    return (list || []).map((ing) => {
+      const scaled = { ...ing, quantity: scaledQuantity(ing) };
+      const product = matchIngredientToProduct(ing.name, products);
+      const conv = product ? convertIngredientToProductQty(scaled, product) : null;
+      return { ingredient: ing, scaled, product, conv, key: `${group}:${ing.name}`, group };
+    });
+  }
+
+  const requiredMatched = result ? buildMatches(result.required, "required") : [];
+  const optionalMatched = result ? buildMatches(result.optional, "optional") : [];
+  const allMatched = [...requiredMatched, ...optionalMatched];
+
+  const requiredAvailable = requiredMatched.filter((m) => m.product && !removed[m.key]);
+  const optionalAvailable = optionalMatched.filter((m) => m.product && !removed[m.key]);
+  const unavailable = allMatched.filter((m) => !m.product);
+  const allAvailable = [...requiredAvailable, ...optionalAvailable];
+
+  function getQty(m) {
+    return qtyOverride[m.key] ?? (m.conv ? m.conv.qty : 1);
+  }
+
+  function lineTotal(m) {
+    if (!m.product) return 0;
+    return getQty(m) * effectivePrice(m.product);
+  }
+
+  const orderTotal = allAvailable.reduce((sum, m) => sum + lineTotal(m), 0);
+
+  // Log this search once we have a result — fire-and-forget, never blocks the
+  // customer. Lets Backstage see what's being asked for and what's missing.
+  useEffect(() => {
+    if (!result || !logAiRecipeRequest) return;
+    let cancelled = false;
+    (async () => {
+      const id = await logAiRecipeRequest({
+        recipeName: result.recipe_name,
+        servings: result.servings,
+        requiredNames: (result.required || []).map((i) => i.name),
+        optionalNames: (result.optional || []).map((i) => i.name),
+        unavailableNames: unavailable.map((m) => m.ingredient.name),
+      });
+      if (!cancelled) setRequestId(id);
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
+
   function addAllAvailable() {
-    available.forEach((m) => {
+    allAvailable.forEach((m) => {
       const p = m.product;
       addToCart({
         id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: getQty(m), kind: "item",
-        source: "ai_recipe", recipeName: result.recipe_name, recipeServings: result.servings,
+        source: "ai_recipe", recipeName: result.recipe_name, recipeServings: servings,
       });
     });
+    if (markAiRecipeRequestConverted) markAiRecipeRequestConverted(requestId, allAvailable.length);
     setView("cart");
+  }
+
+  function renderIngredientRow(m) {
+    const p = m.product;
+    const qty = getQty(m);
+    const step = p.unit === "kg" ? 0.5 : 1;
+    return (
+      <div key={m.key} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 12 }}>
+        <IngredientThumb product={p} size={44} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 13.5, fontWeight: 700 }}>{prodName(p.name, lang)}</div>
+          <div style={{ fontSize: 11.5, opacity: 0.6 }}>
+            {money(effectivePrice(p))} / {unitName(p.unit, lang)}
+            {m.conv && m.conv.estimated && <span style={{ color: BRAND.orangeDeep, fontWeight: 700 }}> · {isAr ? "تقديري" : "estimated"}</span>}
+          </div>
+        </div>
+        <div style={{ textAlign: "right", marginRight: 4 }}>
+          <div style={{ fontSize: 12.5, fontWeight: 700 }}>{money(lineTotal(m))}</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={() => setQtyOverride((prev) => ({ ...prev, [m.key]: Math.max(0, qty - step) }))} style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>−</button>
+          <span style={{ minWidth: 34, textAlign: "center", fontWeight: 700, fontSize: 13 }}>{qty}</span>
+          <button onClick={() => setQtyOverride((prev) => ({ ...prev, [m.key]: qty + step }))} style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>+</button>
+        </div>
+        <button onClick={() => setRemoved((prev) => ({ ...prev, [m.key]: true }))} style={{ background: "none", border: "none", cursor: "pointer", opacity: 0.4, padding: 4 }}>
+          <X size={16} />
+        </button>
+      </div>
+    );
   }
 
   return (
     <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto" }}>
       <SectionTitle
-        eyebrow={isAr ? "ماذا تريد أن تطبخ؟" : "What do you want to cook?"}
-        title={isAr ? "أخبرنا، وسنجهّز المكونات" : "Tell us, we'll build your ingredient list"}
+        eyebrow={isAr ? "مساعد الطبخ الذكي بالذكاء الاصطناعي" : "Smart AI Cooking Assistant"}
+        title={isAr ? "ماذا تريد أن تطبخ؟" : "What do you want to cook?"}
       />
       <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
         {isAr
-          ? "مثال: \"شاورما دجاج لـ 4 أشخاص\" أو \"فتوش لـ 6\". سنعرض فقط المنتجات المتوفرة فعليًا لدى Darousha."
-          : "Try \"chicken shawarma for 4\" or \"fattoush for 6\". We'll only show ingredients Darousha actually sells."}
+          ? "أخبرنا بما تشتهيه. سيقوم الذكاء الاصطناعي ببناء قائمة تسوق باستخدام المنتجات المتوفرة لدى Darousha."
+          : "Tell us what you're craving. Our AI will build your shopping list using products available on Darousha."}
       </p>
 
       <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
@@ -8464,7 +8588,7 @@ function AiRecipeBuilderView({ setView, products, addToCart }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && submit()}
-          placeholder={isAr ? "أخبرنا بما تريد طبخه..." : "Tell us what you want to make..."}
+          placeholder={isAr ? "مثال: فتوش لـ 4 أشخاص" : "e.g. Fattoush for 4"}
           style={{ ...inputStyle, flex: 1 }}
         />
         <PrimaryButton onClick={submit} disabled={loading}>
@@ -8480,41 +8604,39 @@ function AiRecipeBuilderView({ setView, products, addToCart }) {
 
       {result && (
         <div style={{ marginTop: 26 }}>
-          <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>{result.recipe_name}</div>
-          <div style={{ fontSize: 13, opacity: 0.65, marginTop: 2 }}>
-            {isAr ? `لعدد ${result.servings} أشخاص` : `Serves ${result.servings}`} · {isAr ? "وجدنا المكونات التي تحتاجها" : "We found the ingredients you need"}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+            <div>
+              <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>{result.recipe_name}</div>
+              <div style={{ fontSize: 13, opacity: 0.65, marginTop: 2 }}>
+                {isAr ? "وجدنا المكونات التي تحتاجها" : "We found the ingredients you need"}
+              </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 999, padding: "6px 8px 6px 14px" }}>
+              <span style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.7 }}>{isAr ? "لعدد الأشخاص" : "Serves"}</span>
+              <button onClick={() => { setServings((s) => Math.max(1, s - 1)); setQtyOverride({}); }} style={{ width: 26, height: 26, borderRadius: "50%", border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>−</button>
+              <span style={{ minWidth: 20, textAlign: "center", fontWeight: 800, fontSize: 14 }}>{servings}</span>
+              <button onClick={() => { setServings((s) => Math.min(50, s + 1)); setQtyOverride({}); }} style={{ width: 26, height: 26, borderRadius: "50%", border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>+</button>
+            </div>
           </div>
 
-          {available.length > 0 && (
+          {requiredAvailable.length > 0 && (
             <div style={{ marginTop: 20 }}>
               <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", color: BRAND.green, marginBottom: 10 }}>
-                ✓ {isAr ? "متوفر لدى Darousha" : "Available on Darousha"}
+                ✓ {isAr ? "المكونات الأساسية" : "Required Ingredients"}
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {available.map((m) => {
-                  const p = m.product;
-                  const qty = getQty(m);
-                  return (
-                    <div key={m.ingredient.name} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", gap: 12 }}>
-                      <IngredientThumb product={p} size={44} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 13.5, fontWeight: 700 }}>{prodName(p.name, lang)}</div>
-                        <div style={{ fontSize: 11.5, opacity: 0.6 }}>
-                          {money(effectivePrice(p))} / {unitName(p.unit, lang)}
-                          {m.conv && m.conv.estimated && <span style={{ color: BRAND.orangeDeep, fontWeight: 700 }}> · {isAr ? "تقديري" : "estimated"}</span>}
-                        </div>
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <button onClick={() => setQtyOverride((prev) => ({ ...prev, [m.ingredient.name]: Math.max(0, qty - (p.unit === "kg" ? 0.5 : 1)) }))} style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>−</button>
-                        <span style={{ minWidth: 34, textAlign: "center", fontWeight: 700, fontSize: 13 }}>{qty}</span>
-                        <button onClick={() => setQtyOverride((prev) => ({ ...prev, [m.ingredient.name]: qty + (p.unit === "kg" ? 0.5 : 1) }))} style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${BRAND.creamDeep}`, background: "#fff", cursor: "pointer", fontWeight: 700 }}>+</button>
-                      </div>
-                      <button onClick={() => setRemoved((prev) => ({ ...prev, [m.ingredient.name]: true }))} style={{ background: "none", border: "none", cursor: "pointer", opacity: 0.4, padding: 4 }}>
-                        <X size={16} />
-                      </button>
-                    </div>
-                  );
-                })}
+                {requiredAvailable.map(renderIngredientRow)}
+              </div>
+            </div>
+          )}
+
+          {optionalAvailable.length > 0 && (
+            <div style={{ marginTop: 20 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", color: BRAND.orangeDeep, marginBottom: 10 }}>
+                ✨ {isAr ? "اختياري / موصى به" : "Optional / Recommended"}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {optionalAvailable.map(renderIngredientRow)}
               </div>
             </div>
           )}
@@ -8522,24 +8644,38 @@ function AiRecipeBuilderView({ setView, products, addToCart }) {
           {unavailable.length > 0 && (
             <div style={{ marginTop: 20 }}>
               <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", opacity: 0.5, marginBottom: 10 }}>
-                {isAr ? "غير متوفر حاليًا" : "Not currently available"}
+                {isAr ? "غير متوفر حاليًا" : "Not Currently Available"}
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {unavailable.map((m) => (
-                  <span key={m.ingredient.name} style={{ fontSize: 12.5, opacity: 0.6, background: BRAND.creamDeep, borderRadius: 999, padding: "6px 12px" }}>
+                  <span key={m.key} style={{ fontSize: 12.5, opacity: 0.6, background: BRAND.creamDeep, borderRadius: 999, padding: "6px 12px" }}>
                     {m.ingredient.name}
                   </span>
                 ))}
               </div>
+              <p style={{ fontSize: 11.5, opacity: 0.5, marginTop: 8 }}>
+                {isAr ? "لا نبيع هذا المكون حاليًا." : "We don't currently sell these ingredients."}
+              </p>
             </div>
           )}
 
-          {available.length > 0 && (
-            <PrimaryButton onClick={addAllAvailable} full style={{ marginTop: 22 }}>
-              {isAr ? `أضف ${available.length} مكونات متوفرة للسلة` : `Add ${available.length} Available Ingredient${available.length === 1 ? "" : "s"} to Cart`}
-            </PrimaryButton>
+          {allAvailable.length > 0 && (
+            <div style={{ marginTop: 24, borderTop: `1px solid ${BRAND.creamDeep}`, paddingTop: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, opacity: 0.7 }}>{isAr ? "الإجمالي" : "Total"}</span>
+                <span style={{ fontSize: 20, fontWeight: 800, fontFamily: "Fraunces, serif" }}>{money(orderTotal)}</span>
+              </div>
+              <p style={{ fontSize: 11, opacity: 0.5, marginBottom: 14 }}>
+                {isAr
+                  ? "تُباع المنتجات الطازجة بالوزن. قد يختلف السعر النهائي قليلاً حسب الوزن الفعلي عند التعبئة."
+                  : "Fresh produce is sold by weight. Final price may vary slightly based on actual packed weight."}
+              </p>
+              <PrimaryButton onClick={addAllAvailable} full>
+                {isAr ? `أضف ${allAvailable.length} مكونات متوفرة للسلة` : `Add ${allAvailable.length} Available Ingredient${allAvailable.length === 1 ? "" : "s"} to Cart`}
+              </PrimaryButton>
+            </div>
           )}
-          {available.length === 0 && (
+          {allAvailable.length === 0 && (
             <div style={{ marginTop: 20, fontSize: 13.5, opacity: 0.7 }}>
               {isAr ? "لا تتوفر لدينا حاليًا مكونات هذه الوجبة." : "We don't currently have the ingredients for this meal."}
             </div>
@@ -9382,6 +9518,7 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
         <Pill active={tab === "customers"} onClick={() => setTab("customers")}>📧 Customers</Pill>
         <Pill active={tab === "subscriptions"} onClick={() => setTab("subscriptions")}>🔁 Subscriptions</Pill>
         <Pill active={tab === "itemrequests"} onClick={() => setTab("itemrequests")}>🙋 Item Requests ({(itemRequests || []).filter((r) => r.status === "pending").length} new)</Pill>
+        <Pill active={tab === "airecipe"} onClick={() => setTab("airecipe")}>🤖 AI Recipe Builder</Pill>
         <Pill active={tab === "packing"} onClick={() => setTab("packing")}>📦 Packing Center</Pill>
         <Pill active={tab === "driver"} onClick={() => setTab("driver")}>🚚 Driver View</Pill>
       </div>
@@ -9394,6 +9531,7 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
       {tab === "customers" && <CustomerExport orders={orders} reviews={reviews || []} />}
       {tab === "subscriptions" && <SubscriptionsPanel />}
       {tab === "itemrequests" && <ItemRequestsPanel itemRequests={itemRequests || []} updateItemRequestStatus={updateItemRequestStatus} />}
+      {tab === "airecipe" && <AiRecipeAdminPanel />}
       {tab === "newproduct" && (
         <CustomProductManager
           customProducts={customProducts || []}
@@ -10933,6 +11071,113 @@ function DriverOrdersPanel({ orders, updatePackingStatus, updateOrderStatus }) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function AiRecipeAdminPanel() {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const data = await fetchAllAiRecipeRequests();
+      if (!cancelled) {
+        setRequests(data);
+        setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  const stats = useMemo(() => {
+    const recipeCounts = new Map();
+    const ingredientCounts = new Map();
+    const unavailableCounts = new Map();
+    let converted = 0;
+
+    requests.forEach((r) => {
+      const rKey = (r.recipeName || "").trim().toLowerCase();
+      if (rKey) recipeCounts.set(rKey, { name: r.recipeName, count: (recipeCounts.get(rKey)?.count || 0) + 1 });
+
+      [...(r.requiredNames || []), ...(r.optionalNames || [])].forEach((name) => {
+        const key = (name || "").trim().toLowerCase();
+        if (!key) return;
+        ingredientCounts.set(key, { name, count: (ingredientCounts.get(key)?.count || 0) + 1 });
+      });
+
+      (r.unavailableNames || []).forEach((name) => {
+        const key = (name || "").trim().toLowerCase();
+        if (!key) return;
+        unavailableCounts.set(key, { name, count: (unavailableCounts.get(key)?.count || 0) + 1 });
+      });
+
+      if (r.cartAdded) converted += 1;
+    });
+
+    const topRecipes = [...recipeCounts.values()].sort((a, b) => b.count - a.count).slice(0, 10);
+    const topIngredients = [...ingredientCounts.values()].sort((a, b) => b.count - a.count).slice(0, 10);
+    const topUnavailable = [...unavailableCounts.values()].sort((a, b) => b.count - a.count).slice(0, 10);
+    const conversionRate = requests.length > 0 ? Math.round((converted / requests.length) * 100) : 0;
+
+    return { topRecipes, topIngredients, topUnavailable, converted, conversionRate };
+  }, [requests]);
+
+  if (loading) {
+    return <div style={{ opacity: 0.5, fontSize: 13 }}>Loading AI Recipe Builder analytics…</div>;
+  }
+  if (requests.length === 0) {
+    return <div style={{ opacity: 0.5, fontSize: 13 }}>No AI recipe searches yet. Once customers start using "What do you want to cook?", demand data will show up here.</div>;
+  }
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
+        <StatCard label="Total searches" value={requests.length} />
+        <StatCard label="Added to cart" value={stats.converted} />
+        <StatCard label="Conversion rate" value={`${stats.conversionRate}%`} />
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 18 }}>
+        <AdminStatTable title="Top Requested Recipes" rows={stats.topRecipes} emptyText="No data yet" />
+        <AdminStatTable title="Most Searched Ingredients" rows={stats.topIngredients} emptyText="No data yet" />
+        <AdminStatTable
+          title="Top Unavailable Ingredients"
+          rows={stats.topUnavailable}
+          emptyText="Nothing missing yet — great sign"
+          highlight
+        />
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value }) {
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: "14px 18px", minWidth: 140 }}>
+      <div style={{ fontSize: 11.5, opacity: 0.6, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
+      <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "Fraunces, serif", marginTop: 4 }}>{value}</div>
+    </div>
+  );
+}
+
+function AdminStatTable({ title, rows, emptyText, highlight }) {
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 12, padding: 16 }}>
+      <div style={{ fontSize: 12.5, fontWeight: 800, marginBottom: 10, color: highlight ? BRAND.tomato : "inherit" }}>{title}</div>
+      {rows.length === 0 ? (
+        <div style={{ fontSize: 12.5, opacity: 0.5 }}>{emptyText}</div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {rows.map((row, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "4px 0", borderBottom: i < rows.length - 1 ? `1px solid ${BRAND.cream}` : "none" }}>
+              <span style={{ textTransform: "capitalize" }}>{row.name}</span>
+              <span style={{ fontWeight: 700, opacity: 0.6 }}>{row.count}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
