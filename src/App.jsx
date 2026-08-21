@@ -3298,7 +3298,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260820205623"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260821092313"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -6230,6 +6230,78 @@ function ItemRequestForm({ prefillName = "", onSubmitItemRequest, onClose }) {
   );
 }
 
+// Country-of-origin → flag emoji. Admin types free text into the "Country of
+// origin" field in Backstage (e.g. "Syria", "UAE", "سوريا") and this turns it
+// into the matching flag on the storefront automatically — no need to make
+// admin pick from a rigid dropdown. Handles common English/Arabic spelling
+// variants; anything unrecognized just falls back to a plain globe icon
+// rather than showing nothing or breaking.
+const COUNTRY_FLAGS = {
+  "syria": "🇸🇾", "syrian": "🇸🇾", "سوريا": "🇸🇾", "سورية": "🇸🇾",
+  "lebanon": "🇱🇧", "lebanese": "🇱🇧", "لبنان": "🇱🇧",
+  "jordan": "🇯🇴", "jordanian": "🇯🇴", "الأردن": "🇯🇴",
+  "egypt": "🇪🇬", "egyptian": "🇪🇬", "مصر": "🇪🇬",
+  "uae": "🇦🇪", "u.a.e": "🇦🇪", "united arab emirates": "🇦🇪", "emirates": "🇦🇪", "الإمارات": "🇦🇪",
+  "saudi arabia": "🇸🇦", "saudi": "🇸🇦", "ksa": "🇸🇦", "السعودية": "🇸🇦",
+  "oman": "🇴🇲", "عمان": "🇴🇲",
+  "qatar": "🇶🇦", "قطر": "🇶🇦",
+  "bahrain": "🇧🇭", "البحرين": "🇧🇭",
+  "kuwait": "🇰🇼", "الكويت": "🇰🇼",
+  "yemen": "🇾🇪", "اليمن": "🇾🇪",
+  "iraq": "🇮🇶", "العراق": "🇮🇶",
+  "palestine": "🇵🇸", "فلسطين": "🇵🇸",
+  "turkey": "🇹🇷", "turkiye": "🇹🇷", "تركيا": "🇹🇷",
+  "iran": "🇮🇷", "إيران": "🇮🇷",
+  "india": "🇮🇳", "indian": "🇮🇳", "الهند": "🇮🇳",
+  "pakistan": "🇵🇰", "باكستان": "🇵🇰",
+  "china": "🇨🇳", "chinese": "🇨🇳", "الصين": "🇨🇳",
+  "thailand": "🇹🇭", "thai": "🇹🇭",
+  "vietnam": "🇻🇳",
+  "indonesia": "🇮🇩",
+  "philippines": "🇵🇭", "philippine": "🇵🇭",
+  "sri lanka": "🇱🇰",
+  "bangladesh": "🇧🇩",
+  "nepal": "🇳🇵",
+  "japan": "🇯🇵", "japanese": "🇯🇵",
+  "south korea": "🇰🇷", "korea": "🇰🇷",
+  "malaysia": "🇲🇾",
+  "singapore": "🇸🇬",
+  "usa": "🇺🇸", "u.s.a": "🇺🇸", "united states": "🇺🇸", "america": "🇺🇸",
+  "netherlands": "🇳🇱", "holland": "🇳🇱", "dutch": "🇳🇱",
+  "spain": "🇪🇸", "spanish": "🇪🇸",
+  "italy": "🇮🇹", "italian": "🇮🇹",
+  "france": "🇫🇷", "french": "🇫🇷",
+  "germany": "🇩🇪", "german": "🇩🇪",
+  "uk": "🇬🇧", "united kingdom": "🇬🇧", "england": "🇬🇧", "britain": "🇬🇧",
+  "greece": "🇬🇷", "greek": "🇬🇷",
+  "cyprus": "🇨🇾",
+  "south africa": "🇿🇦",
+  "kenya": "🇰🇪",
+  "morocco": "🇲🇦", "المغرب": "🇲🇦",
+  "tunisia": "🇹🇳",
+  "algeria": "🇩🇿",
+  "sudan": "🇸🇩", "السودان": "🇸🇩",
+  "ethiopia": "🇪🇹",
+  "somalia": "🇸🇴",
+  "australia": "🇦🇺",
+  "new zealand": "🇳🇿",
+  "brazil": "🇧🇷",
+  "argentina": "🇦🇷",
+  "chile": "🇨🇱",
+  "peru": "🇵🇪",
+  "mexico": "🇲🇽",
+  "ecuador": "🇪🇨",
+  "russia": "🇷🇺", "russian": "🇷🇺",
+  "ukraine": "🇺🇦",
+  "poland": "🇵🇱",
+  "israel": "🇮🇱",
+};
+function countryToFlag(originText) {
+  if (!originText) return "🌍";
+  const key = originText.trim().toLowerCase();
+  return COUNTRY_FLAGS[key] || "🌍";
+}
+
 function ProductCard({ product, addToCart, cartQty }) {
   const { t, lang } = useLang();
   const [qty, setQty] = useState(1);
@@ -6250,6 +6322,11 @@ function ProductCard({ product, addToCart, cartQty }) {
       {product.available && soldOut && (
         <div style={{ position: "absolute", top: 10, right: 10, background: BRAND.tomato, color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "3px 8px", borderRadius: 999 }}>
           {lang === "ar" ? "نفدت الكمية" : "Sold out"}
+        </div>
+      )}
+      {product.origin && (
+        <div title={lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`} style={{ position: "absolute", top: 10, left: 10, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 999, width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>
+          {countryToFlag(product.origin)}
         </div>
       )}
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -6626,7 +6703,7 @@ function BoxSizeCard({ product, addToCart, cart, lang }) {
         <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 22, marginBottom: product.origin ? 4 : 12 }}>{localName(product.name, lang)}</div>
         {(product.origin || product.shippingMethod) && (
           <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {product.origin && <span>🌍 {lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`}</span>}
+            {product.origin && <span>{countryToFlag(product.origin)} {lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`}</span>}
             {product.shippingMethod && (
               <span>
                 {product.shippingMethod === "Air Freight" ? "✈️" : "🚚"}{" "}
@@ -6697,7 +6774,7 @@ function GourmetItemCard({ product, addToCart, cart, lang }) {
         <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 22, marginBottom: 6 }}>{prodName(product.name, lang)}</div>
         {(product.origin || product.shippingMethod) && (
           <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 6, display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {product.origin && <span>🌍 {lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`}</span>}
+            {product.origin && <span>{countryToFlag(product.origin)} {lang === "ar" ? `المنشأ: ${product.origin}` : `Origin: ${product.origin}`}</span>}
             {product.shippingMethod && (
               <span>
                 {product.shippingMethod === "Air Freight" ? "✈️" : "🚚"}{" "}
@@ -13416,7 +13493,7 @@ function CatalogRow({ product, updateProduct }) {
             value={origin}
             onChange={(e) => setOrigin(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && commitOrigin()}
-            placeholder="e.g. Turkey, Lebanon, UAE"
+            placeholder="e.g. Syria, Turkey, Lebanon, UAE"
             style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 160 }}
           />
           <GhostButton style={{ padding: "7px 12px", fontSize: 12.5 }} onClick={commitOrigin}>
@@ -13425,7 +13502,7 @@ function CatalogRow({ product, updateProduct }) {
           {justSaved === "origin" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700 }}>✓ Saved</span>}
           {justSaved === "origin-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700 }}>⚠ Failed to save — try again</span>}
           <div style={{ fontSize: 10.5, opacity: 0.5, width: "100%" }}>
-            UAE food labeling rules require country of origin on imported items — this also shows to customers on the shop page once set.
+            UAE food labeling rules require country of origin on imported items — this also shows to customers on the shop page once set, with the matching country flag shown automatically.
           </div>
         </div>
       )}
