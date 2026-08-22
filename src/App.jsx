@@ -3314,7 +3314,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260822062405"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260822062836"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -7831,6 +7831,13 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
   async function submit() {
     if (!canSubmit) return;
     const isToday = date === localDateISO();
+    // Final guard, independent of the date picker's own clamping — standard
+    // (next-day) delivery can never land on today's date, no matter how the
+    // date value got set.
+    if (!expressDelivery && date <= localDateISO()) {
+      setPlaceError({ reason: "invalid-date" });
+      return;
+    }
     const nowHour = new Date().getHours() + new Date().getMinutes() / 60;
     if (isToday && TIME_SLOT_END_HOUR[slot] <= nowHour) {
       setPlaceError({ reason: "stale-slot" });
@@ -7977,11 +7984,22 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
                 min={expressDelivery ? localDateISO() : tomorrowDateISO()}
                 max={expressDelivery ? localDateISO() : undefined}
                 onChange={(e) => {
+                  let val = e.target.value;
+                  // Belt-and-braces: the min/max attributes stop the native
+                  // picker UI from offering an invalid date, but don't stop
+                  // a manually typed or pasted value from slipping through
+                  // on some browsers — so clamp here too. Standard (next-day)
+                  // delivery can never be today; express is always today.
+                  if (expressDelivery) {
+                    val = localDateISO();
+                  } else if (val <= localDateISO()) {
+                    val = tomorrowDateISO();
+                  }
                   // Can't pick a slot that's already elapsed for the new date
-                  const isToday = e.target.value === localDateISO();
+                  const isToday = val === localDateISO();
                   const nowHour = new Date().getHours() + new Date().getMinutes() / 60;
                   if (isToday && TIME_SLOT_END_HOUR[slot] <= nowHour) setSlot("");
-                  setDate(e.target.value);
+                  setDate(val);
                 }}
               />
             </Field>
@@ -8053,6 +8071,10 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
                 lang === "ar"
                   ? "الفترة الزمنية التي اخترتها انتهت أثناء وجودك على هذه الصفحة — يرجى اختيار فترة أخرى."
                   : "The time slot you picked has since passed while you were on this page — please choose another one."
+              ) : placeError.reason === "invalid-date" ? (
+                lang === "ar"
+                  ? "التوصيل العادي يكون في اليوم التالي على الأقل — يرجى اختيار تاريخ آخر، أو تفعيل التوصيل السريع للتوصيل في نفس اليوم."
+                  : "Standard delivery is next-day at the earliest — please pick a later date, or switch to Express for same-day delivery."
               ) : (
                 lang === "ar"
                   ? "تعذّر إرسال طلبك — يبدو أن هناك مشكلة في الاتصال. لم يتم إرسال الطلب بعد، سلتك ما زالت كما هي. الرجاء إعادة المحاولة، أو تواصل معنا مباشرة عبر واتساب."
