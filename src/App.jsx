@@ -3298,7 +3298,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260821092313"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260822053843"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -7906,7 +7906,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
                 </div>
               </div>
             )}
-            {cart.some((c) => c.kind === "box") && (
+            {cart.length > 0 && profile && (
               <div style={{ marginTop: 10, background: BRAND.greenSoft, borderRadius: 10, padding: 10 }}>
                 <label style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13, cursor: "pointer" }}>
                   <input type="checkbox" checked={subscribeWeekly} onChange={(e) => setSubscribeWeekly(e.target.checked)} style={{ width: 16, height: 16, marginTop: 2 }} />
@@ -7915,8 +7915,8 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
                     <br />
                     <span style={{ opacity: 0.75 }}>
                       {lang === "ar"
-                        ? "أعيدي طلب هذا الصندوق تلقائيًا حسب الجدول الذي تختارينه — لا حاجة لإعادة الطلب يدويًا. الدفع نقدًا عند التوصيل كالمعتاد."
-                        : "Automatically re-order this box on a schedule you choose — no need to re-order manually each time. Paid by cash on delivery each time, same as normal."}
+                        ? "أعيدي طلب هذه السلة تلقائيًا حسب الجدول الذي تختارينه — لا حاجة لإعادة الطلب يدويًا. الدفع نقدًا عند التوصيل كالمعتاد."
+                        : "Automatically re-order this same cart on a schedule you choose — no need to re-order manually each time. Paid by cash on delivery each time, same as normal."}
                     </span>
                   </span>
                 </label>
