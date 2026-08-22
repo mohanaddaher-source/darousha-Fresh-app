@@ -3237,6 +3237,11 @@ function localDateISO(d = new Date()) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
 }
+function tomorrowDateISO() {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return localDateISO(d);
+}
 const STATUS_STEPS = [
   { key: "placed", label: "Order Placed", icon: ClipboardList },
   { key: "preparing", label: "Preparing", icon: Package },
@@ -3278,8 +3283,19 @@ const ADMIN_EMAIL = "backstage@darousha-fresh.local";
 // DRIVER_PASSWORD below to match whatever you set there.
 const DRIVER_EMAIL = "driver@darousha-fresh.local";
 const DRIVER_PASSWORD = "DFdriver2026";
-const DELIVERY_FEE = 25;
+const MIN_ORDER_AED = 50; // orders below this can't be placed at all
+const STANDARD_DELIVERY_FEE = 15; // next-day delivery fee for orders AED 50–75
+const FREE_DELIVERY_OVER = 75; // free next-day delivery on orders above this subtotal
+const EXPRESS_DELIVERY_FEE = 25; // flat fee for same-day (express) delivery, any order size
 const LOYALTY_EARN_RATE = 0.02; // 2% of what's actually paid, back as points — 1 point = AED 1 when redeemed
+// Standard delivery is next-day: AED 15 for orders AED 50–75, free above AED
+// 75. Express (same-day) is a flat AED 25 regardless of order size — the
+// customer is paying for speed, not covering a shortfall on a small order.
+function calcDeliveryFee(subtotal, isExpress) {
+  if (subtotal <= 0) return 0;
+  if (isExpress) return EXPRESS_DELIVERY_FEE;
+  return subtotal > FREE_DELIVERY_OVER ? 0 : STANDARD_DELIVERY_FEE;
+}
 const REVIEW_BONUS_POINTS = 10; // flat bonus for leaving a photo review, regardless of order size
 async function awardReviewPoints(uid, bonusPoints) {
   try {
@@ -3298,7 +3314,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260822054452"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260822062405"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -3828,8 +3844,6 @@ function sendLowStockAlertWhatsApp(lowStockItems) {
   document.body.appendChild(pixel);
   setTimeout(cleanup, 15000);
 }
-
-const FREE_DELIVERY_OVER = 100; // free delivery on orders above this subtotal
 
 /* Promo codes — add/remove codes here. type: "percent" (value = % off
    subtotal) or "fixed" (value = flat AED off subtotal, never below 0). */
@@ -4846,6 +4860,7 @@ function AppShell() {
       return [];
     }
   }); // {id,name,unit,price,qty,kind:'item'|'box'}
+  const [expressDelivery, setExpressDelivery] = useState(false); // same-day (AED 25 flat) vs standard next-day
   useEffect(() => {
     try {
       localStorage.setItem("dsf-cart", JSON.stringify(cart));
@@ -5010,7 +5025,7 @@ function AppShell() {
   // can't redeem more points than there is order value left to discount.
   const pointsDiscount = Math.max(0, Math.min(pointsToRedeem, pointsBalance, subtotal - discount));
   const discountedSubtotal = subtotal - discount - pointsDiscount;
-  const deliveryFee = subtotal === 0 || subtotal >= FREE_DELIVERY_OVER ? 0 : DELIVERY_FEE;
+  const deliveryFee = calcDeliveryFee(subtotal, expressDelivery);
   const vat = Math.round((discountedSubtotal + deliveryFee) * VAT_RATE * 100) / 100;
   const total = discountedSubtotal + deliveryFee + vat;
   // Earned on what's actually paid toward products (after discounts), not
@@ -5120,7 +5135,7 @@ function AppShell() {
         items: sub.items,
         subtotal: sub.items.reduce((s, it) => s + it.qty * it.price, 0),
         discount: 0, pointsRedeemed: 0, pointsEarned: 0,
-        deliveryFee: sub.items.reduce((s, it) => s + it.qty * it.price, 0) >= FREE_DELIVERY_OVER ? 0 : DELIVERY_FEE,
+        deliveryFee: calcDeliveryFee(sub.items.reduce((s, it) => s + it.qty * it.price, 0), false),
         status: "placed",
       };
       order.vat = Math.round((order.subtotal + order.deliveryFee) * VAT_RATE * 100) / 100;
@@ -5453,7 +5468,7 @@ function AppShell() {
           authLoading ? (
             <div style={{ paddingTop: 60, textAlign: "center", opacity: 0.6 }}>Loading…</div>
           ) : user ? (
-            <CheckoutView cart={cart} subtotal={subtotal} deliveryFee={deliveryFee} vat={vat} discount={discount} appliedPromo={appliedPromo} total={total} onPlaceOrder={placeOrder} setView={setView} profile={profile} lang={lang} pointsDiscount={pointsDiscount} pointsToEarn={pointsToEarn} />
+            <CheckoutView cart={cart} subtotal={subtotal} deliveryFee={deliveryFee} vat={vat} discount={discount} appliedPromo={appliedPromo} total={total} onPlaceOrder={placeOrder} setView={setView} profile={profile} lang={lang} pointsDiscount={pointsDiscount} pointsToEarn={pointsToEarn} expressDelivery={expressDelivery} setExpressDelivery={setExpressDelivery} />
           ) : (
             <CheckoutSignInGate setView={setView} lang={lang} />
           )
@@ -7540,9 +7555,17 @@ function CartView({ cart, setCartQty, removeFromCart, subtotal, deliveryFee, vat
         <Row label={t("vat_label")} value={money(vat)} />
         <hr style={{ border: "none", borderTop: `1px dashed ${BRAND.creamDeep}`, margin: "10px 0" }} />
         <Row label={t("total")} value={money(total)} bold />
-        <PrimaryButton full onClick={() => setView("checkout")} style={{ marginTop: 14 }}>
-          {t("proceed_checkout")} <ChevronRight size={16} />
-        </PrimaryButton>
+        {subtotal < MIN_ORDER_AED ? (
+          <div style={{ marginTop: 14, background: "#FBF0D9", border: `1px solid ${BRAND.gold}`, borderRadius: 12, padding: 12, fontSize: 12.5, color: BRAND.orangeDeep, textAlign: "center" }}>
+            {lang === "ar"
+              ? `الحد الأدنى للطلب ${money(MIN_ORDER_AED)} — أضيفي ${money(MIN_ORDER_AED - subtotal)} أخرى للمتابعة.`
+              : `Minimum order is ${money(MIN_ORDER_AED)} — add ${money(MIN_ORDER_AED - subtotal)} more to continue.`}
+          </div>
+        ) : (
+          <PrimaryButton full onClick={() => setView("checkout")} style={{ marginTop: 14 }}>
+            {t("proceed_checkout")} <ChevronRight size={16} />
+          </PrimaryButton>
+        )}
       </div>
     </div>
   );
@@ -7775,13 +7798,13 @@ function CheckoutSignInGate({ setView }) {
   );
 }
 
-function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo, total, onPlaceOrder, setView, profile, pointsDiscount, pointsToEarn }) {
+function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo, total, onPlaceOrder, setView, profile, pointsDiscount, pointsToEarn, expressDelivery, setExpressDelivery }) {
   const { t, lang } = useLang();
   const [name, setName] = useState(profile?.name || "");
   const [phone, setPhone] = useState(profile?.phone || "");
   const [address, setAddress] = useState(profile?.address || "");
   const [area, setArea] = useState(profile?.area || AREAS[0]);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(tomorrowDateISO()); // standard delivery is next-day by default
   const [slot, setSlot] = useState(TIME_SLOTS[0]);
   const [payment, setPayment] = useState("cod");
   const [card, setCard] = useState({ number: "", exp: "", cvc: "" });
@@ -7795,7 +7818,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
   const [giftRecipientName, setGiftRecipientName] = useState("");
   const [giftNote, setGiftNote] = useState("");
 
-  const canSubmit = name.trim() && phone.trim() && address.trim() && date;
+  const canSubmit = name.trim() && phone.trim() && address.trim() && date && subtotal >= MIN_ORDER_AED;
 
   useEffect(() => {
     if (!profile) return;
@@ -7817,7 +7840,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
       id: genOrderId(),
       createdAt: new Date().toISOString(),
       customer: {
-        name, phone, address, area, date, slot, payment, leaveAtDoor, subscribeWeekly,
+        name, phone, address, area, date, slot, payment, leaveAtDoor, subscribeWeekly, expressDelivery,
         ...(subscribeWeekly ? { subscriptionFrequency } : {}),
         ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
         ...(isGift ? { isGift: true, giftRecipientName: giftRecipientName.trim(), giftNote: giftNote.trim() } : {}),
@@ -7921,12 +7944,38 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
           </FormCard>
 
           <FormCard title={t("delivery_datetime")} icon={Clock}>
+            <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
+              <Pill
+                active={!expressDelivery}
+                onClick={() => {
+                  setExpressDelivery(false);
+                  if (date === localDateISO()) setDate(tomorrowDateISO());
+                }}
+              >
+                🚚 {lang === "ar" ? "توصيل عادي (اليوم التالي)" : "Standard — Next Day"}
+              </Pill>
+              <Pill
+                active={expressDelivery}
+                onClick={() => {
+                  setExpressDelivery(true);
+                  setDate(localDateISO());
+                }}
+              >
+                ⚡ {lang === "ar" ? `توصيل سريع (نفس اليوم) +${money(EXPRESS_DELIVERY_FEE)}` : `Express — Same Day +${money(EXPRESS_DELIVERY_FEE)}`}
+              </Pill>
+            </div>
+            <p style={{ fontSize: 11.5, opacity: 0.6, marginTop: -6, marginBottom: 14 }}>
+              {expressDelivery
+                ? (lang === "ar" ? `رسم ثابت ${money(EXPRESS_DELIVERY_FEE)} للتوصيل في نفس اليوم، بغض النظر عن قيمة الطلب.` : `Flat ${money(EXPRESS_DELIVERY_FEE)} fee for delivery today, regardless of order size.`)
+                : (lang === "ar" ? `${money(STANDARD_DELIVERY_FEE)} للطلبات بين ${money(MIN_ORDER_AED)} و ${money(FREE_DELIVERY_OVER)}، ومجاني فوق ${money(FREE_DELIVERY_OVER)}.` : `${money(STANDARD_DELIVERY_FEE)} for orders between ${money(MIN_ORDER_AED)}–${money(FREE_DELIVERY_OVER)}, free above ${money(FREE_DELIVERY_OVER)}.`)}
+            </p>
             <Field label={t("delivery_date")}>
               <input
                 type="date"
                 style={inputStyle}
                 value={date}
-                min={localDateISO()}
+                min={expressDelivery ? localDateISO() : tomorrowDateISO()}
+                max={expressDelivery ? localDateISO() : undefined}
                 onChange={(e) => {
                   // Can't pick a slot that's already elapsed for the new date
                   const isToday = e.target.value === localDateISO();
@@ -11353,6 +11402,9 @@ function OrderRow({ order: o, updateOrderStatus, acknowledgeOrder }) {
             )}
           </div>
           <div style={{ fontSize: 12.5, opacity: 0.65 }}>{o.customer.date} · {o.customer.slot} · {o.customer.payment === "cod" ? "Cash on delivery" : "Card"}</div>
+          {o.customer.expressDelivery && (
+            <div style={{ fontSize: 12.5, color: BRAND.tomato, fontWeight: 800, marginTop: 2 }}>⚡ EXPRESS — same-day delivery</div>
+          )}
           {o.customer.leaveAtDoor && (
             <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 2 }}>📍 Leave at door — no need to knock</div>
           )}
@@ -11824,6 +11876,12 @@ function PackingCenterPanel({ orders, products, boxes, updatePackingStatus, init
   // out for delivery or delivered has left the packing workflow entirely.
   const todaysOrders = orders.filter((o) => o.customer?.date === todayStr && o.status !== "delivered" && o.status !== "out_for_delivery");
 
+  // Express (same-day) orders always need eyes on them TODAY, regardless of
+  // which date this screen happens to be scoped to (it defaults to
+  // tomorrow) — surfaced separately so an express order placed while
+  // someone's mid-way through tomorrow's picking list doesn't get missed.
+  const expressOrdersToday = orders.filter((o) => o.customer?.expressDelivery && o.customer?.date === todayActualStr && o.status !== "delivered" && o.status !== "out_for_delivery");
+
   const counts = { waiting: 0, picking: 0, packing: 0, packed: 0, ready: 0 };
   todaysOrders.forEach((o) => {
     const s = o.packingStatus || "waiting";
@@ -11884,6 +11942,19 @@ function PackingCenterPanel({ orders, products, boxes, updatePackingStatus, init
 
   return (
     <div>
+      {expressOrdersToday.length > 0 && selectedDate !== todayActualStr && (
+        <div style={{ background: BRAND.tomato, color: "#fff", borderRadius: 14, padding: "14px 18px", marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+          <div style={{ fontWeight: 800, fontSize: 14 }}>
+            ⚡ {expressOrdersToday.length} express order{expressOrdersToday.length > 1 ? "s" : ""} due TODAY — this screen is currently showing {selectedDate === tomorrowStr ? "tomorrow" : "a different date"}
+          </div>
+          <button
+            onClick={() => setSelectedDate(todayActualStr)}
+            style={{ background: "#fff", color: BRAND.tomato, fontWeight: 700, fontSize: 12.5, padding: "7px 14px", borderRadius: 999, border: "none", cursor: "pointer", flexShrink: 0 }}
+          >
+            View today's orders
+          </button>
+        </div>
+      )}
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
         <span style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.7 }}>Preparing for delivery date:</span>
         <button
@@ -12079,6 +12150,7 @@ function PackingCenterPanel({ orders, products, boxes, updatePackingStatus, init
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 700 }}>{o.id}</span>
                   {o.crateNumber && <span style={{ fontSize: 11, fontWeight: 700, background: BRAND.creamDeep, borderRadius: 999, padding: "2px 9px" }}>Crate {o.crateNumber}</span>}
+                  {o.customer?.expressDelivery && <span style={{ fontSize: 11, fontWeight: 800, background: BRAND.tomato, color: "#fff", borderRadius: 999, padding: "2px 9px" }}>⚡ EXPRESS</span>}
                 </div>
                 <div style={{ fontSize: 12.5, opacity: 0.65 }}>{o.customer?.name} · {o.customer?.slot} · {(o.items || []).length} items</div>
               </div>
@@ -12352,7 +12424,11 @@ function DriverOrdersPanel({ orders, updatePackingStatus, updateOrderStatus }) {
   const driverOrders = orders
     .filter((o) => o.customer?.date === todayStr)
     .filter((o) => ["packed", "ready", "picked_up", "out_for_delivery"].includes(o.packingStatus))
-    .sort((a, b) => (a.customer?.slot || "").localeCompare(b.customer?.slot || ""));
+    .sort((a, b) => {
+      const expressDiff = (b.customer?.expressDelivery ? 1 : 0) - (a.customer?.expressDelivery ? 1 : 0);
+      if (expressDiff !== 0) return expressDiff; // express orders first, regardless of slot
+      return (a.customer?.slot || "").localeCompare(b.customer?.slot || "");
+    });
 
   async function markPickedUp(o) {
     await updatePackingStatus(o.id, "picked_up");
@@ -12383,6 +12459,7 @@ function DriverOrdersPanel({ orders, updatePackingStatus, updateOrderStatus }) {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{ fontFamily: "IBM Plex Mono, monospace", fontWeight: 800, fontSize: 16 }}>{o.id}</span>
                   {o.crateNumber && <span style={{ fontSize: 11.5, fontWeight: 700, background: BRAND.creamDeep, borderRadius: 999, padding: "2px 10px" }}>Crate {o.crateNumber}</span>}
+                  {o.customer?.expressDelivery && <span style={{ fontSize: 11.5, fontWeight: 800, background: BRAND.tomato, color: "#fff", borderRadius: 999, padding: "2px 10px" }}>⚡ EXPRESS</span>}
                 </div>
                 <div style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{o.customer?.name}</div>
                 {o.customer?.phone && (

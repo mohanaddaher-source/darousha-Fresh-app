@@ -25,9 +25,14 @@ import { getFirestore } from "firebase-admin/firestore";
 
 const CALLMEBOT_PHONE = "971524786729";
 const CALLMEBOT_APIKEY = "8870812";
-const DELIVERY_FEE = 25;
+const STANDARD_DELIVERY_FEE = 15; // AED 50–75 subtotal
+const FREE_DELIVERY_OVER = 75; // free above this subtotal
 const VAT_RATE = 0.05;
-const FREE_DELIVERY_OVER = 100;
+function calcDeliveryFee(subtotal) {
+  // Subscriptions always re-order via standard (next-day) delivery, never express.
+  if (subtotal <= 0) return 0;
+  return subtotal > FREE_DELIVERY_OVER ? 0 : STANDARD_DELIVERY_FEE;
+}
 
 function todayISOInDubai() {
   // UAE is UTC+4 year-round, no DST — so this is a fixed offset, not a
@@ -80,7 +85,7 @@ export default async function handler(req, res) {
     const created = [];
     for (const sub of due) {
       const subtotal = sub.items.reduce((s, it) => s + it.qty * it.price, 0);
-      const deliveryFee = subtotal >= FREE_DELIVERY_OVER ? 0 : DELIVERY_FEE;
+      const deliveryFee = calcDeliveryFee(subtotal);
       const vat = Math.round((subtotal + deliveryFee) * VAT_RATE * 100) / 100;
       const order = {
         id: "DF" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 5).toUpperCase(),
