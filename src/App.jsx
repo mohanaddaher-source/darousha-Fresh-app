@@ -3298,7 +3298,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260822053843"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260822054452"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -7789,7 +7789,6 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
   const [placeError, setPlaceError] = useState(null);
   const [geo, setGeo] = useState(null); // { lat, lng } once set via search, GPS, or map pin
   const [leaveAtDoor, setLeaveAtDoor] = useState(false);
-  const [washItems, setWashItems] = useState(false);
   const [subscribeWeekly, setSubscribeWeekly] = useState(false);
   const [subscriptionFrequency, setSubscriptionFrequency] = useState("weekly");
   const [isGift, setIsGift] = useState(false);
@@ -7818,7 +7817,7 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
       id: genOrderId(),
       createdAt: new Date().toISOString(),
       customer: {
-        name, phone, address, area, date, slot, payment, leaveAtDoor, washItems, subscribeWeekly,
+        name, phone, address, area, date, slot, payment, leaveAtDoor, subscribeWeekly,
         ...(subscribeWeekly ? { subscriptionFrequency } : {}),
         ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
         ...(isGift ? { isGift: true, giftRecipientName: giftRecipientName.trim(), giftNote: giftNote.trim() } : {}),
@@ -7864,18 +7863,6 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
             <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4, fontSize: 13, cursor: "pointer" }}>
               <input type="checkbox" checked={leaveAtDoor} onChange={(e) => setLeaveAtDoor(e.target.checked)} style={{ width: 16, height: 16 }} />
               {t("leave_at_door")}
-            </label>
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 10, fontSize: 13, cursor: "pointer" }}>
-              <input type="checkbox" checked={washItems} onChange={(e) => setWashItems(e.target.checked)} style={{ width: 16, height: 16, marginTop: 2 }} />
-              <span>
-                <b>{lang === "ar" ? "اغسلوا المنتجات قبل التوصيل" : "Wash items before delivery"}</b>
-                <br />
-                <span style={{ opacity: 0.65, fontSize: 12 }}>
-                  {lang === "ar"
-                    ? "سنغسل المنتجات المناسبة للغسل قريبًا من وقت التوصيل."
-                    : "We'll wash suitable produce close to your delivery time."}
-                </span>
-              </span>
             </label>
             <label style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, fontSize: 13, cursor: "pointer" }}>
               <input type="checkbox" checked={isGift} onChange={(e) => setIsGift(e.target.checked)} style={{ width: 16, height: 16 }} />
@@ -11368,9 +11355,6 @@ function OrderRow({ order: o, updateOrderStatus, acknowledgeOrder }) {
           <div style={{ fontSize: 12.5, opacity: 0.65 }}>{o.customer.date} · {o.customer.slot} · {o.customer.payment === "cod" ? "Cash on delivery" : "Card"}</div>
           {o.customer.leaveAtDoor && (
             <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 2 }}>📍 Leave at door — no need to knock</div>
-          )}
-          {o.customer.washItems && (
-            <div style={{ fontSize: 12.5, color: "#1C7293", fontWeight: 700, marginTop: 2 }}>💧 Wash items before delivery</div>
           )}
           {o.customer.isGift && (
             <div style={{ fontSize: 12.5, color: BRAND.orangeDeep, fontWeight: 700, marginTop: 4, background: "#FBF0D9", borderRadius: 8, padding: "6px 10px" }}>
