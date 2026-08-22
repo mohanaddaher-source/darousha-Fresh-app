@@ -3242,6 +3242,12 @@ function tomorrowDateISO() {
   d.setDate(d.getDate() + 1);
   return localDateISO(d);
 }
+function formatDeliveryDateLabel(iso, lang) {
+  const tomorrowIso = tomorrowDateISO();
+  if (iso === tomorrowIso) return lang === "ar" ? "غدًا" : "Tomorrow";
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString(lang === "ar" ? "ar-AE" : "en-US", { weekday: "short", day: "numeric", month: "short" });
+}
 const STATUS_STEPS = [
   { key: "placed", label: "Order Placed", icon: ClipboardList },
   { key: "preparing", label: "Preparing", icon: Package },
@@ -3314,7 +3320,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260822062836"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260822063253"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -7977,31 +7983,23 @@ function CheckoutView({ cart, subtotal, deliveryFee, vat, discount, appliedPromo
                 : (lang === "ar" ? `${money(STANDARD_DELIVERY_FEE)} للطلبات بين ${money(MIN_ORDER_AED)} و ${money(FREE_DELIVERY_OVER)}، ومجاني فوق ${money(FREE_DELIVERY_OVER)}.` : `${money(STANDARD_DELIVERY_FEE)} for orders between ${money(MIN_ORDER_AED)}–${money(FREE_DELIVERY_OVER)}, free above ${money(FREE_DELIVERY_OVER)}.`)}
             </p>
             <Field label={t("delivery_date")}>
-              <input
-                type="date"
-                style={inputStyle}
-                value={date}
-                min={expressDelivery ? localDateISO() : tomorrowDateISO()}
-                max={expressDelivery ? localDateISO() : undefined}
-                onChange={(e) => {
-                  let val = e.target.value;
-                  // Belt-and-braces: the min/max attributes stop the native
-                  // picker UI from offering an invalid date, but don't stop
-                  // a manually typed or pasted value from slipping through
-                  // on some browsers — so clamp here too. Standard (next-day)
-                  // delivery can never be today; express is always today.
-                  if (expressDelivery) {
-                    val = localDateISO();
-                  } else if (val <= localDateISO()) {
-                    val = tomorrowDateISO();
-                  }
-                  // Can't pick a slot that's already elapsed for the new date
-                  const isToday = val === localDateISO();
-                  const nowHour = new Date().getHours() + new Date().getMinutes() / 60;
-                  if (isToday && TIME_SLOT_END_HOUR[slot] <= nowHour) setSlot("");
-                  setDate(val);
-                }}
-              />
+              {expressDelivery ? (
+                <div style={{ fontSize: 13.5, fontWeight: 700, color: BRAND.green, background: BRAND.greenSoft, borderRadius: 10, padding: "10px 14px", display: "inline-block" }}>
+                  ⚡ {lang === "ar" ? `اليوم، ${new Date(localDateISO() + "T00:00:00").toLocaleDateString("ar-AE", { weekday: "long", day: "numeric", month: "long" })}` : `Today, ${new Date(localDateISO() + "T00:00:00").toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })}`}
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {Array.from({ length: 7 }, (_, i) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() + 1 + i);
+                    return localDateISO(d);
+                  }).map((iso) => (
+                    <Pill key={iso} active={date === iso} onClick={() => setDate(iso)}>
+                      {formatDeliveryDateLabel(iso, lang)}
+                    </Pill>
+                  ))}
+                </div>
+              )}
             </Field>
             <Field label={t("time_slot")}>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
