@@ -3289,6 +3289,11 @@ const ADMIN_EMAIL = "backstage@darousha-fresh.local";
 // DRIVER_PASSWORD below to match whatever you set there.
 const DRIVER_EMAIL = "driver@darousha-fresh.local";
 const DRIVER_PASSWORD = "DFdriver2026";
+// Business Dashboard's own separate login — unlike Backstage/Driver, this
+// screen is read-only (never writes anything), so it doesn't need its own
+// Firebase Auth account or Firestore rules — a plain client-side password
+// gate is enough, and it's fully independent of the main Backstage password.
+const BIZDASH_PASSWORD = "DFbiz2026";
 const MIN_ORDER_AED = 50; // orders below this can't be placed at all
 const STANDARD_DELIVERY_FEE = 15; // next-day delivery fee for orders AED 50–75
 const FREE_DELIVERY_OVER = 75; // free next-day delivery on orders above this subtotal
@@ -3320,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260822063253"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260824102751"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -4768,6 +4773,13 @@ function AppShell() {
       return null;
     }
   }
+  function getBizDashParam() {
+    try {
+      return new URLSearchParams(window.location.search).get("bizdash");
+    } catch {
+      return null;
+    }
+  }
   function getInvoiceParam() {
     try {
       return new URLSearchParams(window.location.search).get("invoice");
@@ -4801,7 +4813,7 @@ function AppShell() {
     }
   }
 
-  const [view, setView] = useState(() => (getInvoiceParam() ? "invoice" : getLabelParam() ? "label" : getDriveParam() ? "drive" : getPackOrderParam() ? "admin" : getBackstageParam() ? "admin" : getDriverPortalParam() ? "driverportal" : getTrackParam() ? "track" : getRecipeParam() ? "recipes" : getPrivacyParam() ? "privacy" : getDeleteAccountParam() ? "delete-account" : "home"));
+  const [view, setView] = useState(() => (getInvoiceParam() ? "invoice" : getLabelParam() ? "label" : getDriveParam() ? "drive" : getPackOrderParam() ? "admin" : getBackstageParam() ? "admin" : getDriverPortalParam() ? "driverportal" : getBizDashParam() ? "bizdashportal" : getTrackParam() ? "track" : getRecipeParam() ? "recipes" : getPrivacyParam() ? "privacy" : getDeleteAccountParam() ? "delete-account" : "home"));
   const [packOrderId] = useState(getPackOrderParam); // set once on load; a printed label's QR code deep-links straight to that order's packing checklist once admin logs in
   // Makes the browser's own Back button work for in-app navigation. Without
   // this, every setView() call only changes React state — the URL and
@@ -4900,6 +4912,7 @@ function AppShell() {
   const [lastOrder, setLastOrder] = useState(null);
   const [adminAuthed, setAdminAuthed] = useState(false);
   const [driverAuthed, setDriverAuthed] = useState(false);
+  const [bizDashAuthed, setBizDashAuthed] = useState(false);
   useEffect(() => {
     if (adminAuthed) {
       processDueSubscriptions(); // fire-and-forget — only the admin session should write to other customers' subscriptions/orders
@@ -5522,6 +5535,14 @@ function AppShell() {
             <DriverPortalView orders={orders} products={products} boxes={boxes} updatePackingStatus={updatePackingStatus} updateOrderStatus={updateOrderStatus} />
           ) : (
             <DriverLogin onSuccess={() => setDriverAuthed(true)} />
+          ))}
+        {view === "bizdashportal" &&
+          (bizDashAuthed ? (
+            <div style={{ paddingTop: 20 }}>
+              <BusinessDashboardPanel orders={orders} products={products} />
+            </div>
+          ) : (
+            <BizDashLogin onSuccess={() => setBizDashAuthed(true)} />
           ))}
       </main>
       <Footer setView={setView} lang={lang} />
@@ -10729,6 +10750,40 @@ function DriverLogin({ onSuccess }) {
   );
 }
 
+function BizDashLogin({ onSuccess }) {
+  const [pw, setPw] = useState("");
+  const [error, setError] = useState(false);
+
+  function attempt() {
+    if (!pw) return;
+    if (pw === BIZDASH_PASSWORD) {
+      onSuccess();
+    } else {
+      setError(true);
+    }
+  }
+
+  return (
+    <div style={{ paddingTop: 70, maxWidth: 340, margin: "0 auto", textAlign: "center" }}>
+      <div style={{ fontSize: 30, marginBottom: 10 }}>📊</div>
+      <h2 style={{ fontFamily: "Fraunces, serif" }}>Business Dashboard</h2>
+      <p style={{ fontSize: 13, opacity: 0.65, marginBottom: 16 }}>Enter the dashboard password to view business performance.</p>
+      <input
+        type="password"
+        value={pw}
+        onChange={(e) => { setPw(e.target.value); setError(false); }}
+        placeholder="Password"
+        style={inputStyle}
+        onKeyDown={(e) => e.key === "Enter" && attempt()}
+      />
+      {error && <div style={{ color: BRAND.tomato, fontSize: 12.5, marginTop: 8 }}>Incorrect password.</div>}
+      <PrimaryButton full style={{ marginTop: 12 }} onClick={attempt}>
+        Enter
+      </PrimaryButton>
+    </div>
+  );
+}
+
 // The driver's whole world — nothing else from Backstage is reachable from here.
 // Reuses the exact same PackingCenterPanel / DriverOrdersPanel components the
 // main admin uses, so there's only ever one packing/delivery implementation
@@ -10963,8 +11018,10 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
         <Pill active={tab === "airecipe"} onClick={() => setTab("airecipe")}>🤖 AI Recipe Builder</Pill>
         <Pill active={tab === "packing"} onClick={() => setTab("packing")}>📦 Packing Center</Pill>
         <Pill active={tab === "driver"} onClick={() => setTab("driver")}>🚚 Driver View</Pill>
+        <Pill active={tab === "bizdash"} onClick={() => setTab("bizdash")}>📊 Business Dashboard</Pill>
       </div>
 
+      {tab === "bizdash" && <BusinessDashboardPanel orders={orders} products={products} />}
       {tab === "packing" && <PackingCenterPanel orders={orders} products={products} boxes={boxes} updatePackingStatus={updatePackingStatus} initialOpenOrderId={packOrderId} />}
       {tab === "driver" && <DriverOrdersPanel orders={orders} updatePackingStatus={updatePackingStatus} updateOrderStatus={updateOrderStatus} />}
 
@@ -11140,6 +11197,175 @@ function PromoCodesPanel({ promoCodesDb, savePromoCode, deletePromoCode }) {
       <p style={{ fontSize: 11.5, opacity: 0.55, marginTop: 10 }}>
         Changes here apply instantly across the site — no redeploy needed. Referral codes (auto-generated per customer) work separately and don't need to be added here.
       </p>
+    </div>
+  );
+}
+
+// ---- Business Dashboard (CEO overview) ----
+// Real numbers only, computed from the same orders/products data already
+// powering the rest of Backstage. Sections that would need data Darousha
+// doesn't track yet (ad spend, product costs, fixed expenses) are clearly
+// labeled "Needs setup" rather than filled with invented numbers.
+function BusinessDashboardPanel({ orders, products }) {
+  const now = new Date();
+  const [range, setRange] = useState("30days"); // "today" | "7days" | "30days" | "month"
+
+  function sameDay(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+  }
+  function daysAgo(n) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - n);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+  const rangeDays = { today: 1, "7days": 7, "30days": 30, month: now.getDate() }[range];
+
+  const withDates = orders.map((o) => ({ ...o, _date: new Date(o.createdAt) }));
+
+  function inRange(o, startOffset, endOffset) {
+    const start = daysAgo(startOffset);
+    const end = endOffset === 0 ? now : daysAgo(endOffset);
+    return o._date >= start && o._date <= end;
+  }
+
+  const current = withDates.filter((o) => inRange(o, rangeDays - 1, 0));
+  const previous = withDates.filter((o) => inRange(o, rangeDays * 2 - 1, rangeDays));
+
+  function summarize(list) {
+    const revenue = list.reduce((s, o) => s + (o.total || 0), 0);
+    const count = list.length;
+    const apv = count ? revenue / count : 0;
+    return { revenue, count, apv };
+  }
+  const cur = summarize(current);
+  const prev = summarize(previous);
+  function pctChange(now_, then) {
+    if (!then) return now_ > 0 ? 100 : 0;
+    return ((now_ - then) / then) * 100;
+  }
+
+  function firstOrderDate(phone) {
+    const theirs = withDates.filter((o) => o.customer?.phone === phone);
+    if (!theirs.length) return null;
+    return theirs.reduce((min, o) => (o._date < min ? o._date : min), theirs[0]._date);
+  }
+  const phonesInPeriod = [...new Set(current.map((o) => o.customer?.phone).filter(Boolean))];
+  let newCustomers = 0, repeatCustomers = 0;
+  phonesInPeriod.forEach((phone) => {
+    const first = firstOrderDate(phone);
+    const isNew = first && current.some((o) => o.customer?.phone === phone && sameDay(o._date, first));
+    if (isNew) newCustomers++; else repeatCustomers++;
+  });
+  const totalCustomersInPeriod = phonesInPeriod.length;
+  const repeatRate = totalCustomersInPeriod ? (repeatCustomers / totalCustomersInPeriod) * 100 : 0;
+
+  const revenueGrowthPct = pctChange(cur.revenue, prev.revenue);
+  const repeatScore = Math.max(0, Math.min(100, repeatRate * 2));
+  const growthScore = Math.max(0, Math.min(100, 50 + revenueGrowthPct * 1.5));
+  const healthScore = Math.round((repeatScore + growthScore) / 2);
+  const healthLabel = healthScore >= 80 ? "Healthy" : healthScore >= 60 ? "Watch" : "Needs Attention";
+
+  const dayBars = Array.from({ length: 7 }, (_, i) => {
+    const dayStart = daysAgo(6 - i);
+    const dayTotal = withDates.filter((o) => sameDay(o._date, dayStart)).reduce((s, o) => s + (o.total || 0), 0);
+    return { label: dayStart.toLocaleDateString(undefined, { weekday: "short" }), total: dayTotal };
+  });
+  const maxBar = Math.max(1, ...dayBars.map((d) => d.total));
+
+  const itemMap = {};
+  current.forEach((o) => {
+    (o.items || []).forEach((it) => {
+      if (!itemMap[it.name]) itemMap[it.name] = { name: it.name, qty: 0, revenue: 0 };
+      itemMap[it.name].qty += it.qty;
+      itemMap[it.name].revenue += it.qty * it.price;
+    });
+  });
+  const topProducts = Object.values(itemMap).sort((a, b) => b.revenue - a.revenue).slice(0, 8);
+
+  function KpiCard({ label, value, changePct, suffix }) {
+    const positive = changePct >= 0;
+    return (
+      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 16 }}>
+        <div style={{ fontSize: 11.5, fontWeight: 700, opacity: 0.6, textTransform: "uppercase", letterSpacing: "0.04em" }}>{label}</div>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22, marginTop: 4 }}>{value}{suffix}</div>
+        {changePct !== null && (
+          <div style={{ fontSize: 12, fontWeight: 700, color: positive ? BRAND.green : BRAND.tomato, marginTop: 4 }}>
+            {positive ? "▲" : "▼"} {Math.abs(changePct).toFixed(1)}% vs previous period
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function NeedsSetupCard({ title, needs }) {
+    return (
+      <div style={{ background: BRAND.creamDeep, borderRadius: 14, padding: 18, opacity: 0.85 }}>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 6 }}>🔒 {title}</div>
+        <div style={{ fontSize: 12.5, opacity: 0.75, lineHeight: 1.5 }}>{needs}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
+        {[["today", "Today"], ["7days", "7 Days"], ["30days", "30 Days"], ["month", "This Month"]].map(([key, label]) => (
+          <Pill key={key} active={range === key} onClick={() => setRange(key)}>{label}</Pill>
+        ))}
+      </div>
+
+      <div style={{ background: `linear-gradient(155deg, ${BRAND.green}, ${BRAND.greenDark})`, borderRadius: 18, padding: 24, color: "#fff", marginBottom: 20, display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 42 }}>{healthScore}<span style={{ fontSize: 20, opacity: 0.7 }}>/100</span></div>
+        <div>
+          <div style={{ fontWeight: 800, fontSize: 16, color: healthScore >= 80 ? "#fff" : BRAND.gold }}>{healthLabel}</div>
+          <div style={{ fontSize: 12, opacity: 0.75, marginTop: 4, maxWidth: 420 }}>
+            Based on repeat purchase rate and revenue trend — the two signals tracked today. Adding marketing spend and product costs (see below) would sharpen this further.
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px,1fr))", gap: 12, marginBottom: 20 }}>
+        <KpiCard label="Revenue" value={money(cur.revenue)} changePct={pctChange(cur.revenue, prev.revenue)} />
+        <KpiCard label="Orders" value={cur.count} changePct={pctChange(cur.count, prev.count)} />
+        <KpiCard label="Avg. Purchase Value" value={money(cur.apv)} changePct={pctChange(cur.apv, prev.apv)} />
+        <KpiCard label="New Customers" value={newCustomers} changePct={null} />
+        <KpiCard label="Repeat Purchase Rate" value={repeatRate.toFixed(0)} suffix="%" changePct={null} />
+      </div>
+
+      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginBottom: 20 }}>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 14 }}>Revenue — last 7 days</div>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 10, height: 100 }}>
+          {dayBars.map((d, i) => (
+            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+              <div style={{ width: "100%", height: Math.max(4, (d.total / maxBar) * 76), background: BRAND.green, borderRadius: 4 }} title={money(d.total)} />
+              <div style={{ fontSize: 10, opacity: 0.6, fontWeight: 700 }}>{d.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginBottom: 20 }}>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 12 }}>Top products by revenue</div>
+        {topProducts.length === 0 && <div style={{ fontSize: 13, opacity: 0.6 }}>No orders in this range.</div>}
+        {topProducts.map((p) => (
+          <div key={p.name} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: `1px solid ${BRAND.creamDeep}`, fontSize: 13 }}>
+            <span>{p.name} <span style={{ opacity: 0.5 }}>× {p.qty}</span></span>
+            <b>{money(p.revenue)}</b>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.6, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+        Not yet available — needs setup
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))", gap: 12 }}>
+        <NeedsSetupCard title="Marketing (CAC, CPP, ROAS)" needs="Needs ad spend per channel to be tracked somewhere — nothing in the app records marketing spend today." />
+        <NeedsSetupCard title="Gross Margin & P&L" needs="Needs real product cost (COGS) per item, plus fixed costs like rent and salaries — only selling prices are tracked today." />
+        <NeedsSetupCard title="Customer LTV & LTV:CAC" needs="LTV itself can be estimated from real order history — but LTV:CAC needs CAC, which needs marketing spend data first." />
+        <NeedsSetupCard title="Break-even Calculator" needs="Needs monthly fixed costs and per-order variable costs — happy to build this once those numbers exist somewhere." />
+        <NeedsSetupCard title="Targets & Achievement %" needs="Needs you to set actual monthly targets (revenue, orders, etc.) somewhere for the app to compare against." />
+      </div>
     </div>
   );
 }
