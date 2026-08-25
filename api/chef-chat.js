@@ -46,13 +46,13 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { messages, lang } = req.body || {};
+  const { messages, lang, favorites } = req.body || {};
   if (!Array.isArray(messages) || messages.length === 0) {
     res.status(400).json({ error: "Say something to start the conversation." });
     return;
   }
 
-  // Validate and sanitize the incoming history â€” never trust the client blindly.
+  // Validate and sanitize the incoming history — never trust the client blindly.
   const cleanHistory = messages
     .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
     .slice(-MAX_MESSAGES)
@@ -64,6 +64,13 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Light personalization: the customer's most-ordered items, if provided.
+  // This is just a hint for the model — it never overrides what the
+  // customer actually asks for in the current message.
+  const cleanFavorites = Array.isArray(favorites)
+    ? favorites.filter((f) => typeof f === "string" && f.trim()).slice(0, 5).map((f) => f.trim().slice(0, 40))
+    : [];
+
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     res.status(500).json({ error: "Chef Chat isn't set up yet â€” missing API key." });
@@ -72,15 +79,19 @@ export default async function handler(req, res) {
 
   const languageHint =
     lang === "ar"
-      ? "The customer's app is set to Arabic â€” reply in Arabic unless they write in English."
-      : "The customer's app is set to English â€” reply in English unless they write in another language.";
+      ? "The customer's app is set to Arabic — reply in Arabic unless they write in English."
+      : "The customer's app is set to English — reply in English unless they write in another language.";
+
+  const favoritesHint = cleanFavorites.length > 0
+    ? `This customer's most-ordered items, most frequent first: ${cleanFavorites.join(", ")}. You may use these to make suggestions more relevant when it fits naturally, but never force them in — always prioritize what the customer is actually asking for right now.`
+    : "";
 
   try {
     const groqUrl = "https://api.groq.com/openai/v1/chat/completions";
     const groqBody = JSON.stringify({
       model: "openai/gpt-oss-120b",
       messages: [
-        { role: "system", content: SYSTEM_PROMPT + "\n\n" + languageHint },
+        { role: "system", content: SYSTEM_PROMPT + "\n\n" + languageHint + (favoritesHint ? "\n\n" + favoritesHint : "") },
         ...cleanHistory,
       ],
       response_format: { type: "json_object" },
