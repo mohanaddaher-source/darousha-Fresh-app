@@ -3325,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260825183231"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260825184029"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -4938,6 +4938,7 @@ function AppShell() {
   }, [updateAvailable, view]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [orders, setOrders] = useState([]);
+  const [bizSettings, setBizSettings] = useState(null);
   const [leads, setLeads] = useState([]);
   const [itemRequests, setItemRequests] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -4984,6 +4985,9 @@ function AppShell() {
       if (!overrides) return;
       setProducts((prev) => prev.map((p) => (overrides[p.id] ? { ...p, ...overrides[p.id] } : p)));
     });
+    const unsubBizSettings = storageSubscribe("dsf-biz-settings", (saved) => {
+      setBizSettings(saved || null);
+    });
     const unsubBoxes = storageSubscribe("dsf-box-overrides", (boxOverrides) => {
       if (!boxOverrides) return;
       setBoxes((prev) => prev.map((b) => (boxOverrides[b.id] ? { ...b, ...boxOverrides[b.id] } : b)));
@@ -5026,6 +5030,7 @@ function AppShell() {
       unsubReviews();
       unsubItemRequests();
       unsubCatalog();
+      unsubBizSettings();
       unsubBoxes();
       unsubPromoCodes();
       unsubSuppliers();
@@ -5365,12 +5370,18 @@ function AppShell() {
     await markChefChatConvertedDoc(sessionId, recipeName, itemsAddedCount);
   }
 
+  async function updateBizSettings(patch) {
+    const next = { ...(bizSettings || {}), ...patch };
+    setBizSettings(next);
+    return await storageSet("dsf-biz-settings", next);
+  }
+
   async function updateProduct(id, patch) {
     const next = products.map((p) => (p.id === id ? { ...p, ...patch } : p));
     setProducts(next);
     const overrides = {};
     next.forEach((p) => {
-      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null, avgWeightG: p.avgWeightG == null ? null : p.avgWeightG, caseSize: p.caseSize == null ? null : p.caseSize, bufferPct: p.bufferPct == null ? null : p.bufferPct, packSizeG: p.packSizeG == null ? null : p.packSizeG };
+      overrides[p.id] = { price: p.price, cost: p.cost == null ? null : p.cost, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null, avgWeightG: p.avgWeightG == null ? null : p.avgWeightG, caseSize: p.caseSize == null ? null : p.caseSize, bufferPct: p.bufferPct == null ? null : p.bufferPct, packSizeG: p.packSizeG == null ? null : p.packSizeG };
     });
     return await storageSet("dsf-catalog-overrides", overrides, true);
   }
@@ -5431,7 +5442,7 @@ function AppShell() {
     setProducts(next);
     const overrides = {};
     next.forEach((p) => {
-      overrides[p.id] = { price: p.price, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null, avgWeightG: p.avgWeightG == null ? null : p.avgWeightG, caseSize: p.caseSize == null ? null : p.caseSize, bufferPct: p.bufferPct == null ? null : p.bufferPct, packSizeG: p.packSizeG == null ? null : p.packSizeG };
+      overrides[p.id] = { price: p.price, cost: p.cost == null ? null : p.cost, available: p.available, unit: p.unit, photoUrl: p.photoUrl || null, stock: p.stock == null ? null : p.stock, salePrice: p.salePrice == null ? null : p.salePrice, origin: p.origin || null, shippingMethod: p.shippingMethod || null, tierPieces: p.tierPieces || null, avgWeightG: p.avgWeightG == null ? null : p.avgWeightG, caseSize: p.caseSize == null ? null : p.caseSize, bufferPct: p.bufferPct == null ? null : p.bufferPct, packSizeG: p.packSizeG == null ? null : p.packSizeG };
     });
     await storageSet("dsf-catalog-overrides", overrides, true);
     // Deliberately no alert fired from here — this function runs inside
@@ -5595,7 +5606,7 @@ function AppShell() {
         {view === "bizdashportal" &&
           (bizDashAuthed ? (
             <div style={{ paddingTop: 20 }}>
-              <BusinessDashboardPanel orders={orders} products={products} />
+              <BusinessDashboardPanel orders={orders} products={products} bizSettings={bizSettings} updateBizSettings={updateBizSettings} />
             </div>
           ) : (
             <BizDashLogin onSuccess={() => setBizDashAuthed(true)} />
@@ -11422,7 +11433,7 @@ function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOr
         <Pill active={tab === "bizdash"} onClick={() => setTab("bizdash")}>📊 Business Dashboard</Pill>
       </div>
 
-      {tab === "bizdash" && <BusinessDashboardPanel orders={orders} products={products} />}
+      {tab === "bizdash" && <BusinessDashboardPanel orders={orders} products={products} bizSettings={bizSettings} updateBizSettings={updateBizSettings} />}
       {tab === "packing" && <PackingCenterPanel orders={orders} products={products} boxes={boxes} updatePackingStatus={updatePackingStatus} initialOpenOrderId={packOrderId} />}
       {tab === "driver" && <DriverOrdersPanel orders={orders} updatePackingStatus={updatePackingStatus} updateOrderStatus={updateOrderStatus} />}
 
@@ -11607,7 +11618,7 @@ function PromoCodesPanel({ promoCodesDb, savePromoCode, deletePromoCode }) {
 // powering the rest of Backstage. Sections that would need data Darousha
 // doesn't track yet (ad spend, product costs, fixed expenses) are clearly
 // labeled "Needs setup" rather than filled with invented numbers.
-function BusinessDashboardPanel({ orders, products }) {
+function BusinessDashboardPanel({ orders, products, bizSettings, updateBizSettings }) {
   const now = new Date();
   const [range, setRange] = useState("30days"); // "today" | "7days" | "30days" | "month"
 
@@ -11684,6 +11695,75 @@ function BusinessDashboardPanel({ orders, products }) {
   });
   const topProducts = Object.values(itemMap).sort((a, b) => b.revenue - a.revenue).slice(0, 8);
 
+  // ---- "This Month" business metrics — fixed costs, marketing spend, and
+  // targets are inherently monthly figures, so these five calculators are
+  // always scoped to the current calendar month regardless of the range
+  // picker above, and shown in their own section further down.
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthOrders = withDates.filter((o) => o._date >= monthStart && o._date <= now);
+  const monthRevenue = monthOrders.reduce((s, o) => s + (o.total || 0), 0);
+  const monthOrderCount = monthOrders.length;
+  const monthAPV = monthOrderCount ? monthRevenue / monthOrderCount : 0;
+
+  const productCostByName = {};
+  products.forEach((p) => { if (p.cost != null) productCostByName[p.name] = p.cost; });
+  let monthCOGS = 0;
+  const itemsMissingCost = new Set();
+  let itemsWithKnownCost = 0;
+  monthOrders.forEach((o) => {
+    (o.items || []).forEach((it) => {
+      const unitCost = productCostByName[it.name];
+      if (unitCost != null) {
+        monthCOGS += unitCost * (it.qty || 0);
+        itemsWithKnownCost++;
+      } else {
+        itemsMissingCost.add(it.name);
+      }
+    });
+  });
+  const hasAnyCostData = itemsWithKnownCost > 0;
+  const grossProfit = monthRevenue - monthCOGS;
+  const grossMarginPct = monthRevenue > 0 ? (grossProfit / monthRevenue) * 100 : 0;
+
+  const fc = (bizSettings && bizSettings.fixedCosts) || {};
+  const fixedCostsTotal = (Number(fc.rent) || 0) + (Number(fc.salaries) || 0) + (Number(fc.other) || 0);
+  const hasFixedCosts = fixedCostsTotal > 0;
+  const netProfit = grossProfit - fixedCostsTotal - (Number(bizSettings?.marketingSpend) || 0);
+  const netMarginPct = monthRevenue > 0 ? (netProfit / monthRevenue) * 100 : 0;
+
+  const marketingSpend = Number(bizSettings?.marketingSpend) || 0;
+  const hasMarketingSpend = marketingSpend > 0;
+  const monthPhones = [...new Set(monthOrders.map((o) => o.customer?.phone).filter(Boolean))];
+  let newCustomersThisMonth = 0;
+  monthPhones.forEach((phone) => {
+    const first = firstOrderDate(phone);
+    if (first && first >= monthStart) newCustomersThisMonth++;
+  });
+  const cac = hasMarketingSpend && newCustomersThisMonth > 0 ? marketingSpend / newCustomersThisMonth : null;
+  const cpp = hasMarketingSpend && monthOrderCount > 0 ? marketingSpend / monthOrderCount : null;
+  const roas = hasMarketingSpend ? monthRevenue / marketingSpend : null;
+
+  // LTV — average all-time spend per unique customer (not scoped to this month).
+  const spendByPhone = {};
+  withDates.forEach((o) => {
+    const phone = o.customer?.phone;
+    if (!phone) return;
+    spendByPhone[phone] = (spendByPhone[phone] || 0) + (o.total || 0);
+  });
+  const uniqueCustomerCount = Object.keys(spendByPhone).length;
+  const ltv = uniqueCustomerCount > 0 ? Object.values(spendByPhone).reduce((s, v) => s + v, 0) / uniqueCustomerCount : 0;
+  const ltvToCac = cac ? ltv / cac : null;
+
+  const breakEvenRevenue = hasFixedCosts && grossMarginPct > 0 ? fixedCostsTotal / (grossMarginPct / 100) : null;
+  const breakEvenOrders = breakEvenRevenue && monthAPV > 0 ? breakEvenRevenue / monthAPV : null;
+
+  const targets = (bizSettings && bizSettings.monthlyTargets) || {};
+  const revenueTarget = Number(targets.revenue) || 0;
+  const ordersTarget = Number(targets.orders) || 0;
+  const revenueAchievementPct = revenueTarget > 0 ? (monthRevenue / revenueTarget) * 100 : null;
+  const ordersAchievementPct = ordersTarget > 0 ? (monthOrderCount / ordersTarget) * 100 : null;
+
+
   function KpiCard({ label, value, changePct, suffix }) {
     const positive = changePct >= 0;
     return (
@@ -11695,15 +11775,6 @@ function BusinessDashboardPanel({ orders, products }) {
             {positive ? "▲" : "▼"} {Math.abs(changePct).toFixed(1)}% vs previous period
           </div>
         )}
-      </div>
-    );
-  }
-
-  function NeedsSetupCard({ title, needs }) {
-    return (
-      <div style={{ background: BRAND.creamDeep, borderRadius: 14, padding: 18, opacity: 0.85 }}>
-        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 6 }}>🔒 {title}</div>
-        <div style={{ fontSize: 12.5, opacity: 0.75, lineHeight: 1.5 }}>{needs}</div>
       </div>
     );
   }
@@ -11758,14 +11829,161 @@ function BusinessDashboardPanel({ orders, products }) {
       </div>
 
       <div style={{ fontSize: 12.5, fontWeight: 700, opacity: 0.6, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-        Not yet available — needs setup
+        This month's business health
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))", gap: 12 }}>
-        <NeedsSetupCard title="Marketing (CAC, CPP, ROAS)" needs="Needs ad spend per channel to be tracked somewhere — nothing in the app records marketing spend today." />
-        <NeedsSetupCard title="Gross Margin & P&L" needs="Needs real product cost (COGS) per item, plus fixed costs like rent and salaries — only selling prices are tracked today." />
-        <NeedsSetupCard title="Customer LTV & LTV:CAC" needs="LTV itself can be estimated from real order history — but LTV:CAC needs CAC, which needs marketing spend data first." />
-        <NeedsSetupCard title="Break-even Calculator" needs="Needs monthly fixed costs and per-order variable costs — happy to build this once those numbers exist somewhere." />
-        <NeedsSetupCard title="Targets & Achievement %" needs="Needs you to set actual monthly targets (revenue, orders, etc.) somewhere for the app to compare against." />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))", gap: 12, marginBottom: 20 }}>
+        <MetricOrLockedCard
+          title="Gross Margin & P&L"
+          unlocked={hasAnyCostData}
+          needs="Set a cost on at least one product below (💰 button on the Products list) to unlock this."
+        >
+          <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "Fraunces, serif" }}>{grossMarginPct.toFixed(0)}%</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65 }}>gross margin · {money(grossProfit)} gross profit</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 4 }}>
+            Net {hasFixedCosts ? money(netProfit) : "— (add fixed costs below)"} {hasFixedCosts && `(${netMarginPct.toFixed(0)}% net margin)`}
+          </div>
+          {itemsMissingCost.size > 0 && (
+            <div style={{ fontSize: 10.5, opacity: 0.5, marginTop: 4 }}>
+              {itemsMissingCost.size} product{itemsMissingCost.size === 1 ? "" : "s"} sold this month still {itemsMissingCost.size === 1 ? "has" : "have"} no cost set — COGS is a partial estimate until they do.
+            </div>
+          )}
+        </MetricOrLockedCard>
+
+        <MetricOrLockedCard
+          title="Marketing (CAC, CPP, ROAS)"
+          unlocked={hasMarketingSpend}
+          needs="Enter this month's marketing spend below to unlock this."
+        >
+          <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "Fraunces, serif" }}>{cac != null ? money(cac) : "—"}</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65 }}>cost per new customer (CAC){cac == null && " — no new customers yet this month"}</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 4 }}>{cpp != null ? money(cpp) : "—"} cost per order (CPP)</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65 }}>{roas != null ? roas.toFixed(2) + "×" : "—"} ROAS</div>
+        </MetricOrLockedCard>
+
+        <MetricOrLockedCard
+          title="Customer LTV & LTV:CAC"
+          unlocked={uniqueCustomerCount > 0}
+          needs="Needs at least one customer order — LTV:CAC also needs marketing spend below."
+        >
+          <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "Fraunces, serif" }}>{money(ltv)}</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65 }}>average lifetime value, all-time, across {uniqueCustomerCount} customers</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 4 }}>
+            LTV:CAC {ltvToCac != null ? `${ltvToCac.toFixed(1)} : 1` : "— (needs marketing spend + a new customer this month)"}
+          </div>
+        </MetricOrLockedCard>
+
+        <MetricOrLockedCard
+          title="Break-even Calculator"
+          unlocked={breakEvenRevenue != null}
+          needs="Needs fixed monthly costs below, plus at least one product with a cost set."
+        >
+          <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "Fraunces, serif" }}>{breakEvenRevenue != null ? money(breakEvenRevenue) : "—"}</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65 }}>break-even revenue this month</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 4 }}>
+            ≈ {breakEvenOrders != null ? Math.ceil(breakEvenOrders) : "—"} orders at this month's avg. order value
+          </div>
+        </MetricOrLockedCard>
+
+        <MetricOrLockedCard
+          title="Targets & Achievement %"
+          unlocked={revenueTarget > 0 || ordersTarget > 0}
+          needs="Set a monthly revenue or orders target below to unlock this."
+        >
+          <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "Fraunces, serif" }}>
+            {revenueAchievementPct != null ? revenueAchievementPct.toFixed(0) + "%" : "—"}
+          </div>
+          <div style={{ fontSize: 11.5, opacity: 0.65 }}>of revenue target ({money(monthRevenue)} of {revenueTarget > 0 ? money(revenueTarget) : "—"})</div>
+          <div style={{ fontSize: 11.5, opacity: 0.65, marginTop: 4 }}>
+            {ordersAchievementPct != null ? ordersAchievementPct.toFixed(0) + "%" : "—"} of orders target ({monthOrderCount} of {ordersTarget > 0 ? ordersTarget : "—"})
+          </div>
+        </MetricOrLockedCard>
+      </div>
+
+      <BizSettingsForm bizSettings={bizSettings} updateBizSettings={updateBizSettings} />
+    </div>
+  );
+}
+
+function MetricOrLockedCard({ title, unlocked, needs, children }) {
+  if (!unlocked) {
+    return (
+      <div style={{ background: BRAND.creamDeep, borderRadius: 14, padding: 18, opacity: 0.85 }}>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 6 }}>🔒 {title}</div>
+        <div style={{ fontSize: 12.5, opacity: 0.75, lineHeight: 1.5 }}>{needs}</div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18 }}>
+      <div style={{ fontSize: 11.5, fontWeight: 700, opacity: 0.6, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 6 }}>{title}</div>
+      {children}
+    </div>
+  );
+}
+
+// Single place to enter the numbers the app can't infer on its own — fixed
+// costs, marketing spend, and monthly targets. Feeds every locked card
+// above once filled in. Values are typed as strings while editing and only
+// parsed to numbers on save, same pattern as the product price/cost fields.
+function BizSettingsForm({ bizSettings, updateBizSettings }) {
+  const fc = (bizSettings && bizSettings.fixedCosts) || {};
+  const targets = (bizSettings && bizSettings.monthlyTargets) || {};
+  const [rent, setRent] = useState(fc.rent ?? "");
+  const [salaries, setSalaries] = useState(fc.salaries ?? "");
+  const [other, setOther] = useState(fc.other ?? "");
+  const [marketingSpend, setMarketingSpend] = useState(bizSettings?.marketingSpend ?? "");
+  const [revenueTarget, setRevenueTarget] = useState(targets.revenue ?? "");
+  const [ordersTarget, setOrdersTarget] = useState(targets.orders ?? "");
+  const [saved, setSaved] = useState(null);
+
+  async function save() {
+    const ok = await updateBizSettings({
+      fixedCosts: { rent: Number(rent) || 0, salaries: Number(salaries) || 0, other: Number(other) || 0 },
+      marketingSpend: Number(marketingSpend) || 0,
+      monthlyTargets: { revenue: Number(revenueTarget) || 0, orders: Number(ordersTarget) || 0 },
+    });
+    setSaved(ok ? "ok" : "failed");
+    setTimeout(() => setSaved(null), ok ? 1800 : 5000);
+  }
+
+  const fieldStyle = { ...inputStyle, padding: "8px 10px", fontSize: 13, width: 110 };
+  const labelStyle = { fontSize: 11, opacity: 0.6, marginBottom: 3 };
+
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, padding: 18, marginTop: 4 }}>
+      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 15, marginBottom: 4 }}>Business settings</div>
+      <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 16 }}>
+        These numbers aren't tracked anywhere else in the app — enter them once a month and every card above updates automatically.
+      </div>
+
+      <div style={{ fontSize: 11.5, fontWeight: 700, opacity: 0.6, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 8 }}>
+        Fixed monthly costs (AED)
+      </div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 18 }}>
+        <div><div style={labelStyle}>Rent</div><input type="number" min="0" value={rent} onChange={(e) => setRent(e.target.value)} style={fieldStyle} /></div>
+        <div><div style={labelStyle}>Salaries</div><input type="number" min="0" value={salaries} onChange={(e) => setSalaries(e.target.value)} style={fieldStyle} /></div>
+        <div><div style={labelStyle}>Other overhead</div><input type="number" min="0" value={other} onChange={(e) => setOther(e.target.value)} style={fieldStyle} /></div>
+      </div>
+
+      <div style={{ fontSize: 11.5, fontWeight: 700, opacity: 0.6, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 8 }}>
+        Marketing spend this month (AED)
+      </div>
+      <div style={{ marginBottom: 18 }}>
+        <input type="number" min="0" value={marketingSpend} onChange={(e) => setMarketingSpend(e.target.value)} placeholder="Total across all channels" style={{ ...fieldStyle, width: 220 }} />
+      </div>
+
+      <div style={{ fontSize: 11.5, fontWeight: 700, opacity: 0.6, textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 8 }}>
+        Monthly targets
+      </div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 18 }}>
+        <div><div style={labelStyle}>Revenue (AED)</div><input type="number" min="0" value={revenueTarget} onChange={(e) => setRevenueTarget(e.target.value)} style={fieldStyle} /></div>
+        <div><div style={labelStyle}>Orders</div><input type="number" min="0" value={ordersTarget} onChange={(e) => setOrdersTarget(e.target.value)} style={fieldStyle} /></div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <PrimaryButton onClick={save} style={{ padding: "9px 18px", fontSize: 13 }}>Save</PrimaryButton>
+        {saved === "ok" && <span style={{ color: BRAND.green, fontSize: 12, fontWeight: 700 }}>✓ Saved</span>}
+        {saved === "failed" && <span style={{ color: BRAND.tomato, fontSize: 12, fontWeight: 700 }}>⚠ Failed to save — try again</span>}
       </div>
     </div>
   );
@@ -13933,6 +14151,8 @@ function LowStockBanner({ products, suppliers, addSupplier, deleteSupplier }) {
 
 function CatalogRow({ product, updateProduct }) {
   const [price, setPrice] = useState(product.price);
+  const [cost, setCost] = useState(product.cost == null ? "" : product.cost);
+  const [costOpen, setCostOpen] = useState(false);
   const [stock, setStock] = useState(product.stock == null ? "" : product.stock);
   const [photoOpen, setPhotoOpen] = useState(false);
   const [discountOpen, setDiscountOpen] = useState(false);
@@ -13999,6 +14219,14 @@ function CatalogRow({ product, updateProduct }) {
     if (e) e.target.blur();
     const ok = await updateProduct(product.id, { price: Number(price) || 0 });
     setJustSaved(ok ? "price" : "price-failed");
+    setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
+  }
+
+  async function commitCost(e) {
+    if (e) e.target.blur();
+    const n = cost === "" ? null : Math.max(0, Number(cost) || 0);
+    const ok = await updateProduct(product.id, { cost: n });
+    setJustSaved(ok ? "cost" : "cost-failed");
     setTimeout(() => setJustSaved(null), ok ? 1500 : 5000);
   }
 
@@ -14108,6 +14336,16 @@ function CatalogRow({ product, updateProduct }) {
             }}
           >
             🏷️
+          </button>
+          <button
+            onClick={() => setCostOpen((o) => !o)}
+            title={product.cost != null ? `Your cost: ${money(product.cost)}` : "Set what this item costs you (for margin tracking)"}
+            style={{
+              border: `1px solid ${product.cost != null ? BRAND.green : BRAND.creamDeep}`, borderRadius: 8, padding: "5px 7px", cursor: "pointer",
+              background: product.cost != null ? BRAND.greenSoft : "#fff", color: product.cost != null ? BRAND.green : BRAND.ink, fontSize: 12, flexShrink: 0,
+            }}
+          >
+            💰
           </button>
           {showsTierPieces && (
             <button
@@ -14341,6 +14579,35 @@ function CatalogRow({ product, updateProduct }) {
           </div>
           <div style={{ fontSize: 11, opacity: 0.55 }}>
             Customers will see the regular price struck through next to this sale price, everywhere the item appears (shop, fruit box builder, cart, invoice). Leave blank and save to remove the discount.
+          </div>
+        </div>
+      )}
+      {costOpen && (
+        <div style={{ padding: "0 16px 14px 58px", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <div style={{ fontSize: 11.5, opacity: 0.6 }}>Your cost (AED):</div>
+            <input
+              type="number"
+              min="0"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && commitCost()}
+              placeholder="e.g. what you pay your supplier"
+              style={{ ...inputStyle, padding: "7px 10px", fontSize: 12.5, width: 140 }}
+            />
+            <GhostButton style={{ padding: "7px 12px", fontSize: 12.5 }} onClick={commitCost}>
+              Save cost
+            </GhostButton>
+            {justSaved === "cost" && <span style={{ color: BRAND.green, fontSize: 11, fontWeight: 700 }}>✓ Saved</span>}
+            {justSaved === "cost-failed" && <span style={{ color: BRAND.tomato, fontSize: 11, fontWeight: 700 }}>⚠ Failed to save — try again</span>}
+            {product.cost != null && (
+              <span style={{ fontSize: 11.5, opacity: 0.6 }}>
+                Margin: {product.price > 0 ? (((product.price - product.cost) / product.price) * 100).toFixed(0) : 0}%
+              </span>
+            )}
+          </div>
+          <div style={{ fontSize: 11, opacity: 0.55 }}>
+            What you pay per {product.unit} — never shown to customers. This is what powers Gross Margin & P&L and the other locked cards on the Business Dashboard.
           </div>
         </div>
       )}
