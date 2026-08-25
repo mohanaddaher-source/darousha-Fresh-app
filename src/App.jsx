@@ -15,7 +15,7 @@ import {
   ShoppingCart, Truck, Leaf, MapPin, Clock, CreditCard, CheckCircle2,
   Lock, Plus, Minus, ChevronRight, Package, ArrowLeft, X, Banknote,
   ShieldCheck, Search, Trash2, ChevronDown, Home as HomeIcon, Store,
-  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator
+  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send
 } from "lucide-react";
 
 /* ============================================================================
@@ -3325,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260824102751"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260825071638"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -4449,6 +4449,39 @@ async function markFridgeScanConvertedDoc(id, recipeName, itemsAddedCount) {
     return false;
   }
 }
+/* Chef Chat sessions — one document per conversation, same demand-tracking
+   pattern as aiRecipeRequests/fridgeScans. Stores the running message count
+   and which recipe (if any) the conversation ended up converting into a
+   cart add, so Backstage can see whether this feature earns its keep. The
+   actual message text is NOT stored — only counts and outcome — to keep
+   Firestore light and avoid warehousing free-text customer conversations. */
+async function saveChefChatDoc(session) {
+  try {
+    await setDoc(doc(db, "chefChats", session.id), session);
+    return true;
+  } catch (e) {
+    console.error("Firestore chef chat save failed:", e);
+    return false;
+  }
+}
+async function markChefChatConvertedDoc(id, recipeName, itemsAddedCount) {
+  try {
+    await setDoc(doc(db, "chefChats", id), { id, cartAdded: true, convertedRecipe: recipeName, itemsAddedCount }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore chef chat conversion update failed:", e);
+    return false;
+  }
+}
+async function updateChefChatMessageCountDoc(id, messageCount) {
+  try {
+    await setDoc(doc(db, "chefChats", id), { id, messageCount }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Firestore chef chat message count update failed:", e);
+    return false;
+  }
+}
 function sendItemRequestAlertWhatsApp(request) {
   if (!CALLMEBOT_READY) return; // not configured yet — skip quietly
   const text = encodeURIComponent(
@@ -5310,6 +5343,28 @@ function AppShell() {
     await markFridgeScanConvertedDoc(scanId, recipeName, itemsAddedCount);
   }
 
+  // Logs one Chef Chat session on its first message, then updates the same
+  // doc as the conversation grows / converts — mirrors logFridgeScan.
+  async function logChefChat({ firstMessage }) {
+    const entry = {
+      id: "CC" + Date.now().toString(36).toUpperCase(),
+      createdAt: new Date().toISOString(),
+      firstMessage: (firstMessage || "").slice(0, 120), // short excerpt only, not the full transcript
+      messageCount: 1,
+      cartAdded: false, convertedRecipe: null, itemsAddedCount: 0,
+    };
+    await saveChefChatDoc(entry);
+    return entry.id;
+  }
+  async function bumpChefChatMessageCount(sessionId, messageCount) {
+    if (!sessionId) return;
+    await updateChefChatMessageCountDoc(sessionId, messageCount);
+  }
+  async function markChefChatConverted(sessionId, recipeName, itemsAddedCount) {
+    if (!sessionId) return;
+    await markChefChatConvertedDoc(sessionId, recipeName, itemsAddedCount);
+  }
+
   async function updateProduct(id, patch) {
     const next = products.map((p) => (p.id === id ? { ...p, ...patch } : p));
     setProducts(next);
@@ -5505,6 +5560,7 @@ function AppShell() {
         {view === "recipes" && <RecipesView setView={setView} products={customerProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
         {view === "aicook" && <AiRecipeBuilderView setView={setView} products={customerProducts} addToCart={addToCart} logAiRecipeRequest={logAiRecipeRequest} markAiRecipeRequestConverted={markAiRecipeRequestConverted} />}
         {view === "fridgescan" && <FridgeScanView setView={setView} products={customerProducts} addToCart={addToCart} logFridgeScan={logFridgeScan} markFridgeScanConverted={markFridgeScanConverted} />}
+        {view === "chefchat" && <ChefChatView setView={setView} products={customerProducts} addToCart={addToCart} logChefChat={logChefChat} bumpChefChatMessageCount={bumpChefChatMessageCount} markChefChatConverted={markChefChatConverted} />}
         {view === "blog" && <BlogView setView={setView} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
@@ -5648,6 +5704,7 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
       {navItem("freshboxes", lang === "ar" ? "فواكه" : "Fruits", Citrus, () => { setActiveCategory && setActiveCategory("Fruits"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Fruits", mobile)}
       {navItem("freshboxes", lang === "ar" ? "أطعمة فاخرة" : "Gourmet", Gift, () => { setActiveCategory && setActiveCategory("Gourmet & Gifts"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Gourmet & Gifts", mobile)}
       {navItem("boxes", t("nav_boxes"), Package, undefined, undefined, mobile)}
+      {navItem("chefchat", lang === "ar" ? "الشيف" : "Chef Chat", ChefHat, () => setView("chefchat"), view === "chefchat", mobile)}
       {navItem("commercial", t("nav_commercial"), Building2, undefined, undefined, mobile)}
       {navItem("track", t("nav_track"), Truck, undefined, undefined, mobile)}
       {navItem("account", user ? (profile?.name || t("nav_account")) : t("nav_signin"), UserIcon, undefined, undefined, mobile)}
@@ -10146,6 +10203,205 @@ function FridgeScanView({ setView, products, addToCart, logFridgeScan, markFridg
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+// ---- "Chef Chat" — a back-and-forth conversation with an AI kitchen
+// assistant. Same non-negotiable rule as Fridge Scan / the AI recipe
+// builder: the AI only ever talks about ingredients in plain language —
+// never a product ID, never a price. When it proposes a specific dish it
+// can return a structured ingredient list, which this component then
+// matches against the real, active product catalog client-side, exactly
+// like the other AI features. Each chat turn is a stateless call to
+// /api/chef-chat — the client holds the conversation history and resends
+// it (capped) each time, since Vercel's free tier has no persistent
+// connections and a 10s execution ceiling per request. */
+const CHEF_CHAT_MAX_TURNS = 8; // trailing user+assistant pairs sent as context, keeps payload/latency sane
+const CHEF_CHAT_MIN_GAP_MS = 1500; // soft client-side throttle against accidental rapid-fire sends
+
+function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatMessageCount, markChefChatConverted }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+  const [messages, setMessages] = useState([]); // { role: "user"|"assistant", content, recipeName?, ingredients?, addedTo?: bool }
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const sessionIdRef = useRef(null);
+  const lastSendRef = useRef(0);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messages, loading]);
+
+  function addIngredientsToCart(msgIndex) {
+    const msg = messages[msgIndex];
+    if (!msg || !msg.ingredients || msg.ingredients.length === 0) return;
+    const productMatches = msg.ingredients
+      .map((ing) => matchIngredientToProduct(ing.name, products))
+      .filter(Boolean);
+    productMatches.forEach((p) => {
+      const est = estimateRecipeIngredientQty(p, 4);
+      addToCart({ id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: est.qty, kind: "item", source: "chef_chat", recipeName: msg.recipeName || undefined });
+    });
+    if (markChefChatConverted) markChefChatConverted(sessionIdRef.current, msg.recipeName, productMatches.length);
+    setMessages((prev) => prev.map((m, i) => (i === msgIndex ? { ...m, addedTo: true, addedCount: productMatches.length } : m)));
+  }
+
+  async function sendMessage() {
+    const text = input.trim();
+    if (!text || loading) return;
+    const now = Date.now();
+    if (now - lastSendRef.current < CHEF_CHAT_MIN_GAP_MS) return; // ignore accidental double/rapid sends
+    lastSendRef.current = now;
+
+    setError(null);
+    const nextMessages = [...messages, { role: "user", content: text.slice(0, 500) }];
+    setMessages(nextMessages);
+    setInput("");
+    setLoading(true);
+
+    if (!sessionIdRef.current && logChefChat) {
+      sessionIdRef.current = await logChefChat({ firstMessage: text });
+    } else if (bumpChefChatMessageCount) {
+      bumpChefChatMessageCount(sessionIdRef.current, nextMessages.length);
+    }
+
+    try {
+      const history = nextMessages
+        .slice(-CHEF_CHAT_MAX_TURNS * 2)
+        .map((m) => ({ role: m.role, content: m.content }));
+      const res = await fetch("/api/chef-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history, lang }),
+      });
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        setError(isAr ? "خطأ غير متوقع — حاول مرة أخرى." : "Unexpected error — please try again.");
+        setLoading(false);
+        return;
+      }
+      if (!res.ok || data.error) {
+        setError(data.error || (isAr ? "تعذّر الوصول إلى الشيف الآن." : "Couldn't reach the chef right now."));
+        setLoading(false);
+        return;
+      }
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: data.reply,
+          recipeName: data.recipe_name || null,
+          ingredients: data.ingredients || null,
+        },
+      ]);
+    } catch (err) {
+      setError((isAr ? "خطأ في الشبكة: " : "Network error: ") + (err && err.message ? err.message : (isAr ? "غير معروف" : "unknown")));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  return (
+    <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto", display: "flex", flexDirection: "column", minHeight: "70vh" }}>
+      <SectionTitle
+        eyebrow={isAr ? "دردشة مع الشيف" : "Chef Chat"}
+        title={isAr ? "👨‍🍳 اسأل الشيف" : "👨‍🍳 Ask the Chef"}
+      />
+      <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
+        {isAr
+          ? "اسأل عن وصفة، بدائل للمكونات، أو ماذا تطبخ الليلة — وسنكمل الناقص من متجرنا."
+          : "Ask for a recipe, a substitution, or what to cook tonight — we'll add whatever you need from the shop."}
+      </p>
+
+      <div
+        ref={scrollRef}
+        style={{ flex: 1, marginTop: 18, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto", maxHeight: "50vh", paddingRight: 2 }}
+      >
+        {messages.length === 0 && (
+          <div style={{ fontSize: 13, opacity: 0.55, textAlign: "center", marginTop: 30 }}>
+            {isAr ? "مثال: \"ماذا أطبخ بالدجاج والأرز؟\"" : "Try: \"What can I make with chicken and rice?\""}
+          </div>
+        )}
+        {messages.map((m, i) => {
+          const mine = m.role === "user";
+          return (
+            <div key={i} style={{ display: "flex", justifyContent: mine ? (isAr ? "flex-start" : "flex-end") : (isAr ? "flex-end" : "flex-start") }}>
+              <div
+                style={{
+                  maxWidth: "82%",
+                  background: mine ? BRAND.green : "#fff",
+                  color: mine ? "#fff" : "inherit",
+                  border: mine ? "none" : `1px solid ${BRAND.creamDeep}`,
+                  borderRadius: 14,
+                  padding: "10px 14px",
+                  fontSize: 13.5,
+                  lineHeight: 1.5,
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                {m.content}
+                {!mine && m.ingredients && m.ingredients.length > 0 && (
+                  <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${BRAND.creamDeep}` }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+                      {m.ingredients.map((ing) => (
+                        <span key={ing.name} style={{ fontSize: 11.5, padding: "4px 9px", borderRadius: 999, background: BRAND.creamDeep }}>
+                          {ing.name}
+                        </span>
+                      ))}
+                    </div>
+                    {m.addedTo ? (
+                      <div style={{ fontSize: 12, fontWeight: 700, color: BRAND.green }}>
+                        {isAr ? `✓ أُضيف ${m.addedCount} إلى السلة` : `✓ Added ${m.addedCount} to cart`}
+                      </div>
+                    ) : (
+                      <PrimaryButton onClick={() => addIngredientsToCart(i)} style={{ fontSize: 12.5, padding: "8px 14px" }}>
+                        {isAr ? "أضف المكونات إلى السلة" : "Add ingredients to cart"}
+                      </PrimaryButton>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+        {loading && (
+          <div style={{ fontSize: 13, opacity: 0.6, alignSelf: isAr ? "flex-end" : "flex-start" }}>
+            {isAr ? "الشيف يفكر…" : "Chef is thinking…"}
+          </div>
+        )}
+      </div>
+
+      {error && (
+        <div style={{ background: "#FDEDED", border: `1px solid ${BRAND.tomato}`, borderRadius: 12, padding: 12, marginTop: 12, fontSize: 13, color: BRAND.tomato }}>
+          {error}
+        </div>
+      )}
+
+      <div style={{ display: "flex", gap: 8, marginTop: 14, alignItems: "flex-end" }}>
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          rows={1}
+          placeholder={isAr ? "اكتب رسالتك..." : "Type a message..."}
+          style={{ ...inputStyle, flex: 1, resize: "none", maxHeight: 100 }}
+        />
+        <PrimaryButton onClick={sendMessage} disabled={loading || !input.trim()} style={{ padding: "12px 16px" }}>
+          <Send size={16} />
+        </PrimaryButton>
+      </div>
     </div>
   );
 }
