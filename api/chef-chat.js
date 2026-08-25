@@ -147,10 +147,37 @@ export default async function handler(req, res) {
       if (cleanIngredients.length === 0) cleanIngredients = null;
     }
 
+    const cleanRecipeName = typeof parsed.recipe_name === "string" && parsed.recipe_name.trim() ? parsed.recipe_name.trim().slice(0, 80) : null;
+
+    // Dish photo — a real stock photo from Pexels (free, no AI image-generation
+    // cost or latency), looked up by the recipe name. This is best-effort: any
+    // failure (missing key, network hiccup, no results) just omits the photo
+    // rather than breaking the chat reply.
+    let recipePhoto = null;
+    if (cleanRecipeName && process.env.PEXELS_API_KEY) {
+      try {
+        const photoRes = await fetch(
+          `https://api.pexels.com/v1/search?query=${encodeURIComponent(cleanRecipeName + " food dish")}&per_page=1&orientation=landscape`,
+          { headers: { Authorization: process.env.PEXELS_API_KEY } }
+        );
+        if (photoRes.ok) {
+          const photoData = await photoRes.json();
+          const photo = photoData?.photos?.[0];
+          // Only trust Pexels' own CDN domain, never pass through an arbitrary URL.
+          if (photo?.src?.medium && /^https:\/\/images\.pexels\.com\//.test(photo.src.medium)) {
+            recipePhoto = photo.src.medium;
+          }
+        }
+      } catch (e) {
+        console.error("Pexels photo lookup failed (non-fatal):", e);
+      }
+    }
+
     res.status(200).json({
       reply: parsed.reply.trim().slice(0, 1200),
-      recipe_name: typeof parsed.recipe_name === "string" && parsed.recipe_name.trim() ? parsed.recipe_name.trim().slice(0, 80) : null,
+      recipe_name: cleanRecipeName,
       ingredients: cleanIngredients,
+      recipe_photo: recipePhoto,
     });
   } catch (e) {
     console.error("Chef chat handler error:", e);
