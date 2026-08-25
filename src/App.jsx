@@ -3325,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260825184029"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260825184448"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -5593,7 +5593,7 @@ function AppShell() {
         )}
         {view === "admin" &&
           (adminAuthed ? (
-            <AdminView products={products} updateProduct={updateProduct} boxes={boxes} updateBox={updateBox} orders={orders} updateOrderStatus={updateOrderStatus} updatePackingStatus={updatePackingStatus} acknowledgeOrder={acknowledgeOrder} leads={leads} promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} reviews={reviews} approveReview={approveReview} deleteReview={deleteReview} customProducts={customProducts} addCustomProduct={addCustomProduct} updateCustomProduct={updateCustomProduct} deleteCustomProduct={deleteCustomProduct} suppliers={suppliers} addSupplier={addSupplier} deleteSupplier={deleteSupplier} itemRequests={itemRequests} updateItemRequestStatus={updateItemRequestStatus} packOrderId={packOrderId} />
+            <AdminView products={products} updateProduct={updateProduct} boxes={boxes} updateBox={updateBox} orders={orders} updateOrderStatus={updateOrderStatus} updatePackingStatus={updatePackingStatus} acknowledgeOrder={acknowledgeOrder} leads={leads} promoCodesDb={promoCodesDb} savePromoCode={savePromoCode} deletePromoCode={deletePromoCode} reviews={reviews} approveReview={approveReview} deleteReview={deleteReview} customProducts={customProducts} addCustomProduct={addCustomProduct} updateCustomProduct={updateCustomProduct} deleteCustomProduct={deleteCustomProduct} suppliers={suppliers} addSupplier={addSupplier} deleteSupplier={deleteSupplier} itemRequests={itemRequests} updateItemRequestStatus={updateItemRequestStatus} packOrderId={packOrderId} bizSettings={bizSettings} updateBizSettings={updateBizSettings} />
           ) : (
             <AdminLogin onSuccess={() => setAdminAuthed(true)} />
           ))}
@@ -11372,7 +11372,7 @@ function useWakeLock(active) {
   }, [active]);
 }
 
-function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOrderStatus, updatePackingStatus, acknowledgeOrder, leads, promoCodesDb, savePromoCode, deletePromoCode, reviews, approveReview, deleteReview, customProducts, addCustomProduct, updateCustomProduct, deleteCustomProduct, suppliers, addSupplier, deleteSupplier, itemRequests, updateItemRequestStatus, packOrderId }) {
+function AdminView({ products, updateProduct, boxes, updateBox, orders, updateOrderStatus, updatePackingStatus, acknowledgeOrder, leads, promoCodesDb, savePromoCode, deletePromoCode, reviews, approveReview, deleteReview, customProducts, addCustomProduct, updateCustomProduct, deleteCustomProduct, suppliers, addSupplier, deleteSupplier, itemRequests, updateItemRequestStatus, packOrderId, bizSettings, updateBizSettings }) {
   const [tab, setTab] = useState(() => (packOrderId ? "packing" : "catalog"));
   const [cat, setCat] = useState(CATALOG[0].cat);
   const [quotingLead, setQuotingLead] = useState(null); // the Office Box lead currently open in the quotation view, or null
