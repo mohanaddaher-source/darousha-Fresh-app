@@ -15,7 +15,7 @@ import {
   ShoppingCart, Truck, Leaf, MapPin, Clock, CreditCard, CheckCircle2,
   Lock, Plus, Minus, ChevronRight, Package, ArrowLeft, X, Banknote,
   ShieldCheck, Search, Trash2, ChevronDown, Home as HomeIcon, Store,
-  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send
+  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send, Mic, CheckCheck
 } from "lucide-react";
 
 /* ============================================================================
@@ -3325,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260825071638"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260825171201"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -10249,6 +10249,10 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
     setMessages((prev) => prev.map((m, i) => (i === msgIndex ? { ...m, addedTo: true, addedCount: productMatches.length } : m)));
   }
 
+  function timeNow() {
+    return new Date().toLocaleTimeString(isAr ? "ar-AE" : "en-US", { hour: "numeric", minute: "2-digit" });
+  }
+
   async function sendMessage() {
     const text = input.trim();
     if (!text || loading) return;
@@ -10257,7 +10261,7 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
     lastSendRef.current = now;
 
     setError(null);
-    const nextMessages = [...messages, { role: "user", content: text.slice(0, 500) }];
+    const nextMessages = [...messages, { role: "user", content: text.slice(0, 500), time: timeNow() }];
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
@@ -10297,6 +10301,7 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
           content: data.reply,
           recipeName: data.recipe_name || null,
           ingredients: data.ingredients || null,
+          time: timeNow(),
         },
       ]);
     } catch (err) {
@@ -10313,63 +10318,116 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
     }
   }
 
-  return (
-    <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto", display: "flex", flexDirection: "column", minHeight: "70vh" }}>
-      <SectionTitle
-        eyebrow={isAr ? "دردشة مع الشيف" : "Chef Chat"}
-        title={isAr ? "👨‍🍳 اسأل الشيف" : "👨‍🍳 Ask the Chef"}
-      />
-      <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
-        {isAr
-          ? "اسأل عن وصفة، بدائل للمكونات، أو ماذا تطبخ الليلة — وسنكمل الناقص من متجرنا."
-          : "Ask for a recipe, a substitution, or what to cook tonight — we'll add whatever you need from the shop."}
-      </p>
+  // Chat-bubble "wallpaper": a faint repeating leaf pattern on cream, echoing
+  // the brand without needing an image asset.
+  const wallpaperStyle = {
+    backgroundColor: BRAND.cream,
+    backgroundImage: `radial-gradient(${BRAND.creamDeep} 1px, transparent 1px)`,
+    backgroundSize: "18px 18px",
+  };
 
-      <div
-        ref={scrollRef}
-        style={{ flex: 1, marginTop: 18, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto", maxHeight: "50vh", paddingRight: 2 }}
-      >
+  return (
+    <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", height: "80vh", borderRadius: 18, overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.12)", border: `1px solid ${BRAND.creamDeep}` }}>
+      {/* Header bar — mirrors the app header: dark green, logo, back + cart */}
+      <div style={{ background: BRAND.greenDark, color: "#fff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+        <button onClick={() => setView("home")} style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: 4, display: "flex" }} aria-label={isAr ? "رجوع" : "Back"}>
+          <ArrowLeft size={20} style={{ transform: isAr ? "scaleX(-1)" : "none" }} />
+        </button>
+        <div style={{ width: 34, height: 34, borderRadius: "50%", background: BRAND.gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <ChefHat size={18} color={BRAND.greenDark} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 700, fontSize: 14.5 }}>{isAr ? "الشيف" : "Chef Chat"}</div>
+          <div style={{ fontSize: 11, opacity: 0.75 }}>{isAr ? "متصل الآن" : "online"}</div>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div ref={scrollRef} style={{ ...wallpaperStyle, flex: 1, overflowY: "auto", padding: "16px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
         {messages.length === 0 && (
-          <div style={{ fontSize: 13, opacity: 0.55, textAlign: "center", marginTop: 30 }}>
+          <div style={{ fontSize: 12.5, opacity: 0.55, textAlign: "center", marginTop: 24, background: "#fff", borderRadius: 10, padding: "8px 14px", alignSelf: "center", border: `1px solid ${BRAND.creamDeep}` }}>
             {isAr ? "مثال: \"ماذا أطبخ بالدجاج والأرز؟\"" : "Try: \"What can I make with chicken and rice?\""}
           </div>
         )}
         {messages.map((m, i) => {
           const mine = m.role === "user";
+          const alignEnd = mine ? !isAr : isAr;
           return (
-            <div key={i} style={{ display: "flex", justifyContent: mine ? (isAr ? "flex-start" : "flex-end") : (isAr ? "flex-end" : "flex-start") }}>
+            <div key={i} style={{ display: "flex", justifyContent: alignEnd ? "flex-end" : "flex-start" }}>
               <div
                 style={{
-                  maxWidth: "82%",
+                  maxWidth: "80%",
                   background: mine ? BRAND.green : "#fff",
-                  color: mine ? "#fff" : "inherit",
-                  border: mine ? "none" : `1px solid ${BRAND.creamDeep}`,
+                  color: mine ? "#fff" : BRAND.ink,
                   borderRadius: 14,
-                  padding: "10px 14px",
+                  borderTopRightRadius: mine && !isAr ? 3 : 14,
+                  borderTopLeftRadius: mine && isAr ? 3 : (!mine && !isAr ? 3 : 14),
+                  padding: "9px 12px",
                   fontSize: 13.5,
                   lineHeight: 1.5,
                   whiteSpace: "pre-wrap",
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
                 }}
               >
                 {m.content}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 4, marginTop: 3, fontSize: 10, opacity: mine ? 0.75 : 0.5 }}>
+                  {m.time || ""}
+                  {mine && <CheckCheck size={13} />}
+                </div>
+
+                {/* Recipe card — shown when the chef proposes a specific dish */}
                 {!mine && m.ingredients && m.ingredients.length > 0 && (
-                  <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${BRAND.creamDeep}` }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
-                      {m.ingredients.map((ing) => (
-                        <span key={ing.name} style={{ fontSize: 11.5, padding: "4px 9px", borderRadius: 999, background: BRAND.creamDeep }}>
-                          {ing.name}
-                        </span>
+                  <div style={{ marginTop: 8, background: BRAND.cream, borderRadius: 10, overflow: "hidden", border: `1px solid ${BRAND.creamDeep}` }}>
+                    {m.recipeName && (
+                      <div style={{ background: BRAND.greenDark, color: "#fff", padding: "9px 12px" }}>
+                        <div style={{ fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 0.3 }}>{m.recipeName}</div>
+                      </div>
+                    )}
+                    <div>
+                      {m.ingredients.map((ing, idx) => (
+                        <div
+                          key={ing.name}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "8px 12px",
+                            borderTop: idx === 0 ? "none" : `1px solid ${BRAND.creamDeep}`,
+                          }}
+                        >
+                          <span style={{ fontSize: 12.5, textTransform: "capitalize" }}>{ing.name}</span>
+                          <span style={{ fontSize: 11.5, opacity: 0.6, whiteSpace: "nowrap" }}>
+                            {ing.quantity} {ing.unit}
+                          </span>
+                        </div>
                       ))}
                     </div>
-                    {m.addedTo ? (
-                      <div style={{ fontSize: 12, fontWeight: 700, color: BRAND.green }}>
-                        {isAr ? `✓ أُضيف ${m.addedCount} إلى السلة` : `✓ Added ${m.addedCount} to cart`}
-                      </div>
-                    ) : (
-                      <PrimaryButton onClick={() => addIngredientsToCart(i)} style={{ fontSize: 12.5, padding: "8px 14px" }}>
-                        {isAr ? "أضف المكونات إلى السلة" : "Add ingredients to cart"}
-                      </PrimaryButton>
-                    )}
+                    <div style={{ padding: 10 }}>
+                      {m.addedTo ? (
+                        <div style={{ fontSize: 12, fontWeight: 700, color: BRAND.green, textAlign: "center", padding: "8px 0" }}>
+                          {isAr ? `✓ أُضيف ${m.addedCount} إلى السلة` : `✓ Added ${m.addedCount} to cart`}
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => addIngredientsToCart(i)}
+                          style={{
+                            width: "100%",
+                            background: BRAND.greenDark,
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: 8,
+                            padding: "10px 0",
+                            fontSize: 12.5,
+                            fontWeight: 700,
+                            letterSpacing: 0.3,
+                            textTransform: "uppercase",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {isAr ? "أضف الكل إلى السلة" : "Add All to Cart"}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -10377,30 +10435,58 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
           );
         })}
         {loading && (
-          <div style={{ fontSize: 13, opacity: 0.6, alignSelf: isAr ? "flex-end" : "flex-start" }}>
-            {isAr ? "الشيف يفكر…" : "Chef is thinking…"}
+          <div style={{ display: "flex", justifyContent: isAr ? "flex-end" : "flex-start" }}>
+            <div style={{ background: "#fff", borderRadius: 14, padding: "10px 14px", fontSize: 13, opacity: 0.6, boxShadow: "0 1px 2px rgba(0,0,0,0.08)" }}>
+              {isAr ? "الشيف يكتب…" : "Chef is typing…"}
+            </div>
           </div>
         )}
       </div>
 
       {error && (
-        <div style={{ background: "#FDEDED", border: `1px solid ${BRAND.tomato}`, borderRadius: 12, padding: 12, marginTop: 12, fontSize: 13, color: BRAND.tomato }}>
+        <div style={{ background: "#FDEDED", borderTop: `1px solid ${BRAND.tomato}`, padding: 10, fontSize: 12.5, color: BRAND.tomato, textAlign: "center", flexShrink: 0 }}>
           {error}
         </div>
       )}
 
-      <div style={{ display: "flex", gap: 8, marginTop: 14, alignItems: "flex-end" }}>
-        <textarea
+      {/* Input bar */}
+      <div style={{ display: "flex", gap: 8, alignItems: "center", padding: "10px 12px", background: BRAND.creamDeep, flexShrink: 0 }}>
+        <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          rows={1}
-          placeholder={isAr ? "اكتب رسالتك..." : "Type a message..."}
-          style={{ ...inputStyle, flex: 1, resize: "none", maxHeight: 100 }}
+          placeholder={isAr ? "اكتب رسالة" : "Type a message"}
+          style={{
+            flex: 1,
+            border: "none",
+            borderRadius: 999,
+            padding: "11px 16px",
+            fontSize: 13.5,
+            background: "#fff",
+            outline: "none",
+          }}
         />
-        <PrimaryButton onClick={sendMessage} disabled={loading || !input.trim()} style={{ padding: "12px 16px" }}>
-          <Send size={16} />
-        </PrimaryButton>
+        <button
+          onClick={sendMessage}
+          disabled={loading || !input.trim()}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            border: "none",
+            background: BRAND.green,
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: loading || !input.trim() ? "default" : "pointer",
+            opacity: loading || !input.trim() ? 0.5 : 1,
+            flexShrink: 0,
+          }}
+          aria-label={isAr ? "إرسال" : "Send"}
+        >
+          {input.trim() ? <Send size={16} /> : <Mic size={16} />}
+        </button>
       </div>
     </div>
   );
