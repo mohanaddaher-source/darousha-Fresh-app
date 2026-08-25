@@ -3325,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260825171201"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260825172104"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -10300,6 +10300,7 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
           role: "assistant",
           content: data.reply,
           recipeName: data.recipe_name || null,
+          recipePhoto: data.recipe_photo || null,
           ingredients: data.ingredients || null,
           time: timeNow(),
         },
@@ -10378,6 +10379,15 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
                 {/* Recipe card — shown when the chef proposes a specific dish */}
                 {!mine && m.ingredients && m.ingredients.length > 0 && (
                   <div style={{ marginTop: 8, background: BRAND.cream, borderRadius: 10, overflow: "hidden", border: `1px solid ${BRAND.creamDeep}` }}>
+                    {m.recipePhoto && (
+                      <img
+                        src={m.recipePhoto}
+                        alt={m.recipeName || ""}
+                        loading="lazy"
+                        style={{ width: "100%", height: 130, objectFit: "cover", display: "block" }}
+                        onError={(e) => { e.currentTarget.style.display = "none"; }}
+                      />
+                    )}
                     {m.recipeName && (
                       <div style={{ background: BRAND.greenDark, color: "#fff", padding: "9px 12px" }}>
                         <div style={{ fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 0.3 }}>{m.recipeName}</div>
