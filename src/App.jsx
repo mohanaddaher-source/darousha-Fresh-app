@@ -3325,7 +3325,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260825172104"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260825183231"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -5560,7 +5560,7 @@ function AppShell() {
         {view === "recipes" && <RecipesView setView={setView} products={customerProducts} addToCart={addToCart} deepLinkRecipeId={deepLinkRecipeId} />}
         {view === "aicook" && <AiRecipeBuilderView setView={setView} products={customerProducts} addToCart={addToCart} logAiRecipeRequest={logAiRecipeRequest} markAiRecipeRequestConverted={markAiRecipeRequestConverted} />}
         {view === "fridgescan" && <FridgeScanView setView={setView} products={customerProducts} addToCart={addToCart} logFridgeScan={logFridgeScan} markFridgeScanConverted={markFridgeScanConverted} />}
-        {view === "chefchat" && <ChefChatView setView={setView} products={customerProducts} addToCart={addToCart} logChefChat={logChefChat} bumpChefChatMessageCount={bumpChefChatMessageCount} markChefChatConverted={markChefChatConverted} />}
+        {view === "chefchat" && <ChefChatView setView={setView} products={customerProducts} addToCart={addToCart} logChefChat={logChefChat} bumpChefChatMessageCount={bumpChefChatMessageCount} markChefChatConverted={markChefChatConverted} orders={orders} user={user} />}
         {view === "blog" && <BlogView setView={setView} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
@@ -10220,7 +10220,7 @@ function FridgeScanView({ setView, products, addToCart, logFridgeScan, markFridg
 const CHEF_CHAT_MAX_TURNS = 8; // trailing user+assistant pairs sent as context, keeps payload/latency sane
 const CHEF_CHAT_MIN_GAP_MS = 1500; // soft client-side throttle against accidental rapid-fire sends
 
-function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatMessageCount, markChefChatConverted }) {
+function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatMessageCount, markChefChatConverted, orders, user }) {
   const { lang } = useLang();
   const isAr = lang === "ar";
   const [messages, setMessages] = useState([]); // { role: "user"|"assistant", content, recipeName?, ingredients?, addedTo?: bool }
@@ -10234,6 +10234,40 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, loading]);
+
+  // Frequently-bought items for this signed-in customer, most-ordered first —
+  // used both for the personalized opening suggestion and passed to the AI
+  // as light context on every turn, so replies can lean on real purchase
+  // history without the customer having to spell it out.
+  const frequentItems = useMemo(() => {
+    if (!user || !Array.isArray(orders)) return [];
+    const counts = {};
+    orders
+      .filter((o) => o.customer && o.customer.uid === user.uid)
+      .forEach((o) => {
+        (o.items || []).forEach((it) => {
+          if (!it || !it.name) return;
+          const key = it.name.trim().toLowerCase();
+          counts[key] = (counts[key] || 0) + (it.qty || 1);
+        });
+      });
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([name]) => name);
+  }, [orders, user]);
+
+  const topTwo = frequentItems.slice(0, 2);
+  const suggestionUsed = useRef(false);
+
+  function useFrequentSuggestion() {
+    if (topTwo.length === 0 || suggestionUsed.current) return;
+    suggestionUsed.current = true;
+    const text = isAr
+      ? `ماذا يمكنني أن أطبخ بـ${topTwo.join(" و")}؟`
+      : `What can I make with ${topTwo.join(" and ")}?`;
+    sendMessage(text);
+  }
 
   function addIngredientsToCart(msgIndex) {
     const msg = messages[msgIndex];
@@ -10253,8 +10287,8 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
     return new Date().toLocaleTimeString(isAr ? "ar-AE" : "en-US", { hour: "numeric", minute: "2-digit" });
   }
 
-  async function sendMessage() {
-    const text = input.trim();
+  async function sendMessage(overrideText) {
+    const text = (overrideText !== undefined ? overrideText : input).trim();
     if (!text || loading) return;
     const now = Date.now();
     if (now - lastSendRef.current < CHEF_CHAT_MIN_GAP_MS) return; // ignore accidental double/rapid sends
@@ -10279,7 +10313,7 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
       const res = await fetch("/api/chef-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history, lang }),
+        body: JSON.stringify({ messages: history, lang, favorites: frequentItems }),
       });
       let data;
       try {
@@ -10345,7 +10379,22 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
 
       {/* Messages */}
       <div ref={scrollRef} style={{ ...wallpaperStyle, flex: 1, overflowY: "auto", padding: "16px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
-        {messages.length === 0 && (
+        {messages.length === 0 && topTwo.length > 0 && (
+          <div style={{ alignSelf: "flex-start", maxWidth: "85%", background: "#fff", borderRadius: 14, borderTopLeftRadius: isAr ? 14 : 3, borderTopRightRadius: isAr ? 3 : 14, padding: "10px 13px", fontSize: 13, boxShadow: "0 1px 2px rgba(0,0,0,0.08)" }}>
+            {isAr
+              ? `لاحظت أنك تطلب ${topTwo.join(" و")} كثيرًا — تريد وصفة بهما؟`
+              : `Noticed you order ${topTwo.join(" and ")} a lot — want a recipe using them?`}
+            <div style={{ marginTop: 8 }}>
+              <button
+                onClick={useFrequentSuggestion}
+                style={{ background: BRAND.greenSoft, color: BRAND.green, border: "none", borderRadius: 999, padding: "6px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer" }}
+              >
+                {isAr ? "نعم، اقترح وصفة" : "Yes, suggest one"}
+              </button>
+            </div>
+          </div>
+        )}
+        {messages.length === 0 && topTwo.length === 0 && (
           <div style={{ fontSize: 12.5, opacity: 0.55, textAlign: "center", marginTop: 24, background: "#fff", borderRadius: 10, padding: "8px 14px", alignSelf: "center", border: `1px solid ${BRAND.creamDeep}` }}>
             {isAr ? "مثال: \"ماذا أطبخ بالدجاج والأرز؟\"" : "Try: \"What can I make with chicken and rice?\""}
           </div>
@@ -10477,7 +10526,7 @@ function ChefChatView({ setView, products, addToCart, logChefChat, bumpChefChatM
           }}
         />
         <button
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           disabled={loading || !input.trim()}
           style={{
             width: 40,
