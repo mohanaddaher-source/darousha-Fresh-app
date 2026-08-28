@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.darousha.fresh",
+      "sha256_cert_fingerprints": [
+        "B2:21:FF:3A:52:52:65:81:11:39:58:F0:02:61:E4:D6:9D:9C:BE:65:18:3E:8C:40:BA:E4:AB:9B:11:E8:8A:60"
+      ]
+    }
+  }
+]
