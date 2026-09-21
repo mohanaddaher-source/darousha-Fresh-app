@@ -15,7 +15,7 @@ import {
   ShoppingCart, Truck, Leaf, MapPin, Clock, CreditCard, CheckCircle2,
   Lock, Plus, Minus, ChevronRight, Package, ArrowLeft, X, Banknote,
   ShieldCheck, Search, Trash2, ChevronDown, Home as HomeIcon, Store,
-  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send, Mic, CheckCheck
+  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send, Mic, CheckCheck, Dumbbell, Sparkles
 } from "lucide-react";
 
 /* ============================================================================
@@ -179,6 +179,10 @@ const TRANSLATIONS = {
     track_btn: "Track",
     gate_eyebrow: "One quick step", gate_title: "Sign in to check out",
     gate_body: "Create an account (or sign back in) to place your order — it saves your details for next time and lets you track every order from one place.",
+    fridge_soon_badge: "LAUNCHING SOON", fridge_soon_title: "Darousha Fresh at Your Office & Gym",
+    fridge_soon_sub: "Smart, branded fridges stocked with fresh fruit cups, salads and healthy snacks — installed and managed by us, at zero cost to your workplace.",
+    fridge_soon_placeholder: "Your email address", fridge_soon_cta: "Notify Me",
+    fridge_soon_thanks: "Thanks! We'll be in touch as soon as we launch.",
     commercial_soon: "COMING SOON", commercial_eyebrow: "For hotels, restaurants & catering", commercial_title: "Darousha Fresh Commercial",
     commercial_p1: "We're building a dedicated commercial line for kitchens that need more than a household box — bulk vegetables, consistent quality, and a carton built for the back of a delivery van, not a doorstep.",
     commercial_p2: "Every export carton is heavy-duty, batch-numbered and QR-coded, so your kitchen team can trace exactly what's inside and when it was packed — stacked and shipped the way a busy service actually works.",
@@ -267,6 +271,10 @@ const TRANSLATIONS = {
     track_btn: "تتبع",
     gate_eyebrow: "خطوة سريعة", gate_title: "سجّل الدخول لإتمام الطلب",
     gate_body: "أنشئ حسابًا (أو سجّل الدخول) لإتمام طلبك — يحفظ بياناتك للمرة القادمة ويتيح لك تتبع كل طلباتك من مكان واحد.",
+    fridge_soon_badge: "يطلق قريبًا", fridge_soon_title: "داروشا فريش في مكتبك أو صالتك الرياضية",
+    fridge_soon_sub: "ثلاجات ذكية تحمل علامتنا، مزودة بأكواب فواكه طازجة وسلطات ووجبات خفيفة صحية — نقوم بتركيبها وإدارتها بالكامل دون أي تكلفة على مكان عملك.",
+    fridge_soon_placeholder: "بريدك الإلكتروني", fridge_soon_cta: "أعلمني",
+    fridge_soon_thanks: "شكرًا لك! سنتواصل معك فور الإطلاق.",
     commercial_soon: "قريبًا", commercial_eyebrow: "للفنادق والمطاعم وشركات التموين", commercial_title: "داروشا فريش للأعمال",
     commercial_p1: "نعمل على تطوير خط تجاري مخصص للمطابخ التي تحتاج أكثر من صندوق منزلي — خضروات بكميات كبيرة، وجودة ثابتة، وكرتون مصمم لمؤخرة شاحنة التوصيل لا لعتبة الباب.",
     commercial_p2: "كل كرتون تصدير متين ومرقّم بالدفعة ومزوّد برمز QR، ليتمكن فريق مطبخك من تتبع محتوياته بدقة وموعد تعبئته — يُكدّس ويُشحن بالطريقة التي تناسب خدمة مزدحمة فعلًا.",
@@ -3325,7 +3333,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260825184448"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260920162807"; // must match public/version.json — bumped on every new build
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -5507,7 +5515,7 @@ function AppShell() {
       )}
       <Header view={view} setView={setView} cartCount={cartCount} user={user} profile={profile} setActiveCategory={setActiveCategory} activeCategory={activeCategory} />
       <main style={{ maxWidth: 1080, margin: "0 auto", padding: "0 18px 64px" }}>
-        {view === "home" && <HomeView setView={setView} setActiveCategory={setActiveCategory} lang={lang} boxes={customerBoxes} products={customerProducts} reviews={reviews} />}
+        {view === "home" && <HomeView setView={setView} setActiveCategory={setActiveCategory} lang={lang} boxes={customerBoxes} products={customerProducts} reviews={reviews} onSubmitLead={submitLead} />}
         {view === "shop" && (
           <ShopView
             products={customerProducts}
@@ -5787,8 +5795,16 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
 
 /* ------------------------------------ Home ------------------------------------ */
 
-function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
+function HomeView({ setView, setActiveCategory, boxes, products, reviews, onSubmitLead }) {
   const { t, lang } = useLang();
+  const [fridgeSoonEmail, setFridgeSoonEmail] = useState("");
+  const [fridgeSoonSent, setFridgeSoonSent] = useState(false);
+  async function handleFridgeSoonSubmit(e) {
+    e.preventDefault();
+    if (!fridgeSoonEmail.trim() || fridgeSoonSent) return;
+    await onSubmitLead?.({ bizType: "Office & Gym Fridge", email: fridgeSoonEmail.trim() });
+    setFridgeSoonSent(true);
+  }
   const gourmetProducts = (products || []).filter((p) => p.category === "Gourmet & Gifts" && p.available);
   const approvedReviews = (reviews || []).filter((r) => r.approved);
   const findRecipeProduct = (name) => (products || []).find((p) => p.name === name);
@@ -5854,6 +5870,63 @@ function HomeView({ setView, setActiveCategory, boxes, products, reviews }) {
           </div>
         ))}
       </div>
+
+      {/* Office & Gym smart fridge — launching soon banner */}
+      <section style={{ marginTop: 32 }}>
+        <div
+          style={{
+            background: `linear-gradient(155deg, ${BRAND.green} 0%, ${BRAND.greenDark} 100%)`,
+            borderRadius: 20,
+            padding: "28px 26px",
+            color: BRAND.cream,
+            display: "grid",
+            gridTemplateColumns: "auto 1fr auto",
+            gap: 20,
+            alignItems: "center",
+          }}
+          className="dsf-fridge-soon"
+        >
+          <div
+            style={{
+              width: 54, height: 54, borderRadius: "50%",
+              background: "rgba(255,255,255,0.1)", border: `1px solid ${BRAND.gold}`,
+              display: "flex", alignItems: "center", justifyContent: "center", color: BRAND.gold, flexShrink: 0,
+            }}
+          >
+            <Dumbbell size={24} />
+          </div>
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", padding: "4px 10px", borderRadius: 999, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: BRAND.gold, marginBottom: 8 }}>
+              <Sparkles size={12} /> {t("fridge_soon_badge")}
+            </div>
+            <div style={{ fontFamily: lang === "ar" ? "Cairo, sans-serif" : "Fraunces, serif", fontWeight: 800, fontSize: 21, marginBottom: 6 }}>
+              {t("fridge_soon_title")}
+            </div>
+            <div style={{ fontSize: 13.5, opacity: 0.85, maxWidth: 520 }}>
+              {t("fridge_soon_sub")}
+            </div>
+          </div>
+          <form onSubmit={handleFridgeSoonSubmit} style={{ display: "flex", gap: 8, flexWrap: "wrap", minWidth: 260 }}>
+            {fridgeSoonSent ? (
+              <div style={{ fontSize: 13.5, fontWeight: 700, color: BRAND.gold, display: "flex", alignItems: "center", gap: 6 }}>
+                <CheckCircle2 size={16} /> {t("fridge_soon_thanks")}
+              </div>
+            ) : (
+              <>
+                <input
+                  type="email"
+                  required
+                  value={fridgeSoonEmail}
+                  onChange={(e) => setFridgeSoonEmail(e.target.value)}
+                  placeholder={t("fridge_soon_placeholder")}
+                  style={{ ...inputStyle, flex: 1, minWidth: 180, background: "rgba(255,255,255,0.95)" }}
+                />
+                <PrimaryButton>{t("fridge_soon_cta")}</PrimaryButton>
+              </>
+            )}
+          </form>
+        </div>
+      </section>
 
       {/* What do you want to cook? — AI ingredient builder entry point */}
       <section style={{ marginTop: 40 }}>
