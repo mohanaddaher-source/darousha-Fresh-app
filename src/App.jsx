@@ -59,6 +59,10 @@ function useResponsiveStyles() {
         .dsf-wordmark-hide-mobile { display: none; }
         .dsf-header-nav { display: none !important; }
         .dsf-header-hamburger { display: flex !important; }
+        .dsf-fridge-soon { grid-template-columns: 1fr !important; text-align: center; }
+        .dsf-fridge-soon > form { width: 100% !important; min-width: 0 !important; }
+        .dsf-fridge-soon > form input { width: 100% !important; min-width: 0 !important; }
+        .dsf-fridge-soon > div:first-child { margin: 0 auto; }
       }
       .pac-container { z-index: 10000 !important; }
       .dsf-header-nav::-webkit-scrollbar { display: none; }
@@ -3343,7 +3347,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260922041608"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260922042214"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
