@@ -183,6 +183,11 @@ const TRANSLATIONS = {
     fridge_soon_sub: "Smart, branded fridges stocked with fresh fruit cups, salads and healthy snacks — installed and managed by us, at zero cost to your workplace.",
     fridge_soon_placeholder: "Your email address", fridge_soon_cta: "Notify Me",
     fridge_soon_thanks: "Thanks! We'll be in touch as soon as we launch.",
+    launch_gate_eyebrow: "Almost there", launch_gate_title: "We're launching very soon",
+    launch_gate_body: "Thanks for exploring Darousha Fresh! We're putting the final touches on delivery — ordering isn't open just yet. Leave your email and we'll notify you the moment we go live, plus you'll get early access.",
+    launch_gate_placeholder: "Your email address", launch_gate_cta: "Notify Me at Launch",
+    launch_gate_thanks: "You're on the list! We'll email you the moment we launch.",
+    launch_gate_back: "Keep browsing",
     commercial_soon: "COMING SOON", commercial_eyebrow: "For hotels, restaurants & catering", commercial_title: "Darousha Fresh Commercial",
     commercial_p1: "We're building a dedicated commercial line for kitchens that need more than a household box — bulk vegetables, consistent quality, and a carton built for the back of a delivery van, not a doorstep.",
     commercial_p2: "Every export carton is heavy-duty, batch-numbered and QR-coded, so your kitchen team can trace exactly what's inside and when it was packed — stacked and shipped the way a busy service actually works.",
@@ -275,6 +280,11 @@ const TRANSLATIONS = {
     fridge_soon_sub: "ثلاجات ذكية تحمل علامتنا، مزودة بأكواب فواكه طازجة وسلطات ووجبات خفيفة صحية — نقوم بتركيبها وإدارتها بالكامل دون أي تكلفة على مكان عملك.",
     fridge_soon_placeholder: "بريدك الإلكتروني", fridge_soon_cta: "أعلمني",
     fridge_soon_thanks: "شكرًا لك! سنتواصل معك فور الإطلاق.",
+    launch_gate_eyebrow: "اقتربنا", launch_gate_title: "نحن على وشك الإطلاق",
+    launch_gate_body: "شكرًا لاستكشافك داروشا فريش! نحن نضع اللمسات الأخيرة على خدمة التوصيل — الطلب غير متاح بعد. اترك بريدك الإلكتروني وسنعلمك فور الإطلاق، وستحصل على وصول مبكر.",
+    launch_gate_placeholder: "بريدك الإلكتروني", launch_gate_cta: "أعلمني عند الإطلاق",
+    launch_gate_thanks: "تم تسجيلك! سنراسلك فور الإطلاق.",
+    launch_gate_back: "متابعة التصفح",
     commercial_soon: "قريبًا", commercial_eyebrow: "للفنادق والمطاعم وشركات التموين", commercial_title: "داروشا فريش للأعمال",
     commercial_p1: "نعمل على تطوير خط تجاري مخصص للمطابخ التي تحتاج أكثر من صندوق منزلي — خضروات بكميات كبيرة، وجودة ثابتة، وكرتون مصمم لمؤخرة شاحنة التوصيل لا لعتبة الباب.",
     commercial_p2: "كل كرتون تصدير متين ومرقّم بالدفعة ومزوّد برمز QR، ليتمكن فريق مطبخك من تتبع محتوياته بدقة وموعد تعبئته — يُكدّس ويُشحن بالطريقة التي تناسب خدمة مزدحمة فعلًا.",
@@ -3333,7 +3343,10 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260920162807"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20260922041608"; // must match public/version.json — bumped on every new build
+// Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
+// capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
+const SITE_LIVE = false;
 function buildTrackingLink(orderId) {
   return `${SITE_URL}/?track=${orderId}`;
 }
@@ -5558,7 +5571,9 @@ function AppShell() {
           />
         )}
         {view === "checkout" && (
-          authLoading ? (
+          !SITE_LIVE ? (
+            <LaunchSoonGate setView={setView} onSubmitLead={submitLead} />
+          ) : authLoading ? (
             <div style={{ paddingTop: 60, textAlign: "center", opacity: 0.6 }}>Loading…</div>
           ) : user ? (
             <CheckoutView cart={cart} subtotal={subtotal} deliveryFee={deliveryFee} vat={vat} discount={discount} appliedPromo={appliedPromo} total={total} onPlaceOrder={placeOrder} setView={setView} profile={profile} lang={lang} pointsDiscount={pointsDiscount} pointsToEarn={pointsToEarn} expressDelivery={expressDelivery} setExpressDelivery={setExpressDelivery} />
@@ -7942,6 +7957,51 @@ function t_geo(lang, key) {
     timeout: { en: "Couldn't get a GPS fix — try again near a window, or just search/drag the pin instead.", ar: "تعذّر تحديد الموقع عبر GPS — حاول مجددًا قرب نافذة، أو ابحث أو اسحب الدبوس بدلاً من ذلك." },
   };
   return map[key][lang] || map[key].en;
+}
+
+function LaunchSoonGate({ setView, onSubmitLead }) {
+  const { t } = useLang();
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!email.trim() || sent) return;
+    await onSubmitLead?.({ bizType: "Launch Waitlist", email: email.trim() });
+    setSent(true);
+  }
+  return (
+    <div style={{ paddingTop: 40, maxWidth: 420, margin: "0 auto", textAlign: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+        <div style={{ width: 56, height: 56, borderRadius: "50%", background: BRAND.greenSoft, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Sparkles size={26} color={BRAND.green} />
+        </div>
+      </div>
+      <SectionTitle eyebrow={t("launch_gate_eyebrow")} title={t("launch_gate_title")} />
+      <p style={{ fontSize: 13.5, opacity: 0.75, marginTop: 12, lineHeight: 1.6 }}>
+        {t("launch_gate_body")}
+      </p>
+      {sent ? (
+        <div style={{ marginTop: 22, fontSize: 14, fontWeight: 700, color: BRAND.green, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <CheckCircle2 size={17} /> {t("launch_gate_thanks")}
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t("launch_gate_placeholder")}
+            style={inputStyle}
+          />
+          <PrimaryButton full>{t("launch_gate_cta")}</PrimaryButton>
+        </form>
+      )}
+      <button onClick={() => setView("cart")} style={{ ...backLinkStyle, marginTop: 24, justifyContent: "center", width: "100%" }}>
+        <ArrowLeft size={15} /> {t("launch_gate_back")}
+      </button>
+    </div>
+  );
 }
 
 function CheckoutSignInGate({ setView }) {
