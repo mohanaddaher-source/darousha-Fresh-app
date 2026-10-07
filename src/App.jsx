@@ -202,6 +202,7 @@ const TRANSLATIONS = {
     footer_about: "About", footer_location: "Location", footer_privacy: "Privacy", footer_terms: "Terms",
     footer_recipes: "Recipes",
     footer_blog: "Blog",
+    footer_facts: "Produce Facts",
     footer_track: "Track order", footer_backstage: "Backstage",
     back_home: "Back home",
   },
@@ -299,6 +300,7 @@ const TRANSLATIONS = {
     footer_about: "من نحن", footer_location: "الموقع", footer_privacy: "الخصوصية", footer_terms: "الشروط",
     footer_recipes: "وصفات",
     footer_blog: "المدونة",
+    footer_facts: "حقائق غذائية",
     footer_track: "تتبع الطلب", footer_backstage: "لوحة الإدارة",
     back_home: "العودة للرئيسية",
   },
@@ -2837,6 +2839,130 @@ const PRODUCT_STORAGE_TIP_AR = {
   "Sage": "يُحفظ في الثلاجة ملفوفًا بمنشفة ورقية رطبة. يبقى طازجًا لمدة ٢-٣ أسابيع.",
   "Oregano": "يُحفظ في الثلاجة ملفوفًا بمنشفة ورقية رطبة. يبقى طازجًا لمدة ٢-٣ أسابيع.",
 };
+
+// Per 100g raw edible portion. kcal, protein(g), carbs(g), fiber(g), vitC(mg), potassium(mg)
+// highlight: short EN benefit line, highlightAr: short AR benefit line
+const PRODUCT_NUTRITION = {
+  "Tomato": { kcal:18, protein:0.9, carbs:3.9, fiber:1.2, vitC:14, potassium:237, highlight:"Rich in lycopene, an antioxidant linked to heart health.", highlightAr:"غني بمادة الليكوبين المضادة للأكسدة المفيدة لصحة القلب." },
+  "Cherry Tomato": { kcal:18, protein:0.9, carbs:3.9, fiber:1.2, vitC:14, potassium:237, highlight:"Same lycopene benefits as regular tomatoes, in bite-size form.", highlightAr:"نفس فوائد الليكوبين الموجودة في الطماطم العادية، بحجم قضمة واحدة." },
+  "Cucumber": { kcal:15, protein:0.7, carbs:3.6, fiber:0.5, vitC:2.8, potassium:147, highlight:"96% water — great for hydration on hot days.", highlightAr:"96% ماء — رائع للترطيب في الأيام الحارة." },
+  "Bell Pepper (Red)": { kcal:31, protein:1.0, carbs:6, fiber:2.1, vitC:128, potassium:211, highlight:"More vitamin C per 100g than an orange.", highlightAr:"يحتوي على فيتامين سي أكثر من البرتقال لكل 100 غرام." },
+  "Bell Pepper (Green)": { kcal:20, protein:0.9, carbs:4.6, fiber:1.7, vitC:80, potassium:175, highlight:"A great low-calorie source of vitamin C.", highlightAr:"مصدر رائع منخفض السعرات لفيتامين سي." },
+  "Bell Pepper (Yellow)": { kcal:27, protein:1.0, carbs:6.3, fiber:0.9, vitC:184, potassium:212, highlight:"One of the richest vegetable sources of vitamin C.", highlightAr:"من أغنى مصادر الخضار بفيتامين سي." },
+  "Bell Pepper (Orange)": { kcal:31, protein:1.0, carbs:6, fiber:1.4, vitC:140, potassium:210, highlight:"Sweet, crunchy, and loaded with vitamin C.", highlightAr:"حلو ومقرمش وغني بفيتامين سي." },
+  "Potato": { kcal:77, protein:2.0, carbs:17, fiber:2.2, vitC:20, potassium:425, highlight:"A good source of potassium — more per 100g than a banana.", highlightAr:"مصدر جيد للبوتاسيوم — أكثر من الموز لكل 100 غرام." },
+  "Carrot": { kcal:41, protein:0.9, carbs:10, fiber:2.8, vitC:5.9, potassium:320, highlight:"Packed with beta-carotene, which the body converts to vitamin A.", highlightAr:"غني ببيتا كاروتين الذي يحوله الجسم إلى فيتامين أ." },
+  "Eggplant": { kcal:25, protein:1.0, carbs:6, fiber:3.0, vitC:2.2, potassium:229, highlight:"Good fiber content and antioxidants in the skin.", highlightAr:"محتوى جيد من الألياف ومضادات الأكسدة في القشرة." },
+  "Zucchini": { kcal:17, protein:1.2, carbs:3.1, fiber:1.0, vitC:17.9, potassium:261, highlight:"Low calorie with a good dose of vitamin C and potassium.", highlightAr:"منخفض السعرات مع جرعة جيدة من فيتامين سي والبوتاسيوم." },
+  "Lemon": { kcal:29, protein:1.1, carbs:9.3, fiber:2.8, vitC:53, potassium:138, highlight:"A classic vitamin C booster, even in small amounts.", highlightAr:"معزز كلاسيكي لفيتامين سي، حتى بكميات صغيرة." },
+  "Chili Pepper": { kcal:40, protein:1.9, carbs:9, fiber:1.5, vitC:144, potassium:322, highlight:"Contains capsaicin, which gives chili its heat and may boost metabolism.", highlightAr:"يحتوي على الكابسيسين الذي يعطي الفلفل حرارته وقد ينشط التمثيل الغذائي." },
+  "Green Chili": { kcal:40, protein:2.0, carbs:9, fiber:1.5, vitC:242, potassium:340, highlight:"Exceptionally high in vitamin C for its size.", highlightAr:"مرتفع جداً بفيتامين سي بالنسبة لحجمه." },
+  "Jalapeno": { kcal:29, protein:0.9, carbs:6.5, fiber:2.8, vitC:118, potassium:248, highlight:"High vitamin C with a mild, manageable heat.", highlightAr:"فيتامين سي مرتفع مع حرارة معتدلة." },
+  "Sweet Potato": { kcal:86, protein:1.6, carbs:20, fiber:3.0, vitC:2.4, potassium:337, highlight:"One of the best natural sources of beta-carotene (vitamin A).", highlightAr:"من أفضل المصادر الطبيعية لبيتا كاروتين (فيتامين أ)." },
+  "Beetroot": { kcal:43, protein:1.6, carbs:10, fiber:2.8, vitC:4.9, potassium:325, highlight:"Rich in nitrates, which may support healthy blood flow.", highlightAr:"غني بالنترات التي قد تدعم تدفق الدم الصحي." },
+  "Baby Eggplant": { kcal:25, protein:1.0, carbs:6, fiber:3.0, vitC:2.2, potassium:229, highlight:"Same nutrition as full-size eggplant, in a tender, smaller form.", highlightAr:"نفس قيمة الباذنجان الكبير، بحجم أصغر وطراوة أكثر." },
+  "Baby Potato": { kcal:77, protein:2.0, carbs:17, fiber:2.2, vitC:20, potassium:425, highlight:"Skin-on baby potatoes keep extra fiber and nutrients.", highlightAr:"البطاطس الصغيرة بقشرتها تحتفظ بألياف وعناصر غذائية أكثر." },
+  "Mini Cucumber": { kcal:15, protein:0.7, carbs:3.6, fiber:0.5, vitC:2.8, potassium:147, highlight:"Same light, hydrating profile as regular cucumber.", highlightAr:"نفس خصائص الخيار العادي المرطبة وخفيفة السعرات." },
+  "Yellow Squash": { kcal:16, protein:1.2, carbs:3.4, fiber:1.1, vitC:17, potassium:212, highlight:"Low-calorie with a solid vitamin C contribution.", highlightAr:"منخفض السعرات مع مساهمة جيدة من فيتامين سي." },
+  "Red Radish": { kcal:16, protein:0.7, carbs:3.4, fiber:1.6, vitC:14.8, potassium:233, highlight:"Crisp, low-calorie, and a source of vitamin C.", highlightAr:"مقرمش، منخفض السعرات، ومصدر لفيتامين سي." },
+  "White Radish": { kcal:18, protein:0.6, carbs:4.1, fiber:1.6, vitC:22, potassium:233, highlight:"Mild flavor with a good vitamin C boost.", highlightAr:"نكهة خفيفة مع جرعة جيدة من فيتامين سي." },
+  "Yellow Onion": { kcal:40, protein:1.1, carbs:9.3, fiber:1.7, vitC:7.4, potassium:146, highlight:"Contains quercetin, a plant antioxidant.", highlightAr:"يحتوي على الكويرسيتين، مضاد أكسدة نباتي." },
+  "Red Onion": { kcal:40, protein:1.1, carbs:9.3, fiber:1.7, vitC:7.4, potassium:146, highlight:"Higher in antioxidant anthocyanins than yellow onion.", highlightAr:"أعلى من البصل الأصفر بمضادات الأكسدة (الأنثوسيانين)." },
+  "White Onion": { kcal:40, protein:1.1, carbs:9.3, fiber:1.7, vitC:7.4, potassium:146, highlight:"Milder flavor, same core nutrition as other onions.", highlightAr:"نكهة أخف، بنفس القيمة الغذائية الأساسية للبصل." },
+  "Shallots": { kcal:72, protein:2.5, carbs:16.8, fiber:3.2, vitC:8, potassium:334, highlight:"More concentrated flavor and nutrients than regular onion.", highlightAr:"نكهة وعناصر غذائية أكثر تركيزاً من البصل العادي." },
+  "Garlic": { kcal:149, protein:6.4, carbs:33, fiber:2.1, vitC:31, potassium:401, highlight:"Contains allicin, studied for cardiovascular and immune support.", highlightAr:"يحتوي على الأليسين، المدروس لدعم القلب والمناعة." },
+  "Fresh Garlic": { kcal:149, protein:6.4, carbs:33, fiber:2.1, vitC:31, potassium:401, highlight:"Same allicin benefits as cured garlic, milder in flavor.", highlightAr:"نفس فوائد الأليسين الموجودة في الثوم المجفف، بنكهة أخف." },
+  "Spring Onion": { kcal:32, protein:1.8, carbs:7.3, fiber:2.6, vitC:18.8, potassium:276, highlight:"The green tops add vitamin K and vitamin C.", highlightAr:"الأجزاء الخضراء تضيف فيتامين ك وفيتامين سي." },
+  "Lettuce (Iceberg)": { kcal:14, protein:0.9, carbs:3, fiber:1.2, vitC:2.8, potassium:141, highlight:"Light and hydrating, mostly water by weight.", highlightAr:"خفيف ومرطب، معظمه ماء من حيث الوزن." },
+  "Romaine Lettuce": { kcal:17, protein:1.2, carbs:3.3, fiber:2.1, vitC:4, potassium:247, highlight:"More fiber and vitamin A than iceberg lettuce.", highlightAr:"أكثر ألياف وفيتامين أ من الخس الجبلي." },
+  "Green Leaf Lettuce": { kcal:15, protein:1.4, carbs:2.9, fiber:1.3, vitC:18, potassium:194, highlight:"A good light-leaf source of vitamin C and vitamin K.", highlightAr:"مصدر جيد من فيتامين سي وفيتامين ك." },
+  "Red Leaf Lettuce": { kcal:16, protein:1.3, carbs:2.3, fiber:0.9, vitC:4, potassium:187, highlight:"Red pigment adds extra antioxidants vs. green varieties.", highlightAr:"اللون الأحمر يضيف مضادات أكسدة إضافية مقارنة بالأنواع الخضراء." },
+  "Spinach": { kcal:23, protein:2.9, carbs:3.6, fiber:2.2, vitC:28, potassium:558, highlight:"Exceptionally high in iron and vitamin K for a leafy green.", highlightAr:"غني جداً بالحديد وفيتامين ك بالنسبة لخضار ورقي." },
+  "Kale": { kcal:49, protein:4.3, carbs:9, fiber:3.6, vitC:120, potassium:491, highlight:"One of the most nutrient-dense leafy greens — huge vitamin K and C.", highlightAr:"من أكثر الخضار الورقية كثافة غذائية — فيتامين ك وسي بكميات كبيرة." },
+  "Swiss Chard": { kcal:19, protein:1.8, carbs:3.7, fiber:1.6, vitC:30, potassium:379, highlight:"Rich in magnesium and vitamin K.", highlightAr:"غني بالمغنيسيوم وفيتامين ك." },
+  "Rocket (Arugula)": { kcal:25, protein:2.6, carbs:3.7, fiber:1.6, vitC:15, potassium:369, highlight:"Peppery leaves with a strong dose of vitamin K and calcium.", highlightAr:"أوراق حارة بجرعة قوية من فيتامين ك والكالسيوم." },
+  "Watercress": { kcal:11, protein:2.3, carbs:1.3, fiber:0.5, vitC:43, potassium:330, highlight:"Very low calorie, very high in vitamin C and K.", highlightAr:"سعرات منخفضة جداً، وفيتامين سي وك مرتفع جداً." },
+  "Lollo Bionde": { kcal:16, protein:1.3, carbs:2.3, fiber:1.1, vitC:9, potassium:200, highlight:"A frilly, light lettuce with modest vitamin A and C.", highlightAr:"خس مجعد وخفيف يحتوي على فيتامين أ وسي بشكل معتدل." },
+  "Lollo Rosso": { kcal:16, protein:1.4, carbs:2.3, fiber:1.1, vitC:9, potassium:200, highlight:"Red frilly lettuce with extra antioxidant pigment.", highlightAr:"خس مجعد أحمر يحتوي على صبغة مضادة للأكسدة إضافية." },
+  "Parsley": { kcal:36, protein:3.0, carbs:6.3, fiber:3.3, vitC:133, potassium:554, highlight:"Tiny amounts pack huge vitamin C and vitamin K.", highlightAr:"كميات صغيرة منه تحتوي على فيتامين سي وك بكثرة." },
+  "Coriander (Cilantro)": { kcal:23, protein:2.1, carbs:3.7, fiber:2.8, vitC:27, potassium:521, highlight:"Good source of vitamin A, C, and K in a small leafy herb.", highlightAr:"مصدر جيد لفيتامين أ وسي وك في عشبة ورقية صغيرة." },
+  "Mint": { kcal:44, protein:3.3, carbs:8.4, fiber:6.8, vitC:31.8, potassium:569, highlight:"Surprisingly rich in fiber and vitamin A for an herb.", highlightAr:"غني بشكل مفاجئ بالألياف وفيتامين أ بالنسبة لعشبة." },
+  "Dill": { kcal:43, protein:3.5, carbs:7, fiber:2.1, vitC:85, potassium:738, highlight:"High vitamin C and potassium packed into a few sprigs.", highlightAr:"فيتامين سي وبوتاسيوم مرتفعان في عدد قليل من الأغصان." },
+  "Celery": { kcal:16, protein:0.7, carbs:3, fiber:1.6, vitC:3.1, potassium:260, highlight:"Very low calorie with a steady source of potassium.", highlightAr:"سعرات منخفضة جداً مع مصدر ثابت للبوتاسيوم." },
+  "Basil": { kcal:23, protein:3.2, carbs:2.6, fiber:1.6, vitC:18, potassium:295, highlight:"Contains vitamin K and plant compounds with antioxidant activity.", highlightAr:"يحتوي على فيتامين ك ومركبات نباتية مضادة للأكسدة." },
+  "Thyme": { kcal:101, protein:5.6, carbs:24, fiber:14, vitC:160, potassium:609, highlight:"One of the most concentrated herb sources of vitamin C.", highlightAr:"من أكثر الأعشاب تركيزاً بفيتامين سي." },
+  "Rosemary": { kcal:131, protein:3.3, carbs:20.7, fiber:14.1, vitC:21.8, potassium:668, highlight:"Rich in antioxidant compounds used for centuries in cooking.", highlightAr:"غني بمركبات مضادة للأكسدة استُخدمت لقرون في الطبخ." },
+  "Sage": { kcal:315, protein:10.6, carbs:60.7, fiber:40.3, vitC:32.4, potassium:1070, highlight:"Used in small amounts, but dense in minerals by weight.", highlightAr:"يُستخدم بكميات صغيرة، لكنه كثيف بالمعادن حسب الوزن." },
+  "Oregano": { kcal:265, protein:9, carbs:69, fiber:42.5, vitC:2.3, potassium:1260, highlight:"Dense in calcium and iron per 100g — used in small pinches.", highlightAr:"كثيف بالكالسيوم والحديد لكل 100غ — يُستخدم بكميات قليلة." },
+  "Broccoli": { kcal:34, protein:2.8, carbs:7, fiber:2.6, vitC:89, potassium:316, highlight:"More vitamin C per 100g than an orange, plus vitamin K.", highlightAr:"فيتامين سي أكثر من البرتقال لكل 100غ، بالإضافة لفيتامين ك." },
+  "Cauliflower": { kcal:25, protein:1.9, carbs:5, fiber:2, vitC:48, potassium:299, highlight:"A low-carb vegetable with a solid vitamin C contribution.", highlightAr:"خضار منخفض الكربوهيدرات بمساهمة جيدة من فيتامين سي." },
+  "White Cabbage": { kcal:25, protein:1.3, carbs:5.8, fiber:2.5, vitC:36.6, potassium:170, highlight:"Good fiber and vitamin C for a budget-friendly vegetable.", highlightAr:"ألياف وفيتامين سي جيدان لخضار اقتصادي." },
+  "Red Cabbage": { kcal:31, protein:1.4, carbs:7.4, fiber:2.1, vitC:57, potassium:243, highlight:"Higher vitamin C and antioxidant anthocyanins than white cabbage.", highlightAr:"فيتامين سي ومضادات أكسدة أعلى من الملفوف الأبيض." },
+  "Chinese Cabbage": { kcal:13, protein:1.5, carbs:2.2, fiber:1, vitC:27, potassium:238, highlight:"Light and watery with a good vitamin C dose.", highlightAr:"خفيف ومائي مع جرعة جيدة من فيتامين سي." },
+  "Brussels Sprouts": { kcal:43, protein:3.4, carbs:9, fiber:3.8, vitC:85, potassium:389, highlight:"Very high vitamin C and K for a small sprout.", highlightAr:"فيتامين سي وك مرتفعان جداً لبرعم صغير." },
+  "Green Beans": { kcal:31, protein:1.8, carbs:7, fiber:2.7, vitC:12.2, potassium:211, highlight:"A fiber-rich pod vegetable with moderate vitamin C.", highlightAr:"خضار قرني غني بالألياف مع فيتامين سي معتدل." },
+  "French Beans": { kcal:31, protein:1.8, carbs:7, fiber:2.7, vitC:12.2, potassium:211, highlight:"Same profile as green beans — fiber and light vitamin C.", highlightAr:"نفس خصائص الفاصولياء الخضراء — ألياف وفيتامين سي خفيف." },
+  "Snow Peas": { kcal:42, protein:2.8, carbs:7.6, fiber:2.6, vitC:60, potassium:200, highlight:"Edible pod with notably high vitamin C.", highlightAr:"قرن صالح للأكل بفيتامين سي مرتفع بشكل لافت." },
+  "Sugar Snap Peas": { kcal:42, protein:2.8, carbs:7.6, fiber:2.6, vitC:60, potassium:200, highlight:"Sweet and crunchy with a strong vitamin C contribution.", highlightAr:"حلو ومقرمش بمساهمة قوية من فيتامين سي." },
+  "Green Peas": { kcal:81, protein:5.4, carbs:14.5, fiber:5.7, vitC:40, potassium:244, highlight:"One of the few vegetables with meaningful plant protein.", highlightAr:"من الخضار القليلة التي تحتوي على بروتين نباتي ملحوظ." },
+  "Broad Beans (Fava)": { kcal:88, protein:7.9, carbs:16, fiber:5.1, vitC:16, potassium:332, highlight:"High in plant protein and fiber for a fresh vegetable.", highlightAr:"غني بالبروتين النباتي والألياف بالنسبة لخضار طازج." },
+  "White Mushroom": { kcal:22, protein:3.1, carbs:3.3, fiber:1, vitC:2.1, potassium:318, highlight:"A rare plant source of vitamin D when exposed to light, plus B vitamins.", highlightAr:"مصدر نباتي نادر لفيتامين د عند التعرض للضوء، بالإضافة لفيتامينات ب." },
+  "Brown Mushroom": { kcal:22, protein:2.5, carbs:3.9, fiber:1, vitC:0, potassium:448, highlight:"Earthier flavor with a good potassium content.", highlightAr:"نكهة أعمق مع محتوى جيد من البوتاسيوم." },
+  "Portobello": { kcal:22, protein:2.1, carbs:3.9, fiber:1.3, vitC:0, potassium:437, highlight:"Meaty texture with notable B vitamins and potassium.", highlightAr:"قوام لحمي مع فيتامينات ب وبوتاسيوم ملحوظين." },
+  "Oyster Mushroom": { kcal:33, protein:3.3, carbs:6.1, fiber:2.3, vitC:0, potassium:420, highlight:"Higher protein than most mushrooms, with good fiber.", highlightAr:"بروتين أعلى من معظم أنواع الفطر، مع ألياف جيدة." },
+  "Shiitake": { kcal:34, protein:2.2, carbs:6.8, fiber:2.5, vitC:0, potassium:304, highlight:"Contains compounds studied for immune support.", highlightAr:"يحتوي على مركبات مدروسة لدعم المناعة." },
+  "Asparagus": { kcal:20, protein:2.2, carbs:3.9, fiber:2.1, vitC:5.6, potassium:202, highlight:"A good source of folate and vitamin K.", highlightAr:"مصدر جيد للفولات وفيتامين ك." },
+  "Artichoke": { kcal:47, protein:3.3, carbs:11, fiber:5.4, vitC:7.4, potassium:370, highlight:"One of the highest-fiber vegetables by weight.", highlightAr:"من أعلى الخضار بالألياف حسب الوزن." },
+  "Leek": { kcal:61, protein:1.5, carbs:14, fiber:1.8, vitC:12, potassium:180, highlight:"Contains vitamin K and allium compounds similar to onion/garlic.", highlightAr:"يحتوي على فيتامين ك ومركبات مشابهة للبصل والثوم." },
+  "Fennel": { kcal:31, protein:1.2, carbs:7.3, fiber:3.1, vitC:12, potassium:414, highlight:"Anise-flavored bulb with good fiber and potassium.", highlightAr:"بصلة بنكهة اليانسون بألياف وبوتاسيوم جيدين." },
+  "Celeriac": { kcal:42, protein:1.5, carbs:9.2, fiber:1.8, vitC:8, potassium:300, highlight:"A root vegetable with a mild celery flavor and decent fiber.", highlightAr:"خضار جذري بنكهة كرفس خفيفة وألياف معقولة." },
+  "Rhubarb (Seasonal)": { kcal:21, protein:0.9, carbs:4.5, fiber:1.8, vitC:8, potassium:288, highlight:"Tart stalks that are technically a vegetable, low in calories.", highlightAr:"سيقان حامضة وهي خضار من الناحية النباتية، منخفضة السعرات." },
+  "Corn": { kcal:86, protein:3.3, carbs:19, fiber:2.7, vitC:6.8, potassium:270, highlight:"A good source of fiber and the antioxidant lutein.", highlightAr:"مصدر جيد للألياف ومضاد الأكسدة لوتين." },
+  "Baby Corn": { kcal:26, protein:2, carbs:5, fiber:2, vitC:5, potassium:166, highlight:"Lower calorie than mature corn with a crisp, tender bite.", highlightAr:"سعرات أقل من الذرة الناضجة مع قرمشة وطراوة." },
+  "Pumpkin": { kcal:26, protein:1.0, carbs:6.5, fiber:0.5, vitC:9, potassium:340, highlight:"Rich in beta-carotene, giving it that deep orange color.", highlightAr:"غني ببيتا كاروتين الذي يعطيه لونه البرتقالي العميق." },
+  "Turnip": { kcal:28, protein:0.9, carbs:6.4, fiber:1.8, vitC:21, potassium:191, highlight:"A root vegetable with more vitamin C than most root crops.", highlightAr:"خضار جذري يحتوي على فيتامين سي أكثر من معظم المحاصيل الجذرية." },
+  "Parsnip": { kcal:75, protein:1.2, carbs:18, fiber:4.9, vitC:17, potassium:375, highlight:"Sweeter and starchier than carrots, with good fiber.", highlightAr:"أحلى وأكثر نشويةً من الجزر، مع ألياف جيدة." },
+  "Ginger": { kcal:80, protein:1.8, carbs:18, fiber:2, vitC:5, potassium:415, highlight:"Contains gingerol, studied for digestive and anti-inflammatory effects.", highlightAr:"يحتوي على الجنجرول، المدروس لتأثيراته الهضمية والمضادة للالتهاب." },
+  "Molokhia": { kcal:49, protein:4.8, carbs:7, fiber:3, vitC:52, potassium:166, highlight:"A Middle Eastern leafy green rich in iron and vitamin C.", highlightAr:"خضار ورقي شرق أوسطي غني بالحديد وفيتامين سي." },
+  "Vine Leaves": { kcal:93, protein:5.6, carbs:17.1, fiber:11, vitC:11, potassium:740, highlight:"High in fiber, iron, and potassium for a wrapped-leaf staple.", highlightAr:"غنية بالألياف والحديد والبوتاسيوم." },
+  "Purslane": { kcal:16, protein:1.3, carbs:3.4, fiber:1, vitC:21, potassium:494, highlight:"A leafy green that's also a plant source of omega-3 fatty acids.", highlightAr:"خضار ورقي يعد أيضاً مصدراً نباتياً لأوميغا 3." },
+  "Green Fava Beans": { kcal:88, protein:7.9, carbs:16, fiber:5.1, vitC:16, potassium:332, highlight:"High plant protein, popular in Middle Eastern cooking.", highlightAr:"بروتين نباتي مرتفع، شائع في الطبخ الشرق أوسطي." },
+  "Fresh Broad Beans": { kcal:88, protein:7.9, carbs:16, fiber:5.1, vitC:16, potassium:332, highlight:"Same as fava beans — rich in plant protein and fiber.", highlightAr:"نفس الفول — غني بالبروتين النباتي والألياف." },
+  "Okra": { kcal:33, protein:1.9, carbs:7.5, fiber:3.2, vitC:23, potassium:299, highlight:"High in fiber and vitamin C, with a natural thickening quality.", highlightAr:"غني بالألياف وفيتامين سي، مع قدرة طبيعية على تكثيف الطبخات." },
+  "Kousa (Light Green Zucchini)": { kcal:17, protein:1.2, carbs:3.1, fiber:1, vitC:17.9, potassium:261, highlight:"Same light nutrition as zucchini — low calorie, good vitamin C.", highlightAr:"نفس قيمة الكوسا العادية — سعرات منخفضة وفيتامين سي جيد." },
+  "Green Almonds (Seasonal)": { kcal:32, protein:1.4, carbs:3, fiber:1.5, vitC:8, potassium:280, highlight:"The fresh, young form of almonds — much lower calorie than dried.", highlightAr:"الشكل الطازج والصغير من اللوز — سعراته أقل بكثير من اللوز المجفف." },
+  "Dates (Kimia)": { kcal:277, protein:1.8, carbs:75, fiber:6.7, vitC:0, potassium:696, highlight:"A concentrated natural energy source, rich in potassium.", highlightAr:"مصدر طاقة طبيعي مركز، غني بالبوتاسيوم." },
+  "Majdool Date": { kcal:277, protein:1.8, carbs:75, fiber:6.7, vitC:0, potassium:696, highlight:"Large, caramel-like dates — rich in fiber and potassium.", highlightAr:"تمر كبير بنكهة الكراميل — غني بالألياف والبوتاسيوم." },
+  "Apple": { kcal:52, protein:0.3, carbs:14, fiber:2.4, vitC:4.6, potassium:107, highlight:"The fiber pectin in apples supports digestive health.", highlightAr:"ألياف البكتين في التفاح تدعم صحة الجهاز الهضمي." },
+  "Banana": { kcal:89, protein:1.1, carbs:23, fiber:2.6, vitC:8.7, potassium:358, highlight:"A well-known source of potassium and quick natural energy.", highlightAr:"مصدر معروف للبوتاسيوم والطاقة الطبيعية السريعة." },
+  "Orange": { kcal:47, protein:0.9, carbs:12, fiber:2.4, vitC:53, potassium:181, highlight:"A classic vitamin C fruit that also supports immune function.", highlightAr:"فاكهة كلاسيكية لفيتامين سي تدعم أيضاً وظيفة المناعة." },
+  "Grapes (Red)": { kcal:69, protein:0.7, carbs:18, fiber:0.9, vitC:3.2, potassium:191, highlight:"Contains resveratrol, an antioxidant found in red grape skins.", highlightAr:"يحتوي على الريسفيراترول، مضاد أكسدة موجود في قشر العنب الأحمر." },
+  "Grapes (Green)": { kcal:69, protein:0.7, carbs:18, fiber:0.9, vitC:3.2, potassium:191, highlight:"A quick, naturally sweet energy snack.", highlightAr:"وجبة خفيفة سريعة وحلوة بشكل طبيعي." },
+  "Strawberry": { kcal:32, protein:0.7, carbs:7.7, fiber:2, vitC:59, potassium:153, highlight:"More vitamin C per 100g than an orange.", highlightAr:"فيتامين سي أكثر من البرتقال لكل 100غ." },
+  "Mango": { kcal:60, protein:0.8, carbs:15, fiber:1.6, vitC:36, potassium:168, highlight:"Rich in vitamin C and beta-carotene.", highlightAr:"غني بفيتامين سي وبيتا كاروتين." },
+  "Kiwi": { kcal:61, protein:1.1, carbs:15, fiber:3, vitC:93, potassium:312, highlight:"One of the highest vitamin C fruits, gram for gram.", highlightAr:"من أعلى الفواكه بفيتامين سي، غراماً بغرام." },
+  "Pineapple": { kcal:50, protein:0.5, carbs:13, fiber:1.4, vitC:47.8, potassium:109, highlight:"Contains bromelain, an enzyme studied for digestion.", highlightAr:"يحتوي على البروميلين، إنزيم مدروس للهضم." },
+  "Pomegranate": { kcal:83, protein:1.7, carbs:19, fiber:4, vitC:10.2, potassium:236, highlight:"Rich in polyphenol antioxidants, more than most fruit juices.", highlightAr:"غني بمضادات أكسدة البوليفينول، أكثر من معظم عصائر الفواكه." },
+  "Pear": { kcal:57, protein:0.4, carbs:15, fiber:3.1, vitC:4.3, potassium:116, highlight:"One of the higher-fiber common fruits, especially with skin on.", highlightAr:"من الفواكه الأعلى بالألياف، خاصة مع القشرة." },
+  "Honey Peach": { kcal:39, protein:0.9, carbs:9.5, fiber:1.5, vitC:6.6, potassium:190, highlight:"Sweet and juicy with a light vitamin C contribution.", highlightAr:"حلو وعصيري مع مساهمة خفيفة من فيتامين سي." },
+  "Dragon Fruit": { kcal:60, protein:1.2, carbs:13, fiber:3, vitC:3, potassium:268, highlight:"Striking color with a good fiber content and plant antioxidants.", highlightAr:"لون لافت مع محتوى جيد من الألياف ومضادات الأكسدة النباتية." },
+  "Mandarin": { kcal:53, protein:0.8, carbs:13, fiber:1.8, vitC:26.7, potassium:166, highlight:"Easy-peel citrus with a solid vitamin C dose.", highlightAr:"حمضيات سهلة التقشير بجرعة جيدة من فيتامين سي." },
+  "Blueberries": { kcal:57, protein:0.7, carbs:14.5, fiber:2.4, vitC:9.7, potassium:77, highlight:"Among the highest-antioxidant fruits, thanks to anthocyanins.", highlightAr:"من أعلى الفواكه بمضادات الأكسدة بسبب الأنثوسيانين." },
+  "3 Colour Apples": { kcal:52, protein:0.3, carbs:14, fiber:2.4, vitC:4.6, potassium:107, highlight:"A mixed selection with the same fiber benefits as any apple.", highlightAr:"تشكيلة مختلطة بنفس فوائد الألياف الموجودة في أي تفاحة." },
+  "Cherry": { kcal:63, protein:1.1, carbs:16, fiber:2.1, vitC:7, potassium:222, highlight:"Contains anthocyanins studied for their anti-inflammatory effects.", highlightAr:"يحتوي على الأنثوسيانين المدروس لتأثيراته المضادة للالتهاب." },
+  "Flat Peach": { kcal:39, protein:0.9, carbs:9.5, fiber:1.5, vitC:6.6, potassium:190, highlight:"Same light, juicy profile as regular peaches.", highlightAr:"نفس خصائص الخوخ العادي العصيرية والخفيفة." },
+  "Blackberry": { kcal:43, protein:1.4, carbs:9.6, fiber:5.3, vitC:21, potassium:162, highlight:"One of the highest-fiber berries available.", highlightAr:"من أعلى أنواع التوت بالألياف." },
+  "Raspberry": { kcal:52, protein:1.2, carbs:12, fiber:6.5, vitC:26.2, potassium:151, highlight:"Exceptionally high fiber for a fruit — over 6g per 100g.", highlightAr:"ألياف مرتفعة جداً لفاكهة — أكثر من 6غ لكل 100غ." },
+  "Apricot": { kcal:48, protein:1.4, carbs:11, fiber:2, vitC:10, potassium:259, highlight:"Good source of beta-carotene and potassium.", highlightAr:"مصدر جيد لبيتا كاروتين والبوتاسيوم." },
+  "Avocado (Hass)": { kcal:160, protein:2, carbs:8.5, fiber:6.7, vitC:10, potassium:485, highlight:"Rich in heart-healthy monounsaturated fats and fiber.", highlightAr:"غني بالدهون الأحادية غير المشبعة الصحية للقلب والألياف." },
+  "Banana Green": { kcal:89, protein:1.1, carbs:23, fiber:2.6, vitC:8.7, potassium:358, highlight:"Unripe bananas have more resistant starch, which feeds gut bacteria.", highlightAr:"الموز غير الناضج يحتوي على نشا مقاوم أكثر يغذي بكتيريا الأمعاء." },
+  "Lime": { kcal:30, protein:0.7, carbs:10.5, fiber:2.8, vitC:29.1, potassium:102, highlight:"A tart citrus with a reliable vitamin C contribution.", highlightAr:"حمضيات حامضة بمساهمة ثابتة من فيتامين سي." },
+  "Mango Green": { kcal:60, protein:0.8, carbs:15, fiber:1.6, vitC:36, potassium:168, highlight:"Unripe mango is tangier but keeps the same vitamin C.", highlightAr:"المانجو غير الناضجة أكثر حموضة لكن تحتفظ بنفس فيتامين سي." },
+  "Passion Fruit": { kcal:97, protein:2.2, carbs:23, fiber:10.4, vitC:30, potassium:348, highlight:"Among the highest-fiber fruits — over 10g per 100g.", highlightAr:"من أعلى الفواكه بالألياف — أكثر من 10غ لكل 100غ." },
+  "Sweet Melon": { kcal:34, protein:0.8, carbs:8.2, fiber:0.9, vitC:36.7, potassium:267, highlight:"High water content plus a good dose of vitamin C.", highlightAr:"محتوى مائي مرتفع مع جرعة جيدة من فيتامين سي." },
+  "Watermelon": { kcal:30, protein:0.6, carbs:7.6, fiber:0.4, vitC:8.1, potassium:112, highlight:"92% water, plus the antioxidant lycopene.", highlightAr:"92% ماء، بالإضافة إلى مضاد الأكسدة الليكوبين." },
+};
+
 const PRODUCTS = CATALOG.flatMap(({ cat, items }) =>
   items.map(([name, unit, price]) => ({
     id: slugify(name),
@@ -2851,6 +2977,7 @@ const PRODUCTS = CATALOG.flatMap(({ cat, items }) =>
     shippingMethod: null, // "Air Freight" | "Road Freight" | null — optional, marketing/freshness signal, not a compliance requirement
     storageTip: PRODUCT_STORAGE_TIP[name] || null,
     storageTipAr: PRODUCT_STORAGE_TIP_AR[name] || null,
+    nutrition: PRODUCT_NUTRITION[name] || null,
   }))
 );
 
@@ -3347,7 +3474,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20260922042214"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20261007193516"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
@@ -5600,6 +5727,7 @@ function AppShell() {
         {view === "fridgescan" && <FridgeScanView setView={setView} products={customerProducts} addToCart={addToCart} logFridgeScan={logFridgeScan} markFridgeScanConverted={markFridgeScanConverted} />}
         {view === "chefchat" && <ChefChatView setView={setView} products={customerProducts} addToCart={addToCart} logChefChat={logChefChat} bumpChefChatMessageCount={bumpChefChatMessageCount} markChefChatConverted={markChefChatConverted} orders={orders} user={user} />}
         {view === "blog" && <BlogView setView={setView} />}
+        {view === "facts" && <NutritionFactsView setView={setView} products={customerProducts} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "account" && (
@@ -5743,6 +5871,7 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
       {navItem("freshboxes", lang === "ar" ? "أطعمة فاخرة" : "Gourmet", Gift, () => { setActiveCategory && setActiveCategory("Gourmet & Gifts"); setView("freshboxes"); }, view === "freshboxes" && activeCategory === "Gourmet & Gifts", mobile)}
       {navItem("boxes", t("nav_boxes"), Package, undefined, undefined, mobile)}
       {navItem("chefchat", lang === "ar" ? "الشيف" : "Chef Chat", ChefHat, () => setView("chefchat"), view === "chefchat", mobile)}
+      {navItem("facts", lang === "ar" ? "حقائق غذائية" : "Produce Facts", Leaf, () => setView("facts"), view === "facts", mobile)}
       {navItem("commercial", t("nav_commercial"), Building2, undefined, undefined, mobile)}
       {navItem("track", t("nav_track"), Truck, undefined, undefined, mobile)}
       {navItem("account", user ? (profile?.name || t("nav_account")) : t("nav_signin"), UserIcon, undefined, undefined, mobile)}
@@ -10752,6 +10881,113 @@ function BlogView({ setView }) {
   );
 }
 
+function NutritionFactsView({ setView, products }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+  const [search, setSearch] = useState("");
+  const [activeCat, setActiveCat] = useState("All");
+  const [openId, setOpenId] = useState(null);
+
+  const items = products.filter((p) => p.nutrition);
+  const categories = ["All", ...new Set(items.map((p) => p.category))];
+  const filtered = items.filter((p) => {
+    const matchesCat = activeCat === "All" || p.category === activeCat;
+    const matchesSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
+
+  return (
+    <div style={{ paddingTop: 30, maxWidth: 900, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
+        <Logo size={90} />
+      </div>
+      <SectionTitle
+        eyebrow={isAr ? "تعرف على طعامك" : "Know your food"}
+        title={isAr ? "حقائق غذائية" : "Produce Facts"}
+      />
+      <p style={{ textAlign: "center", maxWidth: 560, margin: "10px auto 0", fontSize: 13.5, opacity: 0.65, lineHeight: 1.6 }}>
+        {isAr
+          ? "السعرات الحرارية والعناصر الغذائية لكل 100 غرام من الخضروات والفواكه الطازجة لدينا. قيم إرشادية تقريبية تعتمد على المصادر الغذائية العامة."
+          : "Calories and key nutrients per 100g for the fresh fruits and vegetables we sell. Approximate reference values from standard nutrition sources, for general information rather than medical advice."}
+      </p>
+
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center", marginTop: 24 }}>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={isAr ? "ابحث عن خضار أو فاكهة…" : "Search a fruit or vegetable…"}
+          style={{
+            flex: "1 1 260px", maxWidth: 320, padding: "11px 14px", borderRadius: 10,
+            border: `1px solid ${BRAND.creamDeep}`, fontSize: 14, fontFamily: "Manrope, sans-serif",
+          }}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginTop: 14 }}>
+        {categories.map((c) => (
+          <Pill key={c} active={activeCat === c} onClick={() => setActiveCat(c)}>{c}</Pill>
+        ))}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 14, marginTop: 24 }}>
+        {filtered.map((p) => {
+          const n = p.nutrition;
+          const open = openId === p.id;
+          const photo = p.photoUrl || REAL_PHOTOS[p.id];
+          return (
+            <div key={p.id} style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 14, overflow: "hidden" }}>
+              <div style={{ display: "flex", gap: 12, padding: 14, alignItems: "center" }}>
+                {photo ? (
+                  <img src={photo} alt={p.name} style={{ width: 56, height: 56, borderRadius: 10, objectFit: "cover", flexShrink: 0 }} />
+                ) : (
+                  <div style={{ width: 56, height: 56, borderRadius: 10, background: BRAND.creamDeep, flexShrink: 0 }} />
+                )}
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14.5 }}>{p.name}</div>
+                  <div style={{ fontSize: 11.5, opacity: 0.55, marginTop: 1 }}>{isAr ? "لكل 100غ" : "per 100g"}</div>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: BRAND.orangeDeep, marginTop: 2 }}>
+                    {n.kcal} {isAr ? "سعرة" : "kcal"}
+                  </div>
+                </div>
+              </div>
+              <div style={{ padding: "0 14px 14px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 10px", fontSize: 12, opacity: 0.8 }}>
+                  <div>{isAr ? "بروتين" : "Protein"}: <b>{n.protein}g</b></div>
+                  <div>{isAr ? "كربوهيدرات" : "Carbs"}: <b>{n.carbs}g</b></div>
+                  <div>{isAr ? "ألياف" : "Fiber"}: <b>{n.fiber}g</b></div>
+                  <div>{isAr ? "بوتاسيوم" : "Potassium"}: <b>{n.potassium}mg</b></div>
+                  <div style={{ gridColumn: "1 / -1" }}>{isAr ? "فيتامين سي" : "Vitamin C"}: <b>{n.vitC}mg</b></div>
+                </div>
+                {open && (
+                  <p style={{ fontSize: 12.5, lineHeight: 1.6, opacity: 0.8, marginTop: 10, background: BRAND.cream, borderRadius: 8, padding: 10 }}>
+                    {isAr ? n.highlightAr : n.highlight}
+                  </p>
+                )}
+                <button
+                  onClick={() => setOpenId(open ? null : p.id)}
+                  style={{ background: "none", border: "none", color: BRAND.green, fontWeight: 700, fontSize: 12, cursor: "pointer", padding: 0, marginTop: 10, display: "flex", alignItems: "center", gap: 3 }}
+                >
+                  {open ? (isAr ? "إغلاق" : "Close") : (isAr ? "لماذا مفيد؟" : "Why it's good for you")} <ChevronRight size={12} style={{ transform: open ? "rotate(90deg)" : "none" }} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {filtered.length === 0 && (
+        <div style={{ textAlign: "center", opacity: 0.5, marginTop: 40, fontSize: 14 }}>
+          {isAr ? "لا توجد نتائج مطابقة." : "No matches found."}
+        </div>
+      )}
+
+      <div style={{ textAlign: "center", marginTop: 32 }}>
+        <GhostButton onClick={() => setView("home")}><ArrowLeft size={15} /> {isAr ? "العودة للرئيسية" : "Back home"}</GhostButton>
+      </div>
+    </div>
+  );
+}
+
 function AboutView({ setView }) {
   return (
     <div style={{ paddingTop: 40, maxWidth: 680, margin: "0 auto" }}>
@@ -14857,6 +15093,7 @@ function Footer({ setView }) {
           </a>
           <button onClick={() => setView("about")} style={footerLinkStyle}>{t("footer_about")}</button>
           <button onClick={() => setView("recipes")} style={footerLinkStyle}>{t("footer_recipes")}</button>
+          <button onClick={() => setView("facts")} style={footerLinkStyle}>{t("footer_facts")}</button>
           <button onClick={() => setView("blog")} style={footerLinkStyle}>{t("footer_blog")}</button>
           <button onClick={() => setView("location")} style={footerLinkStyle}>{t("footer_location")}</button>
           <button onClick={() => setView("privacy")} style={footerLinkStyle}>{t("footer_privacy")}</button>
