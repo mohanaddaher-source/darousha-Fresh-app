@@ -3474,7 +3474,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20261007193516"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20261015135646"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
@@ -6633,6 +6633,93 @@ function countryToFlag(originText) {
   return COUNTRY_FLAGS[key] || "🌍";
 }
 
+// Small leaf button shown on a product card; tapping it opens a popup with that item's nutrition facts
+// (same per-100g data as the Produce Facts page). Renders nothing if the product has no nutrition data.
+// Place inside a card that has position: relative.
+function NutritionLeafButton({ product, style }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+  const n = product.nutrition;
+  if (!n) return null;
+  const photo = product.photoUrl || REAL_PHOTOS[product.id];
+  const label = isAr ? "حقائق غذائية" : "Produce Facts";
+  return (
+    <>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setOpen(true); }}
+        aria-label={`${label}: ${localName(product.name, lang)}`}
+        title={label}
+        style={{
+          position: "absolute", top: 10, insetInlineEnd: 10, zIndex: 2, width: 30, height: 30, borderRadius: "50%",
+          border: `1px solid ${BRAND.creamDeep}`, background: "#fff", color: BRAND.green, cursor: "pointer", padding: 0,
+          display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.08)", ...style,
+        }}
+      >
+        <Leaf size={15} />
+      </button>
+      {open && (
+        <div
+          onClick={(e) => { e.stopPropagation(); setOpen(false); }}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 18 }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${label}: ${localName(product.name, lang)}`}
+            onClick={(e) => e.stopPropagation()}
+            style={{ background: "#fff", borderRadius: 18, width: "100%", maxWidth: 380, maxHeight: "90vh", overflowY: "auto", padding: 20, position: "relative", textAlign: "start" }}
+          >
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label={isAr ? "إغلاق" : "Close"}
+              style={{ position: "absolute", top: 12, insetInlineEnd: 12, background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", color: BRAND.ink }}
+            >
+              <X size={20} />
+            </button>
+            <div style={{ fontFamily: "IBM Plex Mono, monospace", fontSize: 11, letterSpacing: "0.12em", color: BRAND.orangeDeep, fontWeight: 700, marginBottom: 12 }}>
+              {isAr ? "حقائق غذائية" : "PRODUCE FACTS"}
+            </div>
+            <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+              {photo ? (
+                <img src={photo} alt={localName(product.name, lang)} style={{ width: 72, height: 72, borderRadius: 12, objectFit: "cover", flexShrink: 0 }} />
+              ) : (
+                <div style={{ width: 72, height: 72, borderRadius: 12, background: BRAND.creamDeep, flexShrink: 0 }} />
+              )}
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontFamily: "Fraunces, serif", fontWeight: 700, fontSize: 20 }}>{localName(product.name, lang)}</div>
+                <div style={{ fontSize: 12, opacity: 0.55, marginTop: 2 }}>{isAr ? "لكل 100غ" : "per 100g"}</div>
+                <div style={{ fontSize: 18, fontWeight: 800, color: BRAND.orangeDeep, marginTop: 2 }}>{n.kcal} {isAr ? "سعرة" : "kcal"}</div>
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 14px", fontSize: 13.5, marginTop: 16, opacity: 0.85 }}>
+              <div>{isAr ? "بروتين" : "Protein"}: <b>{n.protein}g</b></div>
+              <div>{isAr ? "كربوهيدرات" : "Carbs"}: <b>{n.carbs}g</b></div>
+              <div>{isAr ? "ألياف" : "Fiber"}: <b>{n.fiber}g</b></div>
+              <div>{isAr ? "بوتاسيوم" : "Potassium"}: <b>{n.potassium}mg</b></div>
+              <div style={{ gridColumn: "1 / -1" }}>{isAr ? "فيتامين سي" : "Vitamin C"}: <b>{n.vitC}mg</b></div>
+            </div>
+            <p style={{ fontSize: 13, lineHeight: 1.6, background: BRAND.cream, borderRadius: 10, padding: 12, marginTop: 16, marginBottom: 0 }}>
+              {isAr ? n.highlightAr : n.highlight}
+            </p>
+            <div style={{ fontSize: 11, opacity: 0.5, marginTop: 12, lineHeight: 1.5 }}>
+              {isAr ? "قيم إرشادية تقريبية، للمعلومات العامة وليست نصيحة طبية." : "Approximate reference values, for general information rather than medical advice."}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 function ProductCard({ product, addToCart, cartQty }) {
   const { t, lang } = useLang();
   const [qty, setQty] = useState(1);
@@ -6660,6 +6747,7 @@ function ProductCard({ product, addToCart, cartQty }) {
           {countryToFlag(product.origin)}
         </div>
       )}
+      <NutritionLeafButton product={product} />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Thumb product={product} size={72} radius={12} />
       </div>
@@ -6837,6 +6925,7 @@ function FruitBoxBuilder({ products, addToCart, cart, setView, lang }) {
                   {lang === "ar" ? "خصم" : "Sale"}
                 </div>
               )}
+              <NutritionLeafButton product={p} style={{ top: 8, insetInlineEnd: 8, width: 26, height: 26 }} />
               <Thumb product={p} size={80} radius={10} />
               <div style={{ fontWeight: 700, fontSize: 13, marginTop: 8 }}>{localName(p.name, lang)}</div>
               <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 4 }}>
@@ -6956,6 +7045,7 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
                   {lang === "ar" ? "خصم" : "Sale"}
                 </div>
               )}
+              <NutritionLeafButton product={p} style={{ top: 8, insetInlineEnd: 8, width: 26, height: 26 }} />
               <Thumb product={p} size={80} radius={10} />
               <div style={{ fontWeight: 700, fontSize: 13, marginTop: 8 }}>{localName(p.name, lang)}</div>
               <div style={{ fontSize: 11.5, opacity: 0.6, marginBottom: 4 }}>
@@ -7026,7 +7116,8 @@ function VegetableBoxBuilder({ products, addToCart, cart, setView, lang }) {
 function BoxSizeCard({ product, addToCart, cart, lang }) {
   const tiers = computeBoxTiers(product);
   return (
-    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 18, overflow: "hidden" }}>
+    <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 18, overflow: "hidden", position: "relative" }}>
+      <NutritionLeafButton product={product} style={{ top: 12, insetInlineEnd: 12, width: 36, height: 36 }} />
       <div style={{ height: 220, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Thumb product={product} size={220} radius={0} />
       </div>
