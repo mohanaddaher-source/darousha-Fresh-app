@@ -3474,7 +3474,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20261015135646"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20261028051507"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
@@ -9700,6 +9700,62 @@ function IngredientThumb({ product, size }) {
   );
 }
 
+// Recipe card header. If a photo of the finished dish exists at /images/recipes/<recipe id>.jpg it is shown
+// as a round photo beside the title; recipes without a photo render exactly as before (no broken image).
+function RecipeHeader({ r, meta, isAr, servings, onServings }) {
+  const [photoOk, setPhotoOk] = useState(false);
+  const side = isAr ? "left" : "right";
+  const name = isAr ? r.nameAr : r.name;
+  return (
+    <div style={{ background: `linear-gradient(160deg, ${BRAND.green}, ${BRAND.greenDark})`, color: "#fff", padding: 20, position: "relative" }}>
+      <div style={{ position: "absolute", top: 14, [side]: 14, background: "rgba(255,255,255,0.15)", borderRadius: 999, padding: "4px 10px", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+        <span style={{ fontSize: 13 }}>{CUISINE_FLAGS[r.cuisine] || CUISINE_FLAGS.international}</span>
+        <span>{isAr ? CUISINE_LABEL[r.cuisine]?.ar : CUISINE_LABEL[r.cuisine]?.en}</span>
+      </div>
+      <img
+        src={`/images/recipes/${r.id}.jpg`}
+        alt={name}
+        loading="lazy"
+        onLoad={() => setPhotoOk(true)}
+        onError={() => setPhotoOk(false)}
+        style={{
+          position: "absolute", top: 46, [side]: 14, width: 124, height: 124, borderRadius: "50%", objectFit: "cover",
+          border: "3px solid rgba(255,255,255,0.22)", boxShadow: "0 8px 22px rgba(0,0,0,0.35)",
+          opacity: photoOk ? 1 : 0, pointerEvents: "none", transition: "opacity 0.3s ease",
+        }}
+      />
+      <div style={{ [isAr ? "paddingLeft" : "paddingRight"]: photoOk ? 138 : 0, minHeight: photoOk ? 150 : undefined }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+          <img src={REAL_LOGO_IMG} alt="Darousha Fresh" style={{ height: 22, borderRadius: 3 }} />
+        </div>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22, lineHeight: 1.2 }}>{name}</div>
+        <div style={{ fontSize: 12.5, opacity: 0.85, fontStyle: "italic", marginTop: 4 }}>{isAr ? r.taglineAr : r.tagline}</div>
+      </div>
+      <div style={{ display: "flex", gap: 16, marginTop: 14, fontSize: 11, fontWeight: 700, opacity: 0.92 }}>
+        <span>⏱ {meta.time} {isAr ? "دقيقة" : "min"}</span>
+        <span>📊 {isAr ? meta.levelAr : meta.level}</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12 }}>
+        <span style={{ fontSize: 11, opacity: 0.8 }}>👥 {isAr ? "الكمية لعدد" : "Serves"}:</span>
+        {[2, 4, 6].map((n) => (
+          <button
+            key={n}
+            onClick={() => onServings(n)}
+            style={{
+              minWidth: 30, height: 26, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer",
+              border: servings === n ? `1.5px solid ${BRAND.gold}` : "1.5px solid rgba(255,255,255,0.3)",
+              background: servings === n ? BRAND.gold : "rgba(255,255,255,0.1)",
+              color: servings === n ? BRAND.ink : "#fff",
+            }}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
   const { lang } = useLang();
   const [openId, setOpenId] = useState(null);
@@ -9791,39 +9847,14 @@ function RecipesView({ setView, products, addToCart, deepLinkRecipeId }) {
               }}
               className="dsf-recipe-card"
             >
-              {/* Branded header */}
-              <div style={{ background: `linear-gradient(160deg, ${BRAND.green}, ${BRAND.greenDark})`, color: "#fff", padding: 20, position: "relative" }}>
-                <div style={{ position: "absolute", top: 14, [isAr ? "left" : "right"]: 14, background: "rgba(255,255,255,0.15)", borderRadius: 999, padding: "4px 10px", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
-                  <span style={{ fontSize: 13 }}>{CUISINE_FLAGS[r.cuisine] || CUISINE_FLAGS.international}</span>
-                  <span>{isAr ? CUISINE_LABEL[r.cuisine]?.ar : CUISINE_LABEL[r.cuisine]?.en}</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                  <img src={REAL_LOGO_IMG} alt="Darousha Fresh" style={{ height: 22, borderRadius: 3 }} />
-                </div>
-                <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22, lineHeight: 1.2 }}>{isAr ? r.nameAr : r.name}</div>
-                <div style={{ fontSize: 12.5, opacity: 0.85, fontStyle: "italic", marginTop: 4 }}>{isAr ? r.taglineAr : r.tagline}</div>
-                <div style={{ display: "flex", gap: 16, marginTop: 14, fontSize: 11, fontWeight: 700, opacity: 0.92 }}>
-                  <span>⏱ {meta.time} {isAr ? "دقيقة" : "min"}</span>
-                  <span>📊 {isAr ? meta.levelAr : meta.level}</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12 }}>
-                  <span style={{ fontSize: 11, opacity: 0.8 }}>👥 {isAr ? "الكمية لعدد" : "Serves"}:</span>
-                  {[2, 4, 6].map((n) => (
-                    <button
-                      key={n}
-                      onClick={() => setServingsMap((prev) => ({ ...prev, [r.id]: n }))}
-                      style={{
-                        minWidth: 30, height: 26, borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer",
-                        border: getServings(r) === n ? `1.5px solid ${BRAND.gold}` : "1.5px solid rgba(255,255,255,0.3)",
-                        background: getServings(r) === n ? BRAND.gold : "rgba(255,255,255,0.1)",
-                        color: getServings(r) === n ? BRAND.ink : "#fff",
-                      }}
-                    >
-                      {n}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              {/* Branded header (with the finished-dish photo when one exists) */}
+              <RecipeHeader
+                r={r}
+                meta={meta}
+                isAr={isAr}
+                servings={getServings(r)}
+                onServings={(n) => setServingsMap((prev) => ({ ...prev, [r.id]: n }))}
+              />
 
               <div style={{ padding: 20, flex: 1, display: "flex", flexDirection: "column" }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.05em", color: BRAND.orangeDeep, textTransform: "uppercase", marginBottom: 10 }}>
