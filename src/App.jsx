@@ -3474,7 +3474,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20261028053738"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20261028123327"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
