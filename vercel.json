@@ -4,6 +4,7 @@
   ],
   "functions": {
     "api/fridge-scan.js": { "maxDuration": 60 },
+    "api/meal-scan.js": { "maxDuration": 60 },
     "api/ai-recipe.js": { "maxDuration": 30 }
   },
   "headers": [

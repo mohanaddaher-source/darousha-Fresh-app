@@ -15,7 +15,7 @@ import {
   ShoppingCart, Truck, Leaf, MapPin, Clock, CreditCard, CheckCircle2,
   Lock, Plus, Minus, ChevronRight, Package, ArrowLeft, X, Banknote,
   ShieldCheck, Search, Trash2, ChevronDown, Home as HomeIcon, Store,
-  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send, Mic, CheckCheck, Dumbbell, Sparkles
+  ClipboardList, Settings, Circle, CheckCircle, Phone, Building2, User as UserIcon, Mail, LogOut, TrendingUp, BookOpen, Instagram, Citrus, Menu, Gift, Calculator, ChefHat, Send, Mic, CheckCheck, Dumbbell, Sparkles, Camera
 } from "lucide-react";
 
 /* ============================================================================
@@ -3474,7 +3474,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20261028123327"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20261105170714"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
@@ -5728,6 +5728,7 @@ function AppShell() {
         {view === "chefchat" && <ChefChatView setView={setView} products={customerProducts} addToCart={addToCart} logChefChat={logChefChat} bumpChefChatMessageCount={bumpChefChatMessageCount} markChefChatConverted={markChefChatConverted} orders={orders} user={user} />}
         {view === "blog" && <BlogView setView={setView} />}
         {view === "facts" && <NutritionFactsView setView={setView} products={customerProducts} />}
+        {view === "mealscan" && <MealScanView setView={setView} products={customerProducts} addToCart={addToCart} />}
         {view === "fruitbuilder" && <FruitBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "vegetablebuilder" && <VegetableBoxBuilder products={customerProducts} addToCart={addToCart} cart={cart} setView={setView} lang={lang} />}
         {view === "account" && (
@@ -5872,6 +5873,7 @@ function Header({ view, setView, cartCount, user, profile, setActiveCategory, ac
       {navItem("boxes", t("nav_boxes"), Package, undefined, undefined, mobile)}
       {navItem("chefchat", lang === "ar" ? "الشيف" : "Chef Chat", ChefHat, () => setView("chefchat"), view === "chefchat", mobile)}
       {navItem("facts", lang === "ar" ? "حقائق غذائية" : "Produce Facts", Leaf, () => setView("facts"), view === "facts", mobile)}
+      {navItem("mealscan", lang === "ar" ? "تحليل وجبتك" : "Meal Scan", Camera, () => setView("mealscan"), view === "mealscan", mobile)}
       {navItem("commercial", t("nav_commercial"), Building2, undefined, undefined, mobile)}
       {navItem("track", t("nav_track"), Truck, undefined, undefined, mobile)}
       {navItem("account", user ? (profile?.name || t("nav_account")) : t("nav_signin"), UserIcon, undefined, undefined, mobile)}
@@ -10322,6 +10324,196 @@ function AiRecipeBuilderView({ setView, products, addToCart, logAiRecipeRequest,
     </div>
   );
 }
+// ---- "Meal Scan" — photograph a meal, get ESTIMATED calories/macros, a short
+// verdict, recommendations, and fresh produce from our catalog that would
+// improve it. The AI only returns text + generic produce names (api/meal-scan.js);
+// products and prices come from our own catalog via matchIngredientToProduct.
+function MealScanView({ setView, products, addToCart }) {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+  const fileRef = useRef(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [res, setRes] = useState(null);
+  const [added, setAdded] = useState(false);
+
+  function compress(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = reject;
+        img.onload = () => {
+          const maxDim = 1024;
+          let { width, height } = img;
+          if (width > height && width > maxDim) { height = Math.round((height * maxDim) / width); width = maxDim; }
+          else if (height > maxDim) { width = Math.round((width * maxDim) / height); height = maxDim; }
+          const c = document.createElement("canvas");
+          c.width = width; c.height = height;
+          c.getContext("2d").drawImage(img, 0, 0, width, height);
+          resolve(c.toDataURL("image/jpeg", 0.7));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function onFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    setError(null); setRes(null); setAdded(false); setLoading(true);
+    try {
+      const img = await compress(file);
+      setPreview(img);
+      const r = await fetch("/api/meal-scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageBase64: img, lang }),
+      });
+      let data;
+      try { data = await r.json(); }
+      catch { setError((isAr ? "خطأ غير متوقع" : "Unexpected error") + ` (HTTP ${r.status})`); setLoading(false); return; }
+      if (!r.ok || data.error) { setError(data.error || (isAr ? "لم نتمكن من قراءة الصورة." : "Sorry, we couldn't read that photo.")); setLoading(false); return; }
+      setRes(data);
+    } catch (err) {
+      setError((isAr ? "خطأ في الشبكة: " : "Network error: ") + (err && err.message ? err.message : ""));
+    }
+    setLoading(false);
+  }
+
+  function reset() {
+    setPreview(null); setRes(null); setError(null); setAdded(false);
+    if (fileRef.current) fileRef.current.value = "";
+  }
+
+  const suggestions = useMemo(() => {
+    if (!res) return [];
+    const seen = new Set();
+    return res.add_produce
+      .map((n) => matchIngredientToProduct(n, products))
+      .filter((p) => p && !seen.has(p.id) && seen.add(p.id));
+  }, [res, products]);
+
+  function addSuggestions() {
+    suggestions.forEach((p) => {
+      const est = estimateRecipeIngredientQty(p, 2);
+      addToCart({ id: p.id, name: p.name, unit: p.unit, price: effectivePrice(p), qty: est.qty, kind: "item", source: "meal_scan" });
+    });
+    setAdded(true);
+  }
+
+  const macros = res ? [
+    { k: isAr ? "بروتين" : "Protein", v: res.protein_g, color: BRAND.green },
+    { k: isAr ? "كربوهيدرات" : "Carbs", v: res.carbs_g, color: BRAND.gold },
+    { k: isAr ? "دهون" : "Fat", v: res.fat_g, color: BRAND.orangeDeep },
+    { k: isAr ? "ألياف" : "Fiber", v: res.fiber_g, color: "#6B8E4E" },
+  ] : [];
+  const macroMax = res ? Math.max(1, ...macros.map((m) => m.v || 0)) : 1;
+
+  return (
+    <div style={{ paddingTop: 22, maxWidth: 640, margin: "0 auto" }}>
+      <SectionTitle
+        eyebrow={isAr ? "تحليل الوجبة" : "Meal Scan"}
+        title={isAr ? "📸 كم سعرة في وجبتك؟" : "📸 What's in your meal?"}
+      />
+      <p style={{ fontSize: 13.5, opacity: 0.7, marginTop: 8 }}>
+        {isAr
+          ? "التقط صورة لوجبتك وسنقدّر السعرات والعناصر الغذائية ونقترح عليك ما يجعلها أفضل."
+          : "Snap a photo of your meal and we'll estimate the calories and nutrition, and suggest how to make it even better."}
+      </p>
+
+      {!preview && (
+        <div style={{ marginTop: 20 }}>
+          <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={onFile} style={{ display: "none" }} />
+          <PrimaryButton onClick={() => fileRef.current && fileRef.current.click()} full>
+            📸 {isAr ? "التقط صورة لوجبتك" : "Take or Upload a Photo"}
+          </PrimaryButton>
+        </div>
+      )}
+
+      {preview && <img src={preview} alt="" style={{ width: "100%", maxHeight: 240, objectFit: "cover", borderRadius: 12, display: "block", marginTop: 18 }} />}
+
+      {loading && <div style={{ marginTop: 18, fontSize: 13.5, opacity: 0.7 }}>{isAr ? "نحلّل وجبتك…" : "Analysing your meal…"}</div>}
+
+      {error && (
+        <div style={{ background: "#FDEDED", border: `1px solid ${BRAND.tomato}`, borderRadius: 12, padding: 14, marginTop: 18, fontSize: 13.5, color: BRAND.tomato }}>
+          {error}
+          <div><button onClick={reset} style={{ background: "none", border: "none", color: BRAND.green, fontWeight: 700, fontSize: 12.5, cursor: "pointer", padding: 0, marginTop: 8 }}>{isAr ? "جرّب صورة أخرى" : "Try another photo"}</button></div>
+        </div>
+      )}
+
+      {res && (
+        <div style={{ marginTop: 22 }}>
+          <div style={{ background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 18 }}>
+            <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 22 }}>{res.dish}</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 8 }}>
+              <span style={{ fontFamily: "Fraunces, serif", fontWeight: 900, fontSize: 44, color: BRAND.green, lineHeight: 1 }}>{res.calories}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, opacity: 0.65 }}>{isAr ? "سعرة حرارية (تقديري)" : "kcal (estimated)"}</span>
+            </div>
+            <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 9 }}>
+              {macros.map((m) => (
+                <div key={m.k}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5, fontWeight: 700, marginBottom: 3 }}>
+                    <span>{m.k}</span><span>{m.v ?? "–"}g</span>
+                  </div>
+                  <div style={{ height: 7, background: BRAND.creamDeep, borderRadius: 999, overflow: "hidden" }}>
+                    <div style={{ width: `${Math.max(4, ((m.v || 0) / macroMax) * 100)}%`, height: "100%", background: m.color, borderRadius: 999 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ background: res.health_score >= 7 ? "#E8F3EA" : res.health_score >= 4 ? "#FFF4DC" : "#FDEDED", color: res.health_score >= 7 ? BRAND.green : res.health_score >= 4 ? BRAND.orangeDeep : BRAND.tomato, fontWeight: 800, borderRadius: 999, padding: "5px 12px", fontSize: 13, whiteSpace: "nowrap" }}>
+                {isAr ? "التقييم" : "Balance"} {res.health_score}/10
+              </div>
+              <div style={{ fontSize: 13, opacity: 0.8 }}>{res.verdict}</div>
+            </div>
+          </div>
+
+          {res.tips.length > 0 && (
+            <div style={{ marginTop: 14, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 18 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", opacity: 0.5, marginBottom: 10 }}>
+                {isAr ? "ما نوصي به" : "Our recommendations"}
+              </div>
+              <ul style={{ margin: 0, paddingInlineStart: 18, display: "flex", flexDirection: "column", gap: 8, fontSize: 13.5, lineHeight: 1.5 }}>
+                {res.tips.map((t, i) => <li key={i}>{t}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {suggestions.length > 0 && (
+            <div style={{ marginTop: 14, background: "#fff", border: `1px solid ${BRAND.creamDeep}`, borderRadius: 16, padding: 18 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.05em", textTransform: isAr ? "none" : "uppercase", opacity: 0.5, marginBottom: 10 }}>
+                {isAr ? "أضف طازجًا لوجبتك" : "Add fresh to your meal"}
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+                {suggestions.map((p) => (
+                  <span key={p.id} style={{ fontSize: 12.5, padding: "5px 11px", borderRadius: 999, background: "#E8F3EA", color: BRAND.green, fontWeight: 700 }}>{localName(p.name, lang)}</span>
+                ))}
+              </div>
+              {added
+                ? <div style={{ fontSize: 12.5, color: BRAND.green, fontWeight: 700 }}>{isAr ? "✓ أُضيف إلى السلة" : "✓ Added to cart"}</div>
+                : <PrimaryButton onClick={addSuggestions} full>{isAr ? "أضف إلى السلة" : "Add to Cart"}</PrimaryButton>}
+            </div>
+          )}
+
+          <p style={{ fontSize: 11.5, opacity: 0.5, marginTop: 14, lineHeight: 1.5 }}>
+            {isAr
+              ? "القيم تقديرية من الصورة فقط وقد تختلف عن الواقع. هذه ليست نصيحة طبية."
+              : "Values are estimates from the photo only and may differ from reality. This is not medical advice."}
+          </p>
+          <button onClick={reset} style={{ background: "none", border: "none", color: BRAND.green, fontWeight: 700, fontSize: 12.5, cursor: "pointer", padding: 0, marginTop: 8 }}>
+            {isAr ? "حلّل وجبة أخرى" : "Scan another meal"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function FridgeScanView({ setView, products, addToCart, logFridgeScan, markFridgeScanConverted }) {
   const { lang } = useLang();
   const isAr = lang === "ar";
