@@ -48,29 +48,44 @@ export default async function handler(req, res) {
   if (!apiKey) { res.status(500).json({ error: "Meal Scan isn't set up yet — missing API key." }); return; }
 
   try {
-    const body = JSON.stringify({
-      model: process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b", // qwen3.6-27b was retired by Groq
-      messages: [{ role: "user", content: [
-        { type: "text", text: PROMPT(lang === "ar" ? "ar" : "en") },
-        { type: "image_url", image_url: { url: imageBase64 } },
-      ] }],
-      response_format: { type: "json_object" },
-      max_completion_tokens: 900,
-      temperature: 0.2,
+    // Try each vision model in turn: Groq retires/renames preview models, and a
+    // model that is gone or can't take images returns 400/404 — fall through to the next.
+    const MODELS = (process.env.GROQ_VISION_MODEL ? [process.env.GROQ_VISION_MODEL] : [])
+      .concat(["qwen/qwen3.8-27b", "meta-llama/llama-4-scout-17b-16e-instruct", "meta-llama/llama-4-maverick-17b-128e-instruct"]);
+    const callModel = (model, json) => fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: "user", content: [
+          { type: "text", text: PROMPT(lang === "ar" ? "ar" : "en") },
+          { type: "image_url", image_url: { url: imageBase64 } },
+        ] }],
+        ...(json ? { response_format: { type: "json_object" } } : {}),
+        max_completion_tokens: 1200,
+        temperature: 0.2,
+      }),
     });
-    const call = () => fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` }, body,
-    });
-    let aiRes = await call();
-    if (aiRes.status === 503 || aiRes.status === 429) { await new Promise((r) => setTimeout(r, 800)); aiRes = await call(); }
-    if (!aiRes.ok) {
-      console.error("Groq meal-scan error:", aiRes.status, await aiRes.text());
-      res.status(502).json({ error: "Couldn't read that photo right now — please try again." }); return;
+    let aiRes = null, lastErr = "";
+    for (const model of MODELS) {
+      for (const json of [true, false]) {
+        aiRes = await callModel(model, json);
+        if (aiRes.status === 503 || aiRes.status === 429) { await new Promise((r) => setTimeout(r, 800)); aiRes = await callModel(model, json); }
+        if (aiRes.ok) break;
+        lastErr = `${model} -> ${aiRes.status}: ${(await aiRes.text()).slice(0, 300)}`;
+        console.error("Groq meal-scan error:", lastErr);
+        if (aiRes.status !== 400) break; // 400 may be json-mode unsupported -> retry once without it
+      }
+      if (aiRes.ok) break;
+    }
+    if (!aiRes || !aiRes.ok) {
+      res.status(502).json({ error: "Couldn't read that photo right now — please try again.", detail: lastErr });
+      return;
     }
     const data = await aiRes.json();
-    const raw = data?.choices?.[0]?.message?.content;
+    const raw = (data?.choices?.[0]?.message?.content || "").replace(/<think>[\s\S]*?<\/think>/g, "");
+    const jsonText = (raw.match(/\{[\s\S]*\}/) || [raw])[0];
     let parsed;
-    try { parsed = JSON.parse(String(raw || "").replace(/```json|```/g, "").trim()); }
+    try { parsed = JSON.parse(jsonText); }
     catch { res.status(502).json({ error: "Sorry, we couldn't read that photo. Try a clearer, well-lit shot." }); return; }
 
     if (parsed && parsed.error === "unclear") {

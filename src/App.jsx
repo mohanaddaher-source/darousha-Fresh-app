@@ -3474,7 +3474,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/darousha_fresh/";
 
 // Your live Vercel domain — tracking links in WhatsApp/email messages point here.
 const SITE_URL = "https://daroushafresh.com";
-const CURRENT_VERSION = "20261106083254"; // must match public/version.json — bumped on every new build
+const CURRENT_VERSION = "20261106083554"; // must match public/version.json — bumped on every new build
 // Master pre-launch switch: while false, checkout is gated site-wide and replaced with a waitlist
 // capture (browsing, cart, and everything else stays fully usable). Flip to true to go live.
 const SITE_LIVE = false;
@@ -10376,7 +10376,7 @@ function MealScanView({ setView, products, addToCart }) {
       let data;
       try { data = await r.json(); }
       catch { setError((isAr ? "خطأ غير متوقع" : "Unexpected error") + ` (HTTP ${r.status})`); setLoading(false); return; }
-      if (!r.ok || data.error) { setError(data.error || (isAr ? "لم نتمكن من قراءة الصورة." : "Sorry, we couldn't read that photo.")); setLoading(false); return; }
+      if (!r.ok || data.error) { setError((data.error || (isAr ? "لم نتمكن من قراءة الصورة." : "Sorry, we couldn't read that photo.")) + (data.detail ? ` [${data.detail}]` : "")); setLoading(false); return; }
       setRes(data);
     } catch (err) {
       setError((isAr ? "خطأ في الشبكة: " : "Network error: ") + (err && err.message ? err.message : ""));
