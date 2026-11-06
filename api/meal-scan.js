@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
   try {
     const body = JSON.stringify({
-      model: "qwen/qwen3.6-27b",
+      model: process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b", // qwen3.6-27b was retired by Groq
       messages: [{ role: "user", content: [
         { type: "text", text: PROMPT(lang === "ar" ? "ar" : "en") },
         { type: "image_url", image_url: { url: imageBase64 } },

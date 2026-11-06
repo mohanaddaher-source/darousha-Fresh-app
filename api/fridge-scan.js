@@ -5,7 +5,7 @@
 // product catalog and the RECIPES library happens entirely client-side in
 // App.jsx, same non-negotiable rule as the text-based recipe assistant.
 //
-// Uses Groq's vision-capable model (qwen/qwen3.6-27b), same free-tier
+// Uses Groq's vision-capable model (qwen/qwen3.8-27b), same free-tier
 // account/API key as api/ai-recipe.js — no separate setup needed if that's
 // already configured. As of August 2026 this model is in Preview on Groq;
 // if it's ever deprecated, swap the model string the same way ai-recipe.js
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
   try {
     const groqUrl = "https://api.groq.com/openai/v1/chat/completions";
     const groqBody = JSON.stringify({
-      model: "qwen/qwen3.6-27b",
+      model: process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b", // qwen3.6-27b was retired by Groq
       messages: [
         {
           role: "user",
